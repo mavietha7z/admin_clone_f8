@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import styles from '~/GlobalStyles.module.scss';
+import NavMenu from '~/components/NavMenu';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +33,16 @@ function CreateCourse() {
             <div className={cx('header')}>
                 <div className="row">
                     <Title name="Thêm khóa học" />
+
+                    <NavMenu
+                        nameHome="Tất cả"
+                        pathHome="/course"
+                        colorHome="warning"
+                        namePlus="Thêm mới"
+                        pathPlus="/course/create"
+                        colorPlus="success"
+                        float="float-right"
+                    />
                 </div>
             </div>
 

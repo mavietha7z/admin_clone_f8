@@ -101,7 +101,7 @@ function Sidebar() {
                             <div id="collapsePin" className="collapse">
                                 <ul>
                                     <li>
-                                        <Link className={cx('link-sub')} to="/course/list">
+                                        <Link className={cx('link-sub')} to="/course">
                                             <FontAwesomeIcon icon={faChevronRight} />
                                             <span className={isHover && cx('active')}>Danh sách khóa học</span>
                                         </Link>
@@ -206,30 +206,6 @@ function Sidebar() {
                                         <Link className={cx('link-sub')} to="/users">
                                             <FontAwesomeIcon icon={faChevronRight} />
                                             <span className={isHover && cx('active')}>Người dùng</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/groups">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Nhóm</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/roles">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Vai trò</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/powers">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Quyền hạn</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/login-history">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Lịch sử đăng nhập</span>
                                         </Link>
                                     </li>
                                 </ul>

@@ -12,7 +12,6 @@ import Charging from '~/pages/chargings/Charging';
 import Pending from '~/pages/chargings/Pending';
 import Telcos from '~/pages/chargings/Telcos';
 import CreateCharging from '~/pages/chargings/CreateCharging';
-import Channel from '~/components/Channel/Channel';
 import EditCharging from '~/pages/chargings/EditCharging';
 import ProviderCharging from '~/pages/chargings/ProviderCharging';
 import EditNcc from '~/pages/chargings/EditNcc';
@@ -38,19 +37,9 @@ import CreateNews from '~/pages/news/CreateNews';
 import EditNews from '~/pages/news/EditNews';
 
 // Import components tài khoản
-import User from '~/pages/account/User';
+import ListUser from '~/pages/account/ListUser';
 import CreateUser from '~/pages/account/CreateUser';
 import EditUser from '~/pages/account/EditUser';
-import Group from '~/pages/account/Group';
-import CreateGroup from '~/pages/account/CreateGroup';
-import EditGroup from '~/pages/account/EditGroup';
-import Role from '~/pages/account/Role';
-import CreateRole from '~/pages/account/CreateRole';
-import EditRole from '~/pages/account/EditRole';
-import Power from '~/pages/account/Power';
-import CreatePower from '~/pages/account/CreatePower';
-import EditPower from '~/pages/account/EditPower';
-import LoginHistory from '~/pages/account/LoginHistory';
 
 // Import components tools
 import SEOPage from '~/pages/tools/SEOPage';
@@ -90,7 +79,7 @@ const privateRoutes = [
     { path: '/', component: Home },
 
     // Route trang khóa học
-    { path: '/course/list', component: ListCourse },
+    { path: '/course', component: ListCourse },
     { path: '/course/create', component: CreateCourse },
     { path: '/course/detail', component: DetailCourse },
     { path: '/course/edit', component: EditCourse },
@@ -100,7 +89,6 @@ const privateRoutes = [
     { path: '/chargings/pending', component: Pending },
     { path: '/chargings/telcos', component: Telcos },
     { path: '/chargings/telcos/create', component: CreateCharging },
-    { path: '/chargings/chanel/VIETNAMOBILE', component: Channel },
     { path: '/chargings/telcos/6/edit', component: EditCharging },
     { path: '/chargings/provider', component: ProviderCharging },
     { path: '/chargings/provider/22/update', component: EditNcc },
@@ -126,19 +114,9 @@ const privateRoutes = [
     { path: '/news/7/edit', component: EditNews },
 
     // Route trang tài khoản
-    { path: '/users', component: User },
+    { path: '/users', component: ListUser },
     { path: '/users/create', component: CreateUser },
-    { path: '/users/452/edit', component: EditUser },
-    { path: '/groups', component: Group },
-    { path: '/groups/create', component: CreateGroup },
-    { path: '/groups/4/edit', component: EditGroup },
-    { path: '/roles', component: Role },
-    { path: '/roles/create', component: CreateRole },
-    { path: '/roles/7/edit', component: EditRole },
-    { path: '/powers', component: Power },
-    { path: '/powers/create', component: CreatePower },
-    { path: '/powers/:id/edit', component: EditPower },
-    { path: '/login-history', component: LoginHistory },
+    { path: '/users/edit/:id', component: EditUser },
 
     // Route trang công cụ
     { path: '/seo', component: SEOPage },

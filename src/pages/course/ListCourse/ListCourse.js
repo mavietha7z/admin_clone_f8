@@ -1,7 +1,8 @@
-import { faHouse, faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faHouse, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
+import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
 
@@ -13,6 +14,16 @@ function ListCourse() {
             <div className={cx('header')}>
                 <div className="row">
                     <Title name="Danh sách khóa học" />
+
+                    <NavMenu
+                        nameHome="Trang chủ"
+                        pathHome="/course"
+                        colorHome="warning"
+                        namePlus="Thêm mới"
+                        pathPlus="/course/create"
+                        colorPlus="success"
+                        float="float-right"
+                    />
                 </div>
             </div>
             <div className={cx('content')}>
@@ -20,21 +31,6 @@ function ListCourse() {
                     <div className="col-12">
                         <div className="card">
                             <div className={cx('card-header', 'bg-white', 'header-card')}>
-                                <div className="col-md-6 float-left pl-0">
-                                    <Link to="/course/list" className="mr-2">
-                                        <button className="btn btn-info">
-                                            <FontAwesomeIcon icon={faHouse} />
-                                            <span>Home</span>
-                                        </button>
-                                    </Link>
-                                    <Link to="/course/create" className="mr-2">
-                                        <button className="btn btn-success">
-                                            <FontAwesomeIcon icon={faPlus} />
-                                            <span>Thêm khóa học</span>
-                                        </button>
-                                    </Link>
-                                </div>
-
                                 <div className="col-md-6 float-right">
                                     <div className="float-right">
                                         <div className="input-group">

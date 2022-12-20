@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import styles from './NavMenu.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faHome } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -70,7 +70,7 @@ function NavMenu({
                 {namePlus !== null ? (
                     <Link to={pathPlus}>
                         <button className={`btn btn-${colorPlus}`}>
-                            {/* <FaPlusCircle /> */}
+                            <FontAwesomeIcon icon={faCirclePlus} />
                             <span>{namePlus}</span>
                         </button>
                     </Link>

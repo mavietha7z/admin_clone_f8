@@ -175,7 +175,7 @@ function DetailCourse() {
                                                 }}
                                             />
                                             <div style={{ marginLeft: 15 }}>
-                                                <button type="button" className="btn btn-info">
+                                                <button type="button" className="btn btn-info" disabled>
                                                     Chọn ảnh
                                                 </button>
                                             </div>
@@ -185,7 +185,7 @@ function DetailCourse() {
                                             <label htmlFor="status" style={{ width: '100%' }}>
                                                 Trạng thái:
                                             </label>
-                                            <select className="form-control col-4">
+                                            <select className="form-control col-4" disabled>
                                                 <option value="off">Tắt</option>
                                                 <option value="on" selected>
                                                     Bật
