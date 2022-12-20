@@ -63,53 +63,92 @@ function ListCourse() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Tên khóa học</th>
-                                                    <th>Ảnh nền</th>
-                                                    <th>Chương</th>
-                                                    <th>Bài học</th>
-                                                    <th>Thời lượng</th>
-                                                    <th>Giá</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Ngày tạo</th>
-                                                    <th>Hành động</th>
+                                                    <th>
+                                                        <div className="text-center">Tên khóa học</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Ảnh nền</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Chương</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Bài học</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Thời lượng</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Giá</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Trạng thái</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Ngày tạo</div>
+                                                    </th>
+                                                    <th>
+                                                        <div className="text-center">Hành động</div>
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Kiến Thức Nhập Môn IT</td>
                                                     <td>
-                                                        <img
-                                                            src="https://files.fullstack.edu.vn/f8-prod/courses/7.png"
-                                                            alt=""
-                                                            style={{
-                                                                width: '160px',
-                                                                height: 'auto',
-                                                                borderRadius: 4,
-                                                            }}
-                                                        />
+                                                        <div className="text-center">Kiến Thức Nhập Môn IT</div>
                                                     </td>
-                                                    <td>3 chương</td>
-                                                    <td>13 bài học</td>
-                                                    <td>01 giờ 34 phút</td>
-                                                    <td>0 VND</td>
                                                     <td>
-                                                        <label className="badge badge-success">BẬT</label>
+                                                        <div className="text-center">
+                                                            <img
+                                                                src="https://files.fullstack.edu.vn/f8-prod/courses/7.png"
+                                                                alt=""
+                                                                style={{
+                                                                    width: '160px',
+                                                                    height: 'auto',
+                                                                    borderRadius: 4,
+                                                                }}
+                                                            />
+                                                        </div>
                                                     </td>
-                                                    <td>2022-03-28 12:07:25</td>
                                                     <td>
-                                                        <div className="action-buttons">
-                                                            <div className="action-buttons text-center">
-                                                                <span
-                                                                    className={cx(
-                                                                        'btn btn-success edit-softcard-btn btn-sm',
-                                                                        'btn-action'
-                                                                    )}
-                                                                    data-toggle="modal"
-                                                                    data-target="#total-order"
-                                                                >
-                                                                    <span>Chi tiết</span>
-                                                                </span>
-                                                            </div>
+                                                        <div className="text-center">
+                                                            <div>4 chương</div>
+                                                            <button className="btn btn-success btn-sm mt-3">
+                                                                Thêm chương
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">12 bài học</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">03 giờ 26 phút</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">Miễn phí</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">
+                                                            <label className="badge badge-success">BẬT</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">2022-03-28 12:07:25</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="text-center">
+                                                            <span
+                                                                className={cx(
+                                                                    'btn btn-success edit-softcard-btn btn-sm',
+                                                                    'btn-action'
+                                                                )}
+                                                                data-toggle="modal"
+                                                                data-target="#total-order"
+                                                            >
+                                                                <Link to="/course/detail">
+                                                                    <span className="text-white">Chi tiết</span>
+                                                                </Link>
+                                                            </span>
                                                         </div>
                                                     </td>
                                                 </tr>

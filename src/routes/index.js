@@ -3,15 +3,9 @@ import Home from '~/layouts/Home';
 
 // Import components mã thẻ cào
 import ListCourse from '~/pages/course/ListCourse/ListCourse';
-import Product from '~/pages/course/Product';
-import ConfigProduct from '~/pages/course/ConfigProduct';
-import ImportCard from '~/pages/course/ImportCard';
-import Create from '~/pages/course/Create';
-import StockCard from '~/pages/course/StockCard';
-import ConfigStock from '~/pages/course/ConfigStock';
+import CreateCourse from '~/pages/course/CreateCourse';
+import DetailCourse from '~/pages/course/DetailCourse';
 import EditProduct from '~/pages/course/EditProduct';
-import EditStock from '~/pages/course/EditStock';
-import ConnectStock from '~/pages/course/ConnectStock';
 
 // Import components đổi thẻ cào
 import Charging from '~/pages/chargings/Charging';
@@ -95,17 +89,11 @@ const privateRoutes = [
     // Route trang chủ
     { path: '/', component: Home },
 
-    // Route trang mã thẻ cào
+    // Route trang khóa học
     { path: '/course/list', component: ListCourse },
-    { path: '/course', component: Product },
-    { path: '/course/setting', component: ConfigProduct },
-    { path: '/course/create', component: Create },
+    { path: '/course/create', component: CreateCourse },
+    { path: '/course/detail', component: DetailCourse },
     { path: '/course/47/edit', component: EditProduct },
-    { path: '/stockcards', component: StockCard },
-    { path: '/stockcards/importcard', component: ImportCard },
-    { path: '/stockcards/setting', component: ConfigStock },
-    { path: '/stockcards/setting/22/update', component: EditStock },
-    { path: '/stockcards/connection', component: ConnectStock },
 
     // Route trang đổi thẻ cào
     { path: '/chargings', component: Charging },

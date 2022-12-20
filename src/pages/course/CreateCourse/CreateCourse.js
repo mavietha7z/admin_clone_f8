@@ -8,7 +8,7 @@ import styles from '~/GlobalStyles.module.scss';
 
 const cx = classNames.bind(styles);
 
-function Create() {
+function CreateCourse() {
     const [inputCount, setInputCount] = useState(1);
 
     const addInput = () => {
@@ -159,4 +159,4 @@ function Create() {
     );
 }
 
-export default Create;
+export default CreateCourse;
