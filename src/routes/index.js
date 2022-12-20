@@ -1,11 +1,11 @@
 // Import components trang chủ
 import Home from '~/layouts/Home';
 
-// Import components mã thẻ cào
+// Import components khóa học
 import ListCourse from '~/pages/course/ListCourse/ListCourse';
 import CreateCourse from '~/pages/course/CreateCourse';
 import DetailCourse from '~/pages/course/DetailCourse';
-import EditProduct from '~/pages/course/EditProduct';
+import EditCourse from '~/pages/course/EditCourse';
 
 // Import components đổi thẻ cào
 import Charging from '~/pages/chargings/Charging';
@@ -93,7 +93,7 @@ const privateRoutes = [
     { path: '/course/list', component: ListCourse },
     { path: '/course/create', component: CreateCourse },
     { path: '/course/detail', component: DetailCourse },
-    { path: '/course/47/edit', component: EditProduct },
+    { path: '/course/edit', component: EditCourse },
 
     // Route trang đổi thẻ cào
     { path: '/chargings', component: Charging },

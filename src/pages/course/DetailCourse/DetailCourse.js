@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
 
 import styles from '~/GlobalStyles.module.scss';
@@ -10,24 +7,6 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function DetailCourse() {
-    const [inputCount, setInputCount] = useState(4);
-
-    const addInput = () => {
-        if (inputCount < 10) {
-            setInputCount(inputCount + 1);
-        } else {
-            alert('Tối đa chỉ được 10');
-        }
-    };
-
-    const removeInput = () => {
-        if (inputCount > 1) {
-            setInputCount(inputCount - 1);
-        } else {
-            alert('Cần ít nhất 1 nội dung');
-        }
-    };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -52,6 +31,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label htmlFor="name">Tên sản phẩm:</label>
                                             <input
+                                                disabled
                                                 name="fullName"
                                                 type="text"
                                                 className="form-control"
@@ -62,6 +42,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label>Đường dẫn SEO:</label>
                                             <input
+                                                disabled
                                                 name="urlSeo"
                                                 type="text"
                                                 className="form-control"
@@ -75,6 +56,7 @@ function DetailCourse() {
                                                 Giá: ( Nếu để mặc định 0 thì sẽ là miễn phí )
                                             </label>
                                             <input
+                                                disabled
                                                 name="item_value"
                                                 type="text"
                                                 className="form-control"
@@ -84,17 +66,10 @@ function DetailCourse() {
                                         </div>
 
                                         <div className="form-group col-md-12">
-                                            <label className=" w-100">
-                                                Học được gì sau khóa học:
-                                                <FontAwesomeIcon
-                                                    className="btn btn-success float-right"
-                                                    onClick={addInput}
-                                                    icon={faCirclePlus}
-                                                    title="Thêm 1 ô input mới"
-                                                />
-                                            </label>
+                                            <label className=" w-100">Học được gì sau khóa học:</label>
                                             <div>
                                                 <input
+                                                    disabled
                                                     name="urlSeo"
                                                     type="text"
                                                     className="form-control mb-2 col-11"
@@ -104,47 +79,32 @@ function DetailCourse() {
                                             </div>
                                             <div>
                                                 <input
+                                                    disabled
                                                     name="urlSeo"
                                                     type="text"
                                                     className="form-control mb-2 col-11"
                                                     placeholder="Các khái niệm, thuật ngữ cốt lõi khi triển khai ứng dụng"
                                                     style={{ display: 'inline-block' }}
                                                 />
-                                                <FontAwesomeIcon
-                                                    className="btn btn-danger float-right"
-                                                    onClick={removeInput}
-                                                    icon={faCircleMinus}
-                                                    title="Xóa ô input này"
-                                                />
                                             </div>
                                             <div>
                                                 <input
+                                                    disabled
                                                     name="urlSeo"
                                                     type="text"
                                                     className="form-control mb-2 col-11"
                                                     placeholder="Các mô hình, kiến trúc cơ bản khi triển khai ứng dụng"
                                                     style={{ display: 'inline-block' }}
                                                 />
-                                                <FontAwesomeIcon
-                                                    className="btn btn-danger float-right"
-                                                    onClick={removeInput}
-                                                    icon={faCircleMinus}
-                                                    title="Xóa ô input này"
-                                                />
                                             </div>
                                             <div>
                                                 <input
+                                                    disabled
                                                     name="urlSeo"
                                                     type="text"
                                                     className="form-control mb-2 col-11"
                                                     placeholder="Hiểu hơn về cách internet và máy vi tính hoạt động"
                                                     style={{ display: 'inline-block' }}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="btn btn-danger float-right"
-                                                    onClick={removeInput}
-                                                    icon={faCircleMinus}
-                                                    title="Xóa ô input này"
                                                 />
                                             </div>
                                         </div>
@@ -158,6 +118,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label htmlFor="name">Tổng số chương:</label>
                                             <input
+                                                disabled
                                                 name="fullName"
                                                 type="text"
                                                 className="form-control"
@@ -168,6 +129,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label>Tổng số bài học:</label>
                                             <input
+                                                disabled
                                                 name="urlSeo"
                                                 type="text"
                                                 className="form-control"
@@ -179,6 +141,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label>Thời lượng khóa học:</label>
                                             <input
+                                                disabled
                                                 name="urlSeo"
                                                 type="text"
                                                 className="form-control"
@@ -190,6 +153,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label>Tác giả khóa học:</label>
                                             <input
+                                                disabled
                                                 name="urlSeo"
                                                 type="text"
                                                 className="form-control"
@@ -232,6 +196,7 @@ function DetailCourse() {
                                         <div className="form-group col-md-12">
                                             <label htmlFor="short_description">Mô tả ngắn:</label>
                                             <textarea
+                                                disabled
                                                 name="short_description"
                                                 id="short_description"
                                                 className="form-control"

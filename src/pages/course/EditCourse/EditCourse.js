@@ -3,35 +3,35 @@ import classNames from 'classnames/bind';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
 import styles from '~/GlobalStyles.module.scss';
 
 const cx = classNames.bind(styles);
 
-function CreateCourse() {
+function EditCourse() {
     const [inputCount, setInputCount] = useState(1);
-
-    const MySwal = withReactContent(Swal);
 
     const addInput = () => {
         if (inputCount < 10) {
             setInputCount(inputCount + 1);
         } else {
-            MySwal.fire('Lỗi', 'Tối đa chỉ được 10 thẻ input', 'error');
+            alert('Tối đa chỉ được 10');
         }
     };
 
     const removeInput = () => {
-        setInputCount(inputCount - 1);
+        if (inputCount > 1) {
+            setInputCount(inputCount - 1);
+        } else {
+            alert('Cần ít nhất 1 nội dung');
+        }
     };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className="row">
-                    <Title name="Thêm khóa học" />
+                    <Title name="Sửa khóa học" />
                 </div>
             </div>
 
@@ -55,6 +55,7 @@ function CreateCourse() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Tên khóa học"
+                                                defaultValue="Kiến Thức Nhập Môn IT"
                                             />
                                         </div>
                                         <div className="form-group col-md-12">
@@ -64,6 +65,7 @@ function CreateCourse() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Vd: javascript-nang-cao"
+                                                defaultValue="lessons-for-newbie"
                                             />
                                         </div>
 
@@ -86,14 +88,12 @@ function CreateCourse() {
                                                             type="text"
                                                             className="form-control mb-2 col-11"
                                                             placeholder="Mô tả những gì sẽ học được"
+                                                            defaultValue="Các kiến thức cơ bản, nền móng của ngành IT"
                                                             style={{ display: 'inline-block' }}
                                                         />
                                                         {inputCount > 1 && (
                                                             <FontAwesomeIcon
-                                                                className={cx(
-                                                                    'btn btn-danger float-right',
-                                                                    'removeInput'
-                                                                )}
+                                                                className="btn btn-danger float-right"
                                                                 onClick={removeInput}
                                                                 icon={faCircleMinus}
                                                                 title="Xóa ô input này"
@@ -121,7 +121,7 @@ function CreateCourse() {
                                             <label htmlFor="url">Ảnh nền:</label>
                                             <img
                                                 className="ml-4 mb-4"
-                                                src=""
+                                                src="https://files.fullstack.edu.vn/f8-prod/courses/7.png"
                                                 alt=""
                                                 style={{
                                                     width: '160px',
@@ -141,7 +141,9 @@ function CreateCourse() {
                                             </label>
                                             <select className="form-control col-4">
                                                 <option value="off">Tắt</option>
-                                                <option value="on">Bật</option>
+                                                <option value="on" selected>
+                                                    Bật
+                                                </option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-12">
@@ -151,7 +153,7 @@ function CreateCourse() {
                                                 id="short_description"
                                                 className="form-control"
                                                 rows={5}
-                                                defaultValue=""
+                                                defaultValue="Để có cái nhìn tổng quan về ngành IT - Lập trình web các bạn nên xem các videos tại khóa này trước nhé."
                                                 placeholder="Mô tả ngắn khóa học"
                                             />
                                         </div>
@@ -161,7 +163,7 @@ function CreateCourse() {
                         </div>
                         <div className="card-footer" style={{ borderTop: 0 }}>
                             <button type="submit" className="btn btn-primary">
-                                Thêm
+                                Cập nhật
                             </button>
                         </div>
                     </div>
@@ -171,4 +173,4 @@ function CreateCourse() {
     );
 }
 
-export default CreateCourse;
+export default EditCourse;
