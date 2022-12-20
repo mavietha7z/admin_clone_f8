@@ -7,6 +7,7 @@ import {
     logoutStart,
     logoutSuccess,
 } from '~/redux/reducer/authReducer';
+import { getAllUsersSuccess } from '~/redux/reducer/userReducer';
 
 export const loginAdmin = async (user, dispatch, navigate) => {
     dispatch(loginStart());
@@ -33,5 +34,19 @@ export const logoutAdmin = async (dispatch, id, navigate, token, axiosJWT) => {
         navigate('/login');
     } catch (error) {
         dispatch(logoutFailed());
+    }
+};
+
+export const getAllUsers = async (dispatch, token, axiosJWT) => {
+    try {
+        // const res = await request.get('/user/get');
+        const res = await axiosJWT.get('http://localhost:8080/api/user/get', {
+            headers: {
+                token: token,
+            },
+        });
+        dispatch(getAllUsersSuccess(res.data));
+    } catch (error) {
+        console.log('error: ', error);
     }
 };

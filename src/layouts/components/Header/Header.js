@@ -1,12 +1,12 @@
 import { faBars, faMagnifyingGlass, faRightFromBracket, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
-import { logoutAdmin } from '~/services/apiAuth';
+import { getAllUsers, logoutAdmin } from '~/services/apiAuth';
 import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);
@@ -14,21 +14,27 @@ const cx = classNames.bind(styles);
 function Header() {
     const [left, setLeft] = useState(false);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const user = useSelector((state) => state.auth.login.currentUser);
-    console.log('user: ', user);
+    const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const id = user?._id;
     const accessToken = user?.accessToken;
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleLeft = () => {
         setLeft(!left);
     };
 
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllUsers(dispatch, accessToken, axiosJWT);
+        };
+        fetchApi();
+    }, []);
+
     const handleLogoutAdmin = async () => {
-        const axiosJWT = createAxios(user, dispatch, loginSuccess);
         await logoutAdmin(dispatch, id, navigate, accessToken, axiosJWT);
     };
 

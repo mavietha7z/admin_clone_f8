@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 
 import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook, faBookMedical, faMinus, faNewspaper, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faBookMedical, faMinus, faNewspaper, faPhone, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function Home() {
+    const allUser = useSelector((state) => state.users.getAllUsers.data);
+    console.log('allUser: ', allUser);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -59,7 +63,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng người dùng</span>
-                                <span className={cx('info-box-number')}>200</span>
+                                <span className={cx('info-box-number')}>{allUser.length}</span>
                             </div>
                         </div>
                     </div>
@@ -226,8 +230,24 @@ function Home() {
                             <div className={cx('card-header')}>
                                 <h3 className={cx('card-title')}>Thành viên</h3>
                                 <div className="card-tools">
-                                    <span className="badge badge-success mr-1">0 Hôm nay</span>
-                                    <span className="badge badge-primary mr-3">Tổng 401</span>
+                                    <span
+                                        className="badge badge-success mr-3"
+                                        style={{
+                                            height: 26,
+                                            lineHeight: '20px',
+                                        }}
+                                    >
+                                        Hôm nay 0
+                                    </span>
+                                    <span
+                                        className="badge badge-primary mr-3"
+                                        style={{
+                                            height: 26,
+                                            lineHeight: '20px',
+                                        }}
+                                    >
+                                        Tổng {allUser.length}
+                                    </span>
                                     <button
                                         className={cx('btn-tool')}
                                         type="button"
@@ -242,17 +262,23 @@ function Home() {
                                 <div className="card-body p-0">
                                     <div className={cx('table-responsive')}>
                                         <ul className={cx('transfer-list')}>
-                                            <li className={cx('transfer-item')}>
-                                                <strong className="text-uppercase">
-                                                    <Link to="/users/449/edit">ki ki</Link>
-                                                </strong>
-                                                <span> (CW)</span> <br />
-                                                {/* <FaRegEnvelope className="text-danger" /> */}
-                                                <span className="ml-2">kikiki@gmail.com</span>
-                                                <br />
-                                                {/* <FaPhoneAlt className="text-success" />
-                                                <span className="ml-2">0568877831</span> */}
-                                            </li>
+                                            {allUser.map((user) => (
+                                                <li className={cx('transfer-item')}>
+                                                    <strong className="text-uppercase">
+                                                        <Link to="/users/449/edit">{user.name}</Link>
+                                                    </strong>
+                                                    <br />
+                                                    <FontAwesomeIcon icon={faEnvelope} className="text-danger" />
+                                                    <span className="ml-2">{user.email}</span>
+                                                    <br />
+                                                    {!!user.phone && (
+                                                        <>
+                                                            <FontAwesomeIcon icon={faPhone} className="text-success" />
+                                                            <span className="ml-2">{!!user.phone}</span>
+                                                        </>
+                                                    )}
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                 </div>
