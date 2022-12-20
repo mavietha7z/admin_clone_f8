@@ -73,10 +73,13 @@ import EditMail from '~/pages/system/ConfigMail/EditMail';
 
 // Export components 404 not found
 import NotFound from '~/layouts/NotFound';
+import Login from '~/layouts/components/Login';
 
 const privateRoutes = [
     // Route trang chủ
     { path: '/', component: Home },
+
+    { path: '/login', component: Login, layout: null },
 
     // Route trang khóa học
     { path: '/course', component: ListCourse },
