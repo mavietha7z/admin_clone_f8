@@ -70,10 +70,10 @@ function Home() {
                 </div>
 
                 <div className="row mt-5">
-                    <div className="col-3">
+                    <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Đơn nạp tiền</h3>
+                                <h3 className={cx('card-title')}>Khóa học miễn phí</h3>
                                 <div className="card-tools">
                                     <button
                                         className={cx('btn-tool')}
@@ -123,10 +123,10 @@ function Home() {
                         </div>
                     </div>
 
-                    <div className="col-3">
+                    <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Đơn rút tiền</h3>
+                                <h3 className={cx('card-title')}>Khóa học có phí</h3>
                                 <div className="card-tools">
                                     <button
                                         className={cx('btn-tool')}
@@ -176,10 +176,10 @@ function Home() {
                         </div>
                     </div>
 
-                    <div className="col-3">
+                    <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Chuyển tiền</h3>
+                                <h3 className={cx('card-title')}>Tất cả bài viết</h3>
                                 <div className="card-tools">
                                     <button
                                         className={cx('btn-tool')}
@@ -224,80 +224,13 @@ function Home() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="col-3">
-                        <div className="card mb-4">
-                            <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Thành viên</h3>
-                                <div className="card-tools">
-                                    <span
-                                        className="badge badge-success mr-3"
-                                        style={{
-                                            height: 26,
-                                            lineHeight: '20px',
-                                        }}
-                                    >
-                                        Hôm nay 0
-                                    </span>
-                                    <span
-                                        className="badge badge-primary mr-3"
-                                        style={{
-                                            height: 26,
-                                            lineHeight: '20px',
-                                        }}
-                                    >
-                                        Tổng {allUser?.length}
-                                    </span>
-                                    <button
-                                        className={cx('btn-tool')}
-                                        type="button"
-                                        data-toggle="collapse"
-                                        data-target="#collapseFour"
-                                    >
-                                        <FontAwesomeIcon icon={faMinus} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="collapseFour" className="collapse show">
-                                <div className="card-body p-0">
-                                    <div className={cx('table-responsive')}>
-                                        <ul className={cx('transfer-list')}>
-                                            {allUser?.slice(-5).map((user) => (
-                                                <li className={cx('transfer-item')} key={user._id}>
-                                                    <strong className="text-uppercase">
-                                                        <Link to="/users/449/edit">{user.name}</Link>
-                                                    </strong>
-                                                    <br />
-                                                    <FontAwesomeIcon icon={faEnvelope} className="text-danger" />
-                                                    <span className="ml-2">{user.email}</span>
-                                                    <br />
-                                                    {!!user.phone && (
-                                                        <>
-                                                            <FontAwesomeIcon icon={faPhone} className="text-success" />
-                                                            <span className="ml-2">{!!user.phone}</span>
-                                                        </>
-                                                    )}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="card-footer text-center py-3">
-                                <Link className="card-link" to="/users" target="_blank">
-                                    Xem tất cả
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Đổi thẻ cào</h3>
+                                <h3 className={cx('card-title')}>Hoạt động gần đây</h3>
                                 <div className="card-tools">
                                     <button
                                         className={cx('btn-tool')}
@@ -336,10 +269,10 @@ function Home() {
                         </div>
                     </div>
 
-                    <div className="col-5">
+                    <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Mua mã thẻ</h3>
+                                <h3 className={cx('card-title')}>Bình luận của thành viên</h3>
                                 <div className="card-tools">
                                     <button
                                         className={cx('btn-tool')}
@@ -395,58 +328,66 @@ function Home() {
                     <div className="col-4">
                         <div className="card mb-4">
                             <div className={cx('card-header')}>
-                                <h3 className={cx('card-title')}>Nạp cước</h3>
+                                <h3 className={cx('card-title')}>Thành viên</h3>
                                 <div className="card-tools">
+                                    <span
+                                        className="badge badge-success mr-3"
+                                        style={{
+                                            height: 26,
+                                            lineHeight: '14px',
+                                            padding: '6px 10px',
+                                        }}
+                                    >
+                                        Hôm nay 0
+                                    </span>
+                                    <span
+                                        className="badge badge-primary mr-3"
+                                        style={{
+                                            height: 26,
+                                            lineHeight: '14px',
+                                            padding: '6px 10px',
+                                        }}
+                                    >
+                                        Tổng {allUser?.length}
+                                    </span>
                                     <button
                                         className={cx('btn-tool')}
                                         type="button"
                                         data-toggle="collapse"
-                                        data-target="#collapseSevent"
+                                        data-target="#collapseFour"
                                     >
                                         <FontAwesomeIcon icon={faMinus} />
                                     </button>
                                 </div>
                             </div>
-                            <div id="collapseSevent" className="collapse show">
+                            <div id="collapseFour" className="collapse show">
                                 <div className="card-body p-0">
                                     <div className={cx('table-responsive')}>
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Khách</th>
-                                                    <th>ST</th>
-                                                    <th>SP</th>
-                                                    <th>TT</th>
-                                                    <th>Ngày</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <Link to="/users?type?id=50" target="_blank">
-                                                            Mã Việt Hà
-                                                        </Link>
-                                                        <br />
-                                                        <span>0706661234</span>
-                                                    </td>
-                                                    <td>50,000</td>
-                                                    <td>
-                                                        <b>0706661234</b> <br />
-                                                        <span>[VINA_TS]</span>
-                                                    </td>
-                                                    <td>
-                                                        <label className="badge badge-warning">ĐANG XỬ LÝ</label>
-                                                    </td>
-                                                    <td>2022-11-24 16:27:32</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <ul className={cx('transfer-list')}>
+                                            {allUser?.slice(-5).map((user) => (
+                                                <li className={cx('transfer-item')} key={user._id}>
+                                                    <strong className="text-uppercase">
+                                                        <Link to="/users/449/edit">{user.name}</Link>
+                                                    </strong>
+                                                    <br />
+                                                    <FontAwesomeIcon icon={faEnvelope} className="text-danger" />
+                                                    <span className="ml-2">{user.email}</span>
+                                                    <br />
+                                                    {!!user.phone && (
+                                                        <>
+                                                            <FontAwesomeIcon icon={faPhone} className="text-success" />
+                                                            <span className="ml-2">{!!user.phone}</span>
+                                                        </>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="card-footer text-center py-3">
-                                <Link className="card-link" to="/mtopup/orders" target="_blank">
+                                <Link className="card-link" to="/users" target="_blank">
                                     Xem tất cả
                                 </Link>
                             </div>

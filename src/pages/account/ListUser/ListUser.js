@@ -14,11 +14,15 @@ import {
     faTrash,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function ListUser() {
     const [status, setStatus] = useState(false);
+
+    const allUser = useSelector((state) => state.users?.getAllUsers?.data);
+    console.log('allUser: ', allUser);
 
     const handleToggleStatus = () => {
         setStatus(!status);
@@ -140,96 +144,99 @@ function ListUser() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <strong>452</strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <strong>Ngô Văn Quý</strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <strong>quynvithn</strong>
-                                                            <br />
-                                                            <strong className="text-info">0369574322</strong>
-                                                            <br />
-                                                            <strong className="text-success">
-                                                                mavietha.info@gmail.com
-                                                            </strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <strong>ADMIN</strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <strong>2</strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">
-                                                            <div
-                                                                data-table="softcard_products"
-                                                                data-id={47}
-                                                                data-col="status"
-                                                                className={
-                                                                    status
-                                                                        ? cx('switch', 'round', 'on')
-                                                                        : cx('switch', 'round', 'off')
-                                                                }
-                                                                style={{ verticalAlign: 'top', marginLeft: 10 }}
-                                                                onClick={() => handleToggleStatus()}
-                                                            >
-                                                                <div className={cx('toggle')} />
+                                                {allUser?.slice(-10).map((user) => (
+                                                    <tr key={user._id}>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <strong>{user._id}</strong>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="text-center">2022-12-05 10:37:35</div>
-                                                    </td>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <strong>{user.name}</strong>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <strong>{user.username}</strong>
+                                                                <br />
+                                                                <strong className="text-success">
+                                                                    mavietha.info@gmail.com
+                                                                </strong>
+                                                                <br />
+                                                                {!!user.phone && (
+                                                                    <strong className="text-info">0369574322</strong>
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <strong>{user.admin ? 'ADMIN' : 'USER'}</strong>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <strong>{user.blog?.length}</strong>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">
+                                                                <div
+                                                                    data-table="softcard_products"
+                                                                    data-id={47}
+                                                                    data-col="status"
+                                                                    className={
+                                                                        status
+                                                                            ? cx('switch', 'round', 'on')
+                                                                            : cx('switch', 'round', 'off')
+                                                                    }
+                                                                    style={{ verticalAlign: 'top', marginLeft: 10 }}
+                                                                    onClick={() => handleToggleStatus()}
+                                                                >
+                                                                    <div className={cx('toggle')} />
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="text-center">{user.createdAt}</div>
+                                                        </td>
 
-                                                    <td>
-                                                        <div className="action-buttons text-center">
-                                                            <Link to="/users/edit/452" title="Sửa">
-                                                                <span className="btn btn-sm btn-info mr-2">
-                                                                    <FontAwesomeIcon
-                                                                        icon={faPenToSquare}
-                                                                        style={{ fontSize: '1.6rem' }}
-                                                                    />
-                                                                </span>
-                                                            </Link>
-                                                            <Link
-                                                                to="#"
-                                                                name="Ngô Văn Quý"
-                                                                link="/users/452"
-                                                                title="Xóa"
-                                                                className="deleteClick red id-btn-dialog2"
-                                                                data-toggle="modal"
-                                                                data-target="#deleteModal"
-                                                            >
-                                                                <span className="btn btn-sm btn-danger mr-2">
-                                                                    <FontAwesomeIcon icon={faTrash} />
-                                                                </span>
-                                                            </Link>
-                                                            <Link to="/users/bell" title="Gửi thông báo đến thành viên">
-                                                                <span className="btn btn-sm btn-warning mr-2">
-                                                                    <FontAwesomeIcon icon={faComment} />
-                                                                </span>
-                                                            </Link>
-                                                            <Link to="/users/detail">
-                                                                <span className="btn btn-sm btn-success">
-                                                                    <span>Chi tiết</span>
-                                                                </span>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        <td>
+                                                            <div className="action-buttons text-center">
+                                                                <Link to={`/users/edit/${user._id}`} title="Sửa">
+                                                                    <span className="btn btn-sm btn-info mr-2">
+                                                                        <FontAwesomeIcon
+                                                                            icon={faPenToSquare}
+                                                                            style={{ fontSize: '1.6rem' }}
+                                                                        />
+                                                                    </span>
+                                                                </Link>
+                                                                <Link
+                                                                    to="#"
+                                                                    data-toggle="modal"
+                                                                    data-target="#deleteModal"
+                                                                >
+                                                                    <span className="btn btn-sm btn-danger mr-2">
+                                                                        <FontAwesomeIcon icon={faTrash} />
+                                                                    </span>
+                                                                </Link>
+                                                                <Link
+                                                                    to="/users/bell"
+                                                                    title="Gửi thông báo đến thành viên"
+                                                                >
+                                                                    <span className="btn btn-sm btn-warning mr-2">
+                                                                        <FontAwesomeIcon icon={faComment} />
+                                                                    </span>
+                                                                </Link>
+                                                                <Link to="/users/detail">
+                                                                    <span className="btn btn-sm btn-success">
+                                                                        <span>Chi tiết</span>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>

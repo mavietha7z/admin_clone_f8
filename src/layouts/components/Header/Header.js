@@ -73,8 +73,10 @@ function Header() {
                         <div className={cx('avt')} data-toggle="dropdown" aria-expanded="false"></div>
                         <div className={cx('dropdown-menu', 'dropdown-menu-right', 'menu-dropdown')}>
                             <button className={cx('btn dropdown-item', 'btn-drop')} type="button">
-                                <FontAwesomeIcon icon={faUserPen} className={cx('icon-drop')} />
-                                <span>Sửa thông tin</span>
+                                <Link to={`/users/edit/${user._id}`}>
+                                    <FontAwesomeIcon icon={faUserPen} className={cx('icon-drop')} />
+                                    <span className="text">Sửa thông tin</span>
+                                </Link>
                             </button>
                             <button
                                 className={cx('btn dropdown-item', 'btn-drop')}
