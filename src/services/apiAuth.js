@@ -53,8 +53,22 @@ export const getAllUsers = async (dispatch, token, axiosJWT) => {
 export const registerNewUser = async (user) => {
     try {
         const res = await request.post('/user/register', user);
-        return res;
+        const { data, ...other } = res;
+        return { ...other };
     } catch (error) {
         return error.response.data;
+    }
+};
+
+export const deleteUserById = async (userId, axiosJWT, token) => {
+    try {
+        const res = await axiosJWT.delete(`http://localhost:8080/api/user/${userId}`, {
+            headers: {
+                token: token,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        return error;
     }
 };

@@ -63,16 +63,6 @@ function EditUser() {
                                                 placeholder="Email"
                                             />
                                         </div>
-                                        <div className="form-group">
-                                            <label>Điện thoại:</label>
-                                            <input
-                                                name="phone"
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Enter number phone"
-                                                defaultValue="0369574322"
-                                            />
-                                        </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group ">
@@ -84,6 +74,16 @@ function EditUser() {
                                                 <option value="SALES">ADMIN</option>
                                             </select>
                                         </div>
+                                        <div className="form-group">
+                                            <label>Điện thoại:</label>
+                                            <input
+                                                name="phone"
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Enter number phone"
+                                                defaultValue="0369574322"
+                                            />
+                                        </div>
                                         <div className="form-group ">
                                             <label>Mật khẩu: </label>
                                             <input
@@ -92,22 +92,6 @@ function EditUser() {
                                                 className="form-control"
                                                 placeholder="Bỏ qua nếu không thay đổi"
                                             />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Giới tính:</label>
-                                            <select className="form-control" name="gender">
-                                                <option value="male">Name</option>
-                                                <option value="female">Nữ</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group ">
-                                            <label>Xác minh giấy tờ:</label>
-                                            <select name="verify_document" className="form-control">
-                                                <option value>-- Chọn --</option>
-                                                <option value="accept">Chấp nhận</option>
-                                                <option value="denied">Từ chối</option>
-                                                <option value="blockacc">Khóa tài khoản</option>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>

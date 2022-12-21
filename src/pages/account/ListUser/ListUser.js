@@ -14,18 +14,44 @@ import {
     faTrash,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUserById } from '~/services/apiAuth';
+import { loginSuccess } from '~/redux/reducer/authReducer';
+import { createAxios } from '~/redux/createInstance';
+
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const cx = classNames.bind(styles);
 
 function ListUser() {
     const [status, setStatus] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
+
+    const dispatch = useDispatch();
+    const MySwal = withReactContent(Swal);
+
+    const user = useSelector((state) => state.auth.login.currentUser);
 
     const allUser = useSelector((state) => state.users?.getAllUsers?.data);
     console.log('allUser: ', allUser);
+    const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const handleToggleStatus = () => {
         setStatus(!status);
+    };
+
+    const handleDelete = async (id) => {
+        const result = await deleteUserById(id, axiosJWT, user.accessToken);
+        if (result.errCode === 0) {
+            MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                if (res.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        } else {
+            MySwal.fire('Lỗi', `${result.message}`, 'error');
+        }
     };
 
     return (
@@ -160,9 +186,7 @@ function ListUser() {
                                                             <div className="text-center">
                                                                 <strong>{user.username}</strong>
                                                                 <br />
-                                                                <strong className="text-success">
-                                                                    mavietha.info@gmail.com
-                                                                </strong>
+                                                                <strong className="text-success">{user.email}</strong>
                                                                 <br />
                                                                 {!!user.phone && (
                                                                     <strong className="text-info">0369574322</strong>
@@ -215,6 +239,7 @@ function ListUser() {
                                                                     to="#"
                                                                     data-toggle="modal"
                                                                     data-target="#deleteModal"
+                                                                    onClick={() => setCurrentUser(user)}
                                                                 >
                                                                     <span className="btn btn-sm btn-danger mr-2">
                                                                         <FontAwesomeIcon icon={faTrash} />
@@ -310,12 +335,17 @@ function ListUser() {
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div className="modal-body">Delete : Ngô Văn Quý ?</div>
+                        <div className="modal-body">Delete : {currentUser.name}?</div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">
                                 Đóng
                             </button>
-                            <button type="submit" className="btn btn-danger">
+                            <button
+                                type="submit"
+                                className="btn btn-danger"
+                                onClick={() => handleDelete(currentUser._id)}
+                                data-dismiss="modal"
+                            >
                                 Delete
                             </button>
                         </div>

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import Swal from 'sweetalert2';
@@ -18,10 +18,11 @@ function CreateUser() {
     const [role, setRole] = useState('0');
 
     const MySwal = withReactContent(Swal);
+    const inputRef = useRef();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        // eslint-disable-next-line  no-useless-escape
         const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         const newUser = {
@@ -32,7 +33,7 @@ function CreateUser() {
             role: role,
         };
 
-        if (newUser.name.length < 2 || typeof newUser.name !== 'string') {
+        if (newUser.name.length < 2) {
             MySwal.fire('Lỗi', 'Tên không hợp lệ', 'error');
         } else if (!regexEmail.test(newUser.email)) {
             MySwal.fire('Lỗi', 'Email không hợp lệ', 'error');
@@ -40,10 +41,18 @@ function CreateUser() {
             MySwal.fire('Lỗi', 'Mật khẩu tối thiểu 8 kí tự', 'error');
         } else {
             const result = await registerNewUser(newUser);
-            console.log('result: ', result);
 
             if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success');
+                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                    if (res.isConfirmed) {
+                        setEmail('');
+                        setName('');
+                        setPassword('');
+                        setPhone('');
+                        setRole('0');
+                        inputRef.current.focus();
+                    }
+                });
             } else {
                 MySwal.fire('Lỗi', `${result.message}`, 'error');
             }
@@ -82,6 +91,7 @@ function CreateUser() {
                                             <div className="form-group">
                                                 <label>Họ và tên:</label>
                                                 <input
+                                                    ref={inputRef}
                                                     name="name"
                                                     type="text"
                                                     className="form-control"
