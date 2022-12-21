@@ -32,6 +32,8 @@ function Header() {
             await getAllUsers(dispatch, accessToken, axiosJWT);
         };
         fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleLogoutAdmin = async () => {

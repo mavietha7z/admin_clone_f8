@@ -39,7 +39,6 @@ export const logoutAdmin = async (dispatch, id, navigate, token, axiosJWT) => {
 
 export const getAllUsers = async (dispatch, token, axiosJWT) => {
     try {
-        // const res = await request.get('/user/get');
         const res = await axiosJWT.get('http://localhost:8080/api/user/get', {
             headers: {
                 token: token,
@@ -48,5 +47,14 @@ export const getAllUsers = async (dispatch, token, axiosJWT) => {
         dispatch(getAllUsersSuccess(res.data));
     } catch (error) {
         console.log('error: ', error);
+    }
+};
+
+export const registerNewUser = async (user) => {
+    try {
+        const res = await request.post('/user/register', user);
+        return res;
+    } catch (error) {
+        return error.response.data;
     }
 };
