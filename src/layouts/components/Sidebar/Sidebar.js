@@ -78,7 +78,7 @@ function Sidebar() {
                         <li>
                             <Link className={cx('link')} to="/">
                                 <FontAwesomeIcon icon={faGauge} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>Bảng quản trị</span>
+                                <span>Bảng quản trị</span>
                             </Link>
                         </li>
 
@@ -92,18 +92,17 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faBook} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Khóa học
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
                             </Link>
-
                             <div id="collapsePin" className="collapse">
                                 <ul>
                                     <li>
                                         <Link className={cx('link-sub')} to="/course">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Danh sách khóa học</span>
+                                            <span>Danh sách khóa học</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -120,7 +119,7 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faChartColumn} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Thống kê
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
@@ -130,49 +129,49 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/charging">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê đổi thẻ</span>
+                                            <span>Thống kê đổi thẻ</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/mtopup">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê nạp cước</span>
+                                            <span>Thống kê nạp cước</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/softcard">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê bán thẻ</span>
+                                            <span>Thống kê bán thẻ</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/stockcard">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê kho thẻ</span>
+                                            <span>Thống kê kho thẻ</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/deposit">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê nạp tiền</span>
+                                            <span>Thống kê nạp tiền</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/withdraw">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Thống kê rút tiền</span>
+                                            <span>Thống kê rút tiền</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/dailystat">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Tổng hợp ngày</span>
+                                            <span>Tổng hợp ngày</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/statistic/user">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Sản lượng thành viên</span>
+                                            <span>Sản lượng thành viên</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -182,7 +181,7 @@ function Sidebar() {
                         <li>
                             <Link className={cx('link')} to="/news">
                                 <FontAwesomeIcon icon={faNewspaper} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>Tin tức</span>
+                                <span>Tin tức</span>
                             </Link>
                         </li>
 
@@ -195,7 +194,7 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faUser} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Tài khoản
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
@@ -205,7 +204,7 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/users">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Người dùng</span>
+                                            <span>Người dùng</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -222,7 +221,7 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faWrench} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Công cụ
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
@@ -232,13 +231,13 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/seo">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Seo OnePage</span>
+                                            <span>Seo OnePage</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/tools">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Xóa dữ liệu</span>
+                                            <span>Xóa dữ liệu</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -255,7 +254,7 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faCubes} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Mô-đun khác
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
@@ -265,43 +264,43 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/menu">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Menu</span>
+                                            <span>Menu</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/pages">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Trang tĩnh</span>
+                                            <span>Trang tĩnh</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/sliders">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Trình diễn ảnh</span>
+                                            <span>Trình diễn ảnh</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/webdata">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Webdata</span>
+                                            <span>Webdata</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/twofactor">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Mã bảo mật</span>
+                                            <span>Mã bảo mật</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/banners">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Trao đổi banner</span>
+                                            <span>Trao đổi banner</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/merchants">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Đối tác kết nối</span>
+                                            <span>Đối tác kết nối</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -318,7 +317,7 @@ function Sidebar() {
                                 type="button"
                             >
                                 <FontAwesomeIcon icon={faCog} className={cx('icon')} />
-                                <span className={isHover && cx('active')}>
+                                <span>
                                     Cấu hình hệ thống
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
@@ -328,31 +327,31 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/settings">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Cài đặt</span>
+                                            <span>Cài đặt</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/currencies">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Tiền tệ</span>
+                                            <span>Tiền tệ</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/paygates">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Cổng thanh toán</span>
+                                            <span>Cổng thanh toán</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/language">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Ngôn ngữ</span>
+                                            <span>Ngôn ngữ</span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link className={cx('link-sub')} to="/sendmail/setting">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span className={isHover && cx('active')}>Cấu hình mail</span>
+                                            <span>Cấu hình mail</span>
                                         </Link>
                                     </li>
                                 </ul>

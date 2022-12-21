@@ -44,17 +44,14 @@ const authReducer = createSlice({
         },
 
         logoutStart: (state) => {
-            console.log('logout start');
             state.login.isFetching = true;
         },
         logoutSuccess: (state) => {
-            console.log('logout success');
             state.login.isFetching = false;
             state.login.currentUser = null;
             state.login.error = false;
         },
         logoutFailed: (state) => {
-            console.log('logout failed');
             state.login.isFetching = false;
             state.login.error = true;
         },

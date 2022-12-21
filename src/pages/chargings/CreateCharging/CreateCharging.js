@@ -29,11 +29,6 @@ function CreateCharging() {
                                     <h2 className="card-title text-white">Thêm loại thẻ</h2>
                                 </div>
                                 <form method="POST" action="/chargings/telcos/postcreate" acceptCharset="UTF-8">
-                                    <input
-                                        name="_token"
-                                        type="hidden"
-                                        defaultValue="fu5RnQtywzyS751plEpKfO4UEuEMiwniIvorMCHy"
-                                    />
                                     <div className="card-body row">
                                         <div className="col-md-6">
                                             <div className="form-group">
@@ -44,7 +39,6 @@ function CreateCharging() {
                                                     className="form-control"
                                                     id="name"
                                                     placeholder="Ví dụ: VIETTEL"
-                                                    defaultValue=""
                                                 />
                                             </div>
                                             <div className="form-group">
@@ -59,32 +53,22 @@ function CreateCharging() {
                                                 <label htmlFor="code_length">
                                                     Chiều dài mã nạp (cách nhau dấu phẩy):
                                                 </label>
-                                                <input name="code_length" defaultValue="" className="form-control" />
+                                                <input name="code_length" className="form-control" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="serial_length">
                                                     Chiều dài Serial (cách nhau dấu phẩy):
                                                 </label>
-                                                <input name="serial_length" defaultValue="" className="form-control" />
+                                                <input name="serial_length" className="form-control" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="icon">Ảnh minh họa:</label>
                                                 <div>
                                                     {/* <img id="logo-icon" className="imgPreview" src /> */}
-                                                    <input
-                                                        type="hidden"
-                                                        name="icon"
-                                                        id="icon"
-                                                        className="inputImg"
-                                                        defaultValue=""
-                                                    />
+                                                    <input type="hidden" name="icon" id="icon" className="inputImg" />
                                                 </div>
                                                 <div className="ml-4">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-default"
-                                                        onclick="selectFileWithCKFinder('icon', 'logo-icon')"
-                                                    >
+                                                    <button type="button" className="btn btn-default">
                                                         Chọn ảnh
                                                     </button>
                                                 </div>

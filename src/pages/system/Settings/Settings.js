@@ -138,11 +138,7 @@ function Settings() {
                                                                     defaultValue="https://thenhanh.vn/storage/userfiles/files/thenhanhlogo.png"
                                                                 />
                                                             </div>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary"
-                                                                onclick="selectFileWithCKFinder('favicon', 'favicon-icon')"
-                                                            >
+                                                            <button type="button" className="btn btn-primary">
                                                                 Chọn ảnh
                                                             </button>
                                                         </div>
@@ -194,11 +190,7 @@ function Settings() {
                                                                     defaultValue="https://thenhanh.vn/storage/userfiles/files/thenhanh.png"
                                                                 />
                                                             </div>
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-primary"
-                                                                onclick="selectFileWithCKFinder('backendlogo', 'backendlogo-icon')"
-                                                            >
+                                                            <button type="button" className="btn btn-primary">
                                                                 Chọn ảnh
                                                             </button>
                                                         </div>

@@ -9,7 +9,6 @@ const userReducer = createSlice({
     },
     reducers: {
         getAllUsersSuccess: (state, action) => {
-            console.log('action.payload: ', action.payload);
             state.getAllUsers.data = action.payload;
         },
     },

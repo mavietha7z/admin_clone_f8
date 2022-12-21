@@ -103,7 +103,7 @@ function CreateMenu() {
                                                 <div className="col-md-4">
                                                     <label htmlFor="status">Trạng thái:</label>
                                                     <select className="form-control" name="status" id="status">
-                                                        <option value={1} selected="selected">
+                                                        <option value={1} selected>
                                                             Bật
                                                         </option>
                                                         <option value={0}>Tắt</option>

@@ -83,84 +83,12 @@ function ProviderCharging() {
                                                         <div className="action-buttons">
                                                             <Link to="/chargings/provider/22/update">
                                                                 <span className="btn btn-warning btn-sm mr-2">
-                                                                    <FaPencilAlt />
+                                                                    {/* <FaPencilAlt /> */}
                                                                 </span>
                                                             </Link>
                                                             <Link to="/chargings/provider/22/uninstall">
                                                                 <span className="btn btn-danger btn-sm">
-                                                                    <FaRegTrashAlt />
-                                                                </span>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>23</td>
-                                                    <td>NCC tẩy thẻ Trumthe</td>
-                                                    <td>Trumthe</td>
-                                                    <td />
-                                                    <td>
-                                                        <div
-                                                            data-table="softcard_products"
-                                                            data-id={47}
-                                                            data-col="status"
-                                                            className={
-                                                                status
-                                                                    ? cx('switch', 'round', 'on')
-                                                                    : cx('switch', 'round', 'off')
-                                                            }
-                                                            style={{ verticalAlign: 'top', marginLeft: 10 }}
-                                                            onClick={() => handleToggleStatus()}
-                                                        >
-                                                            <div className={cx('toggle')} />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="action-buttons">
-                                                            <Link to="/chargings/provider/23/update">
-                                                                <span className="btn btn-warning btn-sm mr-2">
-                                                                    <FaPencilAlt />
-                                                                </span>
-                                                            </Link>
-                                                            <Link to="/chargings/provider/23/uninstall">
-                                                                <span className="btn btn-danger btn-sm">
-                                                                    <FaRegTrashAlt />
-                                                                </span>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>24</td>
-                                                    <td>NCC tẩy thẻ Doithe</td>
-                                                    <td>Doithe</td>
-                                                    <td />
-                                                    <td>
-                                                        <div
-                                                            data-table="softcard_products"
-                                                            data-id={47}
-                                                            data-col="status"
-                                                            className={
-                                                                status
-                                                                    ? cx('switch', 'round', 'on')
-                                                                    : cx('switch', 'round', 'off')
-                                                            }
-                                                            style={{ verticalAlign: 'top', marginLeft: 10 }}
-                                                            onClick={() => handleToggleStatus()}
-                                                        >
-                                                            <div className={cx('toggle')} />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className="action-buttons">
-                                                            <Link to="/chargings/provider/24/update">
-                                                                <span className="btn btn-warning btn-sm mr-2">
-                                                                    <FaPencilAlt />
-                                                                </span>
-                                                            </Link>
-                                                            <Link to="/chargings/provider/24/uninstall">
-                                                                <span className="btn btn-danger btn-sm">
-                                                                    <FaRegTrashAlt />
+                                                                    {/* <FaRegTrashAlt /> */}
                                                                 </span>
                                                             </Link>
                                                         </div>

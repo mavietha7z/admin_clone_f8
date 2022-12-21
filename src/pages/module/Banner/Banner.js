@@ -167,7 +167,6 @@ function Banner() {
                                                 <div className="form-group row">
                                                     <div className="col-md-4">
                                                         <select name="action" className="form-control">
-                                                            <option value />
                                                             <option value="on">Bật đã chọn</option>
                                                             <option value="off">Tắt đã chọn</option>
                                                             <option value="delete">Xóa đã chọn</option>

@@ -74,14 +74,14 @@ function ListUser() {
                                             <div className="float-right">
                                                 <div className="input-group">
                                                     <select name="status" className="form-control">
-                                                        <option value>-- Trạng thái --</option>
+                                                        <option>-- Trạng thái --</option>
                                                         <option value="status1">Hoạt động</option>
                                                         <option value="status0">Bị khóa</option>
                                                         <option value="verifydoc">Chờ xác thực</option>
                                                     </select>
 
                                                     <select name="type" className="form-control">
-                                                        <option value> -- Theo --</option>
+                                                        <option> -- Theo --</option>
                                                         <option value="id">Mã ID</option>
                                                         <option value="email">E-mail</option>
                                                         <option value="phone">Số điện thoại</option>
@@ -94,7 +94,6 @@ function ListUser() {
                                                         name="keyword"
                                                         className="form-control"
                                                         placeholder="Nhập từ khóa"
-                                                        defaultValue=""
                                                     />
                                                     <div className="input-group-append">
                                                         <button type="submit" className="btn btn-warning">

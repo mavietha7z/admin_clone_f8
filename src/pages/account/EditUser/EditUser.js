@@ -61,7 +61,6 @@ function EditUser() {
                                                 type="email"
                                                 className="form-control"
                                                 placeholder="Email"
-                                                defaultValue=""
                                             />
                                         </div>
                                         <div className="form-group">
@@ -79,7 +78,7 @@ function EditUser() {
                                         <div className="form-group ">
                                             <label>Vai trò: ( Người dùng luôn là USER ) </label>
                                             <select className="form-control">
-                                                <option value="USER" selected="selected">
+                                                <option value="USER" selected>
                                                     USER
                                                 </option>
                                                 <option value="SALES">ADMIN</option>

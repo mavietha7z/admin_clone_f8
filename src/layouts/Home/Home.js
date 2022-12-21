@@ -11,8 +11,8 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 const cx = classNames.bind(styles);
 
 function Home() {
-    const allUser = useSelector((state) => state.users.getAllUsers.data);
-    console.log('allUser: ', allUser);
+    const allUser = useSelector((state) => state.users?.getAllUsers?.data);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -63,7 +63,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng người dùng</span>
-                                <span className={cx('info-box-number')}>{allUser.length}</span>
+                                <span className={cx('info-box-number')}>{allUser?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -246,7 +246,7 @@ function Home() {
                                             lineHeight: '20px',
                                         }}
                                     >
-                                        Tổng {allUser.length}
+                                        Tổng {allUser?.length}
                                     </span>
                                     <button
                                         className={cx('btn-tool')}
@@ -262,8 +262,8 @@ function Home() {
                                 <div className="card-body p-0">
                                     <div className={cx('table-responsive')}>
                                         <ul className={cx('transfer-list')}>
-                                            {allUser.map((user) => (
-                                                <li className={cx('transfer-item')}>
+                                            {allUser?.slice(-5).map((user) => (
+                                                <li className={cx('transfer-item')} key={user._id}>
                                                     <strong className="text-uppercase">
                                                         <Link to="/users/449/edit">{user.name}</Link>
                                                     </strong>

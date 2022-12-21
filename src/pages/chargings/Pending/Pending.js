@@ -53,7 +53,7 @@ function Pending() {
                                                 />
                                                 <div className="input-group-append">
                                                     <button type="submit" className="btn btn-info">
-                                                        <FaSearch />
+                                                        {/* <FaSearch /> */}
                                                     </button>
                                                 </div>
                                             </div>
@@ -78,9 +78,7 @@ function Pending() {
                                                         <option value="ZING">ZING</option>
                                                     </select>
                                                     <select name="value" className="form-control">
-                                                        <option value selected="selected">
-                                                            Mệnh giá
-                                                        </option>
+                                                        <option selected>Mệnh giá</option>
                                                         <option value={10000}>10.000đ</option>
                                                         <option value={20000}>20.000đ</option>
                                                         <option value={30000}>30.000đ</option>
@@ -92,15 +90,13 @@ function Pending() {
                                                         <option value={1000000}>1.000.000đ</option>
                                                     </select>
                                                     <select name="status" className="form-control">
-                                                        <option value selected="selected">
-                                                            Trạng thái
-                                                        </option>
+                                                        <option selected>Trạng thái</option>
                                                         <option value="correct">Thành công</option>
                                                         <option value="invalid">Thẻ lỗi</option>
                                                         <option value="waiting">Thẻ chờ</option>
                                                     </select>
                                                     <select name="provider" className="form-control">
-                                                        <option value selected="selected">
+                                                        <option value selected>
                                                             Nhà cung cấp
                                                         </option>
                                                         <option value="Me">Tự xử lý</option>
@@ -122,7 +118,7 @@ function Pending() {
                                                     />
                                                     <div style={{ marginLeft: 10 }}>
                                                         <button type="submit" className="btn btn-warning mr-0">
-                                                            <FaCheckCircle />
+                                                            {/* <FaCheckCircle /> */}
                                                             <span>Lọc dữ liệu</span>
                                                         </button>
                                                     </div>
@@ -179,7 +175,7 @@ function Pending() {
                                                                 data-id={15704}
                                                                 style={{ padding: '6px 10px' }}
                                                             >
-                                                                <FaDownload className="d-inline-block mb-2 mr-1" />
+                                                                {/* <FaDownload className="d-inline-block mb-2 mr-1" /> */}
                                                                 <span>Doithe</span>
                                                             </span>
                                                         </td>
@@ -199,7 +195,7 @@ function Pending() {
                                                                 style={{ padding: '4px 10px' }}
                                                                 title="Gửi thẻ sang nhà cung cấp phụ"
                                                             >
-                                                                <FaTelegramPlane style={{ fontSize: '1.6rem' }} />
+                                                                {/* <FaTelegramPlane style={{ fontSize: '1.6rem' }} /> */}
                                                             </span>
                                                         </td>
                                                         <td>
