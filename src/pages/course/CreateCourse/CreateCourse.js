@@ -21,7 +21,6 @@ function CreateCourse() {
     const [status, setStatus] = useState(true);
     const [desc, setDesc] = useState('');
     const [image, setImage] = useState(null);
-    // const [data, setData] = useState(null);
 
     // const imageData = Buffer.from(data?.image?.data).toString('base64');
     // const imageUrl = `data:image/png;base64,${imageData}`;
@@ -55,12 +54,19 @@ function CreateCourse() {
         formData.append('price', price);
         formData.append('status', status);
         formData.append('description', desc);
-        formData.append('profile_pic', image);
+        formData.append('image', image);
 
         const result = await createNewCourse(formData);
 
-        // setData(result);
-        console.log('result: ', result);
+        if (result.errCode === 0) {
+            MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                if (res.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+        } else {
+            MySwal.fire('Thất bại', `${result.message}`, 'error');
+        }
     };
 
     const handlePrevImage = (e) => {
@@ -104,9 +110,9 @@ function CreateCourse() {
                         </div>
 
                         <div className="card-body row">
-                            <div className="col-md-6 col-md-offset-3">
+                            <div className="col-md-7 col-md-offset-3">
                                 <div className="card">
-                                    <form onSubmit={handleCreateNewCourse} method="POST" encType="multipart/form-data">
+                                    <form onSubmit={handleCreateNewCourse} encType="multipart/form-data">
                                         <div className="card-body row">
                                             <div className="form-group col-md-12">
                                                 <label>Tên khóa học:</label>
@@ -147,7 +153,7 @@ function CreateCourse() {
                                                             <input
                                                                 name="whatLearn"
                                                                 type="text"
-                                                                className="form-control mb-2 col-11"
+                                                                className="form-control mb-2 col-10"
                                                                 placeholder="Mô tả những gì sẽ học được"
                                                                 style={{ display: 'inline-block' }}
                                                                 defaultValue={isWhatLearn[i]}
@@ -207,7 +213,7 @@ function CreateCourse() {
                                                         ref={fileRef}
                                                         onChange={handlePrevImage}
                                                         type="file"
-                                                        name="profile_pic"
+                                                        name="image"
                                                         style={{ display: 'none' }}
                                                     />
                                                 </div>
@@ -241,7 +247,6 @@ function CreateCourse() {
                                                 Thêm
                                             </button>
                                         </div>
-                                        <div>{/* <img src={imageUrl} alt="" /> */}</div>
                                     </form>
                                 </div>
                             </div>

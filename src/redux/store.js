@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import authReducer from './reducer/authReducer';
 import userReducer from './reducer/userReducer';
+import courseReducer from './reducer/courseReducer';
 
 const persistConfig = {
     key: 'root',
@@ -12,6 +13,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     users: userReducer,
+    courses: courseReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
