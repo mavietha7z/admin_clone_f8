@@ -1,11 +1,26 @@
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
+import { getUserById } from '~/services/apiAuth';
 
 const cx = classNames.bind(styles);
 
 function EditUser() {
+    const [currentUser, setCurrentUser] = useState(null);
+    const pathName = useLocation().pathname;
+    const id = pathName.split('/').pop();
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await getUserById(id);
+            setCurrentUser(result);
+        };
+        fetchApi();
+    }, [id]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -29,7 +44,7 @@ function EditUser() {
                         <div className="col-md-12">
                             <div className="card card-light">
                                 <div className="card-header" style={{ backgroundColor: '#f8f9fa', borderBottom: 0 }}>
-                                    <h2 className="card-title">Ngô Văn Quý</h2>
+                                    <h2 className="card-title">{currentUser?.name}</h2>
                                 </div>
 
                                 <div className="card-body row">
@@ -41,7 +56,7 @@ function EditUser() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter username"
-                                                defaultValue="quynvithn"
+                                                value={currentUser?.username}
                                             />
                                         </div>
                                         <div className="form-group">
@@ -51,7 +66,7 @@ function EditUser() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter full name"
-                                                defaultValue="Ngô Văn Quý"
+                                                value={currentUser?.name}
                                             />
                                         </div>
                                         <div className="form-group ">
@@ -61,17 +76,16 @@ function EditUser() {
                                                 type="email"
                                                 className="form-control"
                                                 placeholder="Email"
+                                                value={currentUser?.email}
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group ">
                                             <label>Vai trò: ( Người dùng luôn là USER ) </label>
-                                            <select className="form-control">
-                                                <option value="USER" selected>
-                                                    USER
-                                                </option>
-                                                <option value="SALES">ADMIN</option>
+                                            <select className="form-control" value={currentUser?.admin}>
+                                                <option value={false}>USER</option>
+                                                <option value={true}>ADMIN</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
@@ -81,17 +95,15 @@ function EditUser() {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Enter number phone"
-                                                defaultValue="0369574322"
+                                                value={currentUser?.phone}
                                             />
                                         </div>
-                                        <div className="form-group ">
-                                            <label>Mật khẩu: </label>
-                                            <input
-                                                name="password"
-                                                type="password"
-                                                className="form-control"
-                                                placeholder="Bỏ qua nếu không thay đổi"
-                                            />
+                                        <div className="form-group">
+                                            <label>Tick:</label>
+                                            <select className="form-control" value={currentUser?.tick}>
+                                                <option value={false}>Tắt</option>
+                                                <option value={true}>Bật</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

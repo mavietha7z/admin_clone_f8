@@ -72,3 +72,12 @@ export const deleteUserById = async (userId, axiosJWT, token) => {
         return error;
     }
 };
+
+export const getUserById = async (userId) => {
+    try {
+        const res = await request.get(`/user/${userId}`);
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error);
+    }
+};

@@ -226,7 +226,10 @@ function ListUser() {
 
                                                         <td>
                                                             <div className="action-buttons text-center">
-                                                                <Link to={`/users/edit/${user._id}`} title="Sửa">
+                                                                <Link
+                                                                    to={`/users/edit/${user._id}`}
+                                                                    title="Chỉnh sửa thông tin thành viên"
+                                                                >
                                                                     <span className="btn btn-sm btn-info mr-2">
                                                                         <FontAwesomeIcon
                                                                             icon={faPenToSquare}
@@ -238,6 +241,7 @@ function ListUser() {
                                                                     to="#"
                                                                     data-toggle="modal"
                                                                     data-target="#deleteModal"
+                                                                    title="Xóa thành viên"
                                                                     onClick={() => setCurrentUser(user)}
                                                                 >
                                                                     <span className="btn btn-sm btn-danger mr-2">
@@ -252,7 +256,10 @@ function ListUser() {
                                                                         <FontAwesomeIcon icon={faComment} />
                                                                     </span>
                                                                 </Link>
-                                                                <Link to="/users/detail">
+                                                                <Link
+                                                                    to="/users/detail"
+                                                                    title="Xem thông tin chi tiết thành viên"
+                                                                >
                                                                     <span className="btn btn-sm btn-success">
                                                                         <span>Chi tiết</span>
                                                                     </span>

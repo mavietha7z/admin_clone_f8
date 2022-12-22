@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 import styles from '~/GlobalStyles.module.scss';
 import NavMenu from '~/components/NavMenu';
 import { createNewCourse } from '~/services/apiCourse';
+// import { Buffer } from 'buffer';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +21,10 @@ function CreateCourse() {
     const [status, setStatus] = useState(true);
     const [desc, setDesc] = useState('');
     const [image, setImage] = useState(null);
+    // const [data, setData] = useState(null);
+
+    // const imageData = Buffer.from(data?.image?.data).toString('base64');
+    // const imageUrl = `data:image/png;base64,${imageData}`;
 
     const MySwal = withReactContent(Swal);
     const fileRef = useRef();
@@ -36,31 +41,39 @@ function CreateCourse() {
         setInputCount(inputCount - 1);
     };
 
-    // Đây là code bên frontend gửi thông tin kèm ảnh lên backend
     const handleCreateNewCourse = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         const whatLearn = isWhatLearn.map((desc) => {
             return { description: desc };
         });
-        console.log('whatLearn: ', whatLearn);
+        const arrAsJson = JSON.stringify(whatLearn);
 
         formData.append('name', name);
         formData.append('pathName', pathName);
-        formData.append('whatLearn', whatLearn);
+        formData.append('whatLearn', arrAsJson);
         formData.append('price', price);
         formData.append('status', status);
         formData.append('description', desc);
-        formData.append('image', image);
+        formData.append('profile_pic', image);
 
         const result = await createNewCourse(formData);
+
+        // setData(result);
         console.log('result: ', result);
     };
 
     const handlePrevImage = (e) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
+
         setImage(file);
+    };
+
+    const handleChange = (e, i) => {
+        const updatedWhatLearn = [...isWhatLearn];
+        updatedWhatLearn[i] = e.target.value;
+        setIsWhatLearn(updatedWhatLearn);
     };
 
     return (
@@ -130,20 +143,15 @@ function CreateCourse() {
                                                 </label>
                                                 <div>
                                                     {Array.from({ length: inputCount }, (_, i) => (
-                                                        <>
+                                                        <Fragment key={i}>
                                                             <input
-                                                                key={i}
                                                                 name="whatLearn"
                                                                 type="text"
                                                                 className="form-control mb-2 col-11"
                                                                 placeholder="Mô tả những gì sẽ học được"
                                                                 style={{ display: 'inline-block' }}
-                                                                value={isWhatLearn[i]}
-                                                                onChange={(e) => {
-                                                                    const updatedWhatLearn = [...isWhatLearn];
-                                                                    updatedWhatLearn[i] = e.target.value;
-                                                                    setIsWhatLearn(updatedWhatLearn);
-                                                                }}
+                                                                defaultValue={isWhatLearn[i]}
+                                                                onChange={(e) => handleChange(e, i)}
                                                             />
                                                             {inputCount > 1 && (
                                                                 <FontAwesomeIcon
@@ -156,7 +164,7 @@ function CreateCourse() {
                                                                     title="Xóa ô input này"
                                                                 />
                                                             )}
-                                                        </>
+                                                        </Fragment>
                                                     ))}
                                                 </div>
                                             </div>
@@ -233,6 +241,7 @@ function CreateCourse() {
                                                 Thêm
                                             </button>
                                         </div>
+                                        <div>{/* <img src={imageUrl} alt="" /> */}</div>
                                     </form>
                                 </div>
                             </div>
