@@ -1,20 +1,28 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
 import styles from '~/GlobalStyles.module.scss';
 import NavMenu from '~/components/NavMenu';
+import { createNewCourse } from '~/services/apiCourse';
 
 const cx = classNames.bind(styles);
 
 function CreateCourse() {
     const [inputCount, setInputCount] = useState(1);
+    const [name, setName] = useState('');
+    const [pathName, setPathName] = useState('');
+    const [isWhatLearn, setIsWhatLearn] = useState([]);
+    const [price, setPrice] = useState(0);
+    const [status, setStatus] = useState(true);
+    const [desc, setDesc] = useState('');
+    const [image, setImage] = useState(null);
 
     const MySwal = withReactContent(Swal);
+    const fileRef = useRef();
 
     const addInput = () => {
         if (inputCount < 10) {
@@ -26,6 +34,33 @@ function CreateCourse() {
 
     const removeInput = () => {
         setInputCount(inputCount - 1);
+    };
+
+    // Đây là code bên frontend gửi thông tin kèm ảnh lên backend
+    const handleCreateNewCourse = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        const whatLearn = isWhatLearn.map((desc) => {
+            return { description: desc };
+        });
+        console.log('whatLearn: ', whatLearn);
+
+        formData.append('name', name);
+        formData.append('pathName', pathName);
+        formData.append('whatLearn', whatLearn);
+        formData.append('price', price);
+        formData.append('status', status);
+        formData.append('description', desc);
+        formData.append('image', image);
+
+        const result = await createNewCourse(formData);
+        console.log('result: ', result);
+    };
+
+    const handlePrevImage = (e) => {
+        const file = e.target.files[0];
+        file.preview = URL.createObjectURL(file);
+        setImage(file);
     };
 
     return (
@@ -58,122 +93,149 @@ function CreateCourse() {
                         <div className="card-body row">
                             <div className="col-md-6 col-md-offset-3">
                                 <div className="card">
-                                    <div className="card-body row">
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="name">Tên sản phẩm:</label>
-                                            <input
-                                                name="fullName"
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Tên khóa học"
-                                            />
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="slug">Đường dẫn SEO:</label>
-                                            <input
-                                                name="urlSeo"
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Vd: javascript-nang-cao"
-                                            />
-                                        </div>
-
-                                        <div className="form-group col-md-12">
-                                            <label className=" w-100">
-                                                Học được gì sau khóa học:
-                                                <FontAwesomeIcon
-                                                    className="btn btn-success float-right"
-                                                    onClick={addInput}
-                                                    icon={faCirclePlus}
-                                                    title="Thêm 1 ô input mới"
+                                    <form onSubmit={handleCreateNewCourse} method="POST" encType="multipart/form-data">
+                                        <div className="card-body row">
+                                            <div className="form-group col-md-12">
+                                                <label>Tên khóa học:</label>
+                                                <input
+                                                    name="name"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Tên khóa học"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
                                                 />
-                                            </label>
-                                            <div>
-                                                {Array.from({ length: inputCount }, (_, i) => (
-                                                    <>
-                                                        <input
-                                                            key={i}
-                                                            name="urlSeo"
-                                                            type="text"
-                                                            className="form-control mb-2 col-11"
-                                                            placeholder="Mô tả những gì sẽ học được"
-                                                            style={{ display: 'inline-block' }}
-                                                        />
-                                                        {inputCount > 1 && (
-                                                            <FontAwesomeIcon
-                                                                className={cx(
-                                                                    'btn btn-danger float-right',
-                                                                    'removeInput'
-                                                                )}
-                                                                onClick={removeInput}
-                                                                icon={faCircleMinus}
-                                                                title="Xóa ô input này"
+                                            </div>
+                                            <div className="form-group col-md-12">
+                                                <label>Đường dẫn pathName:</label>
+                                                <input
+                                                    name="pathName"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Vd: javascript-nang-cao"
+                                                    value={pathName}
+                                                    onChange={(e) => setPathName(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="form-group col-md-12">
+                                                <label className=" w-100">
+                                                    Học được gì sau khóa học:
+                                                    <FontAwesomeIcon
+                                                        className="btn btn-success float-right"
+                                                        onClick={addInput}
+                                                        icon={faCirclePlus}
+                                                        title="Thêm 1 ô input mới"
+                                                    />
+                                                </label>
+                                                <div>
+                                                    {Array.from({ length: inputCount }, (_, i) => (
+                                                        <>
+                                                            <input
+                                                                key={i}
+                                                                name="whatLearn"
+                                                                type="text"
+                                                                className="form-control mb-2 col-11"
+                                                                placeholder="Mô tả những gì sẽ học được"
+                                                                style={{ display: 'inline-block' }}
+                                                                value={isWhatLearn[i]}
+                                                                onChange={(e) => {
+                                                                    const updatedWhatLearn = [...isWhatLearn];
+                                                                    updatedWhatLearn[i] = e.target.value;
+                                                                    setIsWhatLearn(updatedWhatLearn);
+                                                                }}
                                                             />
-                                                        )}
-                                                    </>
-                                                ))}
+                                                            {inputCount > 1 && (
+                                                                <FontAwesomeIcon
+                                                                    className={cx(
+                                                                        'btn btn-danger float-right',
+                                                                        'removeInput'
+                                                                    )}
+                                                                    onClick={removeInput}
+                                                                    icon={faCircleMinus}
+                                                                    title="Xóa ô input này"
+                                                                />
+                                                            )}
+                                                        </>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="form-group col-md-12">
+                                                <label>Giá: ( Nếu để mặc định 0 thì sẽ là miễn phí )</label>
+                                                <input
+                                                    name="price"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Giá khóa học"
+                                                    value={price}
+                                                    onChange={(e) => setPrice(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="form-group col-md-12">
+                                                <label>Ảnh nền:</label>
+                                                {image?.preview && (
+                                                    <img
+                                                        className="ml-4 mb-4"
+                                                        src={image.preview}
+                                                        alt="Preview"
+                                                        style={{
+                                                            width: '160px',
+                                                            height: 'auto',
+                                                            borderRadius: 4,
+                                                        }}
+                                                    />
+                                                )}
+                                                <div style={{ marginLeft: 15 }}>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-info"
+                                                        onClick={() => fileRef.current.click()}
+                                                    >
+                                                        Chọn ảnh
+                                                    </button>
+                                                    <input
+                                                        ref={fileRef}
+                                                        onChange={handlePrevImage}
+                                                        type="file"
+                                                        name="profile_pic"
+                                                        style={{ display: 'none' }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="form-group col-md-12">
+                                                <label style={{ width: '100%' }}>Trạng thái:</label>
+                                                <select
+                                                    className="form-control col-4"
+                                                    name="status"
+                                                    value={status}
+                                                    onChange={(e) => setStatus(e.target.value)}
+                                                >
+                                                    <option value={true}>Bật</option>
+                                                    <option value={false}>Tắt</option>
+                                                </select>
+                                            </div>
+                                            <div className="form-group col-md-12">
+                                                <label>Mô tả ngắn:</label>
+                                                <textarea
+                                                    name="description"
+                                                    className="form-control"
+                                                    rows={5}
+                                                    placeholder="Mô tả ngắn khóa học"
+                                                    value={desc}
+                                                    onChange={(e) => setDesc(e.target.value)}
+                                                />
                                             </div>
                                         </div>
-
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="item_value">
-                                                Giá: ( Nếu để mặc định 0 thì sẽ là miễn phí )
-                                            </label>
-                                            <input
-                                                name="item_value"
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Giá khóa học"
-                                                defaultValue={0}
-                                            />
+                                        <div className="card-footer" style={{ borderTop: 0 }}>
+                                            <button type="submit" className="btn btn-primary">
+                                                Thêm
+                                            </button>
                                         </div>
-
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="url">Ảnh nền:</label>
-                                            <img
-                                                className="ml-4 mb-4"
-                                                src=""
-                                                alt=""
-                                                style={{
-                                                    width: '160px',
-                                                    height: 'auto',
-                                                    borderRadius: 4,
-                                                }}
-                                            />
-                                            <div style={{ marginLeft: 15 }}>
-                                                <button type="button" className="btn btn-info">
-                                                    Chọn ảnh
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="status" style={{ width: '100%' }}>
-                                                Trạng thái:
-                                            </label>
-                                            <select className="form-control col-4">
-                                                <option value="off">Tắt</option>
-                                                <option value="on">Bật</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="short_description">Mô tả ngắn:</label>
-                                            <textarea
-                                                name="short_description"
-                                                id="short_description"
-                                                className="form-control"
-                                                rows={5}
-                                                defaultValue=""
-                                                placeholder="Mô tả ngắn khóa học"
-                                            />
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                        <div className="card-footer" style={{ borderTop: 0 }}>
-                            <button type="submit" className="btn btn-primary">
-                                Thêm
-                            </button>
                         </div>
                     </div>
                 </div>

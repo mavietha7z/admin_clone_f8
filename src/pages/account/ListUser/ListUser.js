@@ -34,7 +34,6 @@ function ListUser() {
     const user = useSelector((state) => state.auth.login.currentUser);
 
     const allUser = useSelector((state) => state.users?.getAllUsers?.data);
-    console.log('allUser: ', allUser);
     const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const handleToggleStatus = () => {
