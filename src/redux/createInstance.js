@@ -14,6 +14,7 @@ const refreshToken = async () => {
 
 export const createAxios = (user, dispatch, stateSuccess) => {
     const newInstance = axios.create();
+
     newInstance.interceptors.request.use(
         async (config) => {
             let date = new Date();

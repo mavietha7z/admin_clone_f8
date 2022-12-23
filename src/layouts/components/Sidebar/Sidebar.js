@@ -27,6 +27,7 @@ function Sidebar() {
     const [isActiveTool, setIsActiveTool] = useState(false);
     const [isActiveModun, setIsActiveModun] = useState(false);
     const [isActiveConfig, setIsActiveConfig] = useState(false);
+    const [isActiveBlog, setIsActiveBlog] = useState(false);
 
     const handleActivePin = () => {
         setIsActivePin(!isActivePin);
@@ -38,6 +39,10 @@ function Sidebar() {
 
     const handleActiveAccount = () => {
         setIsActiveAccount(!isActiveAccount);
+    };
+
+    const handleActiveBlog = () => {
+        setIsActiveBlog(!isActiveBlog);
     };
 
     const handleActiveTool = () => {
@@ -111,6 +116,65 @@ function Sidebar() {
 
                         <li>
                             <Link
+                                className={isActiveAccount ? cx('link', 'active') : cx('link')}
+                                onClick={() => handleActiveAccount()}
+                                data-toggle="collapse"
+                                data-target="#collapseAccount"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faUser} className={cx('icon')} />
+                                <span>
+                                    Tài khoản
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </span>
+                            </Link>
+                            <div className="collapse" id="collapseAccount">
+                                <ul>
+                                    <li>
+                                        <Link className={cx('link-sub')} to="/users">
+                                            <FontAwesomeIcon icon={faChevronRight} />
+                                            <span>Người dùng</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <Link
+                                className={isActiveBlog ? cx('link', 'active') : cx('link')}
+                                onClick={() => handleActiveBlog()}
+                                data-toggle="collapse"
+                                data-target="#collapseBlog"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faUser} className={cx('icon')} />
+                                <span>
+                                    Blog
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </span>
+                            </Link>
+                            <div className="collapse" id="collapseBlog">
+                                <ul>
+                                    <li>
+                                        <Link className={cx('link-sub')} to="/users">
+                                            <FontAwesomeIcon icon={faChevronRight} />
+                                            <span>Danh sách blog</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <Link className={cx('link')} to="/news">
+                                <FontAwesomeIcon icon={faNewspaper} className={cx('icon')} />
+                                <span>Tin tức</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link
                                 className={isActiveStat ? cx('link', 'active') : cx('link')}
                                 onClick={() => handleActiveStat()}
                                 aria-expanded="false"
@@ -172,39 +236,6 @@ function Sidebar() {
                                         <Link className={cx('link-sub')} to="/statistic/user">
                                             <FontAwesomeIcon icon={faChevronRight} />
                                             <span>Sản lượng thành viên</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li>
-                            <Link className={cx('link')} to="/news">
-                                <FontAwesomeIcon icon={faNewspaper} className={cx('icon')} />
-                                <span>Tin tức</span>
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link
-                                className={isActiveAccount ? cx('link', 'active') : cx('link')}
-                                onClick={() => handleActiveAccount()}
-                                data-toggle="collapse"
-                                data-target="#collapseAccount"
-                                type="button"
-                            >
-                                <FontAwesomeIcon icon={faUser} className={cx('icon')} />
-                                <span>
-                                    Tài khoản
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                </span>
-                            </Link>
-                            <div className="collapse" id="collapseAccount">
-                                <ul>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/users">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Người dùng</span>
                                         </Link>
                                     </li>
                                 </ul>

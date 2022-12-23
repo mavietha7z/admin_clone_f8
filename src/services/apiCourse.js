@@ -1,5 +1,5 @@
-import { getAllCoursesSuccess } from '~/redux/reducer/courseReducer';
 import * as request from '~/utils/request';
+import { getAllCoursesFailed, getAllCoursesSuccess } from '~/redux/reducer/moduleReducer';
 
 export const createNewCourse = async (course) => {
     try {
@@ -11,7 +11,7 @@ export const createNewCourse = async (course) => {
     }
 };
 
-export const getAllCourse = async (dispatch, axiosJWT, token) => {
+export const getAllCourse = async (dispatch, token, axiosJWT) => {
     try {
         const res = await axiosJWT.get('http://localhost:8080/api/course/get', {
             headers: {
@@ -19,8 +19,8 @@ export const getAllCourse = async (dispatch, axiosJWT, token) => {
             },
         });
         dispatch(getAllCoursesSuccess(res.data.data));
-        console.log('res: ', res);
     } catch (error) {
         console.log('error: ', error);
+        dispatch(getAllCoursesFailed());
     }
 };

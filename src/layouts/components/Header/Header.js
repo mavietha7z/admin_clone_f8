@@ -27,15 +27,6 @@ function Header() {
         setLeft(!left);
     };
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            await getAllUsers(dispatch, accessToken, axiosJWT);
-        };
-        fetchApi();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const handleLogoutAdmin = async () => {
         await logoutAdmin(dispatch, id, navigate, accessToken, axiosJWT);
     };
@@ -75,7 +66,7 @@ function Header() {
                         <div className={cx('avt')} data-toggle="dropdown" aria-expanded="false"></div>
                         <div className={cx('dropdown-menu', 'dropdown-menu-right', 'menu-dropdown')}>
                             <button className={cx('btn dropdown-item', 'btn-drop')} type="button">
-                                <Link to={`/users/edit/${user._id}`}>
+                                <Link to={`/users/edit/${user?._id}`}>
                                     <FontAwesomeIcon icon={faUserPen} className={cx('icon-drop')} />
                                     <span className="text">Sửa thông tin</span>
                                 </Link>

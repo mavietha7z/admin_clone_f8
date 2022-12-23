@@ -1,17 +1,55 @@
 import classNames from 'classnames/bind';
 import Tile from '~/components/Title';
 import { Link } from 'react-router-dom';
-
 import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faBookMedical, faMinus, faNewspaper, faPhone, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { getAllUsers } from '~/services/apiAuth';
+import { createAxios } from '~/redux/createInstance';
+import { loginSuccess } from '~/redux/reducer/authReducer';
+import { useEffect, useState } from 'react';
+import { getAllCourse } from '~/services/apiCourse';
 
 const cx = classNames.bind(styles);
 
 function Home() {
-    const allUser = useSelector((state) => state.users?.getAllUsers?.data);
+    const [courseFree, setCourseFree] = useState(0);
+    const [coursePro, setCoursePro] = useState(0);
+
+    const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.auth?.login?.currentUser);
+    const axiosJWT = createAxios(user, dispatch, loginSuccess);
+
+    const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
+    const allCourse = useSelector((state) => state.module.allCourses?.currentCourses);
+
+    useEffect(() => {
+        let countCourseFree = 0;
+        let countCoursePro = 0;
+
+        for (let i = 0; i < allCourse.length; i++) {
+            if (allCourse[i].price === 0) {
+                countCourseFree++;
+            } else {
+                countCoursePro++;
+            }
+            setCourseFree(countCourseFree);
+            setCoursePro(countCoursePro);
+        }
+    }, [allCourse]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllUsers(dispatch, user?.accessToken, axiosJWT);
+            await getAllCourse(dispatch, user?.accessToken, axiosJWT);
+        };
+        fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={cx('wrapper')}>
@@ -30,7 +68,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Khóa học miễn phí</span>
-                                <span className={cx('info-box-number')}>7</span>
+                                <span className={cx('info-box-number')}>{courseFree}</span>
                             </div>
                         </div>
                     </div>
@@ -41,7 +79,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Khóa học có phí</span>
-                                <span className={cx('info-box-number')}>3</span>
+                                <span className={cx('info-box-number')}>{coursePro}</span>
                             </div>
                         </div>
                     </div>
@@ -116,7 +154,7 @@ function Home() {
                             </div>
 
                             <div className="card-footer text-center py-3">
-                                <Link className="card-link" to="/chargings" target="_blank">
+                                <Link className="card-link" to="/course" target="_blank">
                                     Xem tất cả
                                 </Link>
                             </div>
@@ -364,7 +402,7 @@ function Home() {
                                 <div className="card-body p-0">
                                     <div className={cx('table-responsive')}>
                                         <ul className={cx('transfer-list')}>
-                                            {allUser?.slice(-5).map((user) => (
+                                            {allUser?.slice(-5)?.map((user) => (
                                                 <li className={cx('transfer-item')} key={user._id}>
                                                     <strong className="text-uppercase">
                                                         <Link to="/users/449/edit">{user.name}</Link>
