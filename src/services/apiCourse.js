@@ -11,14 +11,10 @@ export const createNewCourse = async (course) => {
     }
 };
 
-export const getAllCourse = async (dispatch, token, axiosJWT) => {
+export const getAllCourse = async (dispatch) => {
     try {
-        const res = await axiosJWT.get('http://localhost:8080/api/course/get', {
-            headers: {
-                token,
-            },
-        });
-        dispatch(getAllCoursesSuccess(res.data.data));
+        const res = await request.get('http://localhost:8080/api/course/get');
+        dispatch(getAllCoursesSuccess(res.data));
     } catch (error) {
         console.log('error: ', error);
         dispatch(getAllCoursesFailed());

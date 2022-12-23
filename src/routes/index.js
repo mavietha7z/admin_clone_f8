@@ -2,31 +2,18 @@
 import Home from '~/layouts/Home';
 
 // Import components khóa học
-import ListCourse from '~/pages/course/ListCourse/ListCourse';
+import ListCourse from '~/pages/course/ListCourse';
 import CreateCourse from '~/pages/course/CreateCourse';
 import DetailCourse from '~/pages/course/DetailCourse';
 import EditCourse from '~/pages/course/EditCourse';
 
-// Import components đổi thẻ cào
-import Charging from '~/pages/chargings/Charging';
-import Pending from '~/pages/chargings/Pending';
-import Telcos from '~/pages/chargings/Telcos';
-import CreateCharging from '~/pages/chargings/CreateCharging';
-import EditCharging from '~/pages/chargings/EditCharging';
-import ProviderCharging from '~/pages/chargings/ProviderCharging';
-import EditNcc from '~/pages/chargings/EditNcc';
-import TestCharging from '~/pages/chargings/TestCharging/TestCharging';
-import SettingCharging from '~/pages/chargings/SettingCharging';
+// Import components bài viết
+import ListBlog from '~/pages/blog/ListBlog';
+import CreateBlog from '~/pages/blog/CreateBlog';
 
-// Import components thống kê
-import StatCharging from '~/pages/stat/StatCharging';
-import StatMtopup from '~/pages/stat/StatMtopup';
-import StatOrders from '~/pages/stat/StatOrders';
-import StatStockCard from '~/pages/stat/StatStockCard';
-import StatDeposit from '~/pages/stat/StatDeposit';
-import StatWithdraw from '~/pages/stat/StatWithdraw';
-import StatDaily from '~/pages/stat/StatDaily/';
-import StatUser from '~/pages/stat/StatUser';
+// Import components video
+import ListVideo from '~/pages/video/ListVideo';
+import CreateVideo from '~/pages/video/CreateVideo';
 
 // Import components tin tức
 import News from '~/pages/news/NewsPage';
@@ -88,25 +75,12 @@ const privateRoutes = [
     { path: '/course/edit', component: EditCourse },
 
     // Route trang đổi thẻ cào
-    { path: '/chargings', component: Charging },
-    { path: '/chargings/pending', component: Pending },
-    { path: '/chargings/telcos', component: Telcos },
-    { path: '/chargings/telcos/create', component: CreateCharging },
-    { path: '/chargings/telcos/6/edit', component: EditCharging },
-    { path: '/chargings/provider', component: ProviderCharging },
-    { path: '/chargings/provider/22/update', component: EditNcc },
-    { path: '/chargings/testcard', component: TestCharging },
-    { path: '/chargings/setting', component: SettingCharging },
+    { path: '/blog', component: ListBlog },
+    { path: '/blog/create', component: CreateBlog },
 
     // Route trang thống kê
-    { path: '/statistic/charging', component: StatCharging },
-    { path: '/statistic/mtopup', component: StatMtopup },
-    { path: '/statistic/softcard', component: StatOrders },
-    { path: '/statistic/stockcard', component: StatStockCard },
-    { path: '/statistic/deposit', component: StatDeposit },
-    { path: '/statistic/withdraw', component: StatWithdraw },
-    { path: '/statistic/dailystat', component: StatDaily },
-    { path: '/statistic/user', component: StatUser },
+    { path: '/video', component: ListVideo },
+    { path: '/video/create', component: CreateVideo },
 
     // Route trang tin tức
     { path: '/news', component: News },

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Image } from '~/assets/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    faBlog,
     faBook,
     faChartColumn,
     faChevronLeft,
@@ -13,6 +14,7 @@ import {
     faGauge,
     faNewspaper,
     faUser,
+    faVideo,
     faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Sidebar.module.scss';
@@ -28,6 +30,7 @@ function Sidebar() {
     const [isActiveModun, setIsActiveModun] = useState(false);
     const [isActiveConfig, setIsActiveConfig] = useState(false);
     const [isActiveBlog, setIsActiveBlog] = useState(false);
+    const [isActiveVideo, setIsActiveVideo] = useState(false);
 
     const handleActivePin = () => {
         setIsActivePin(!isActivePin);
@@ -43,6 +46,10 @@ function Sidebar() {
 
     const handleActiveBlog = () => {
         setIsActiveBlog(!isActiveBlog);
+    };
+
+    const handleActiveVideo = () => {
+        setIsActiveVideo(!isActiveVideo);
     };
 
     const handleActiveTool = () => {
@@ -67,7 +74,7 @@ function Sidebar() {
 
     return (
         <div
-            className={isHover ? cx('wrapper', 'active') : cx('wrapper')}
+            className={isHover ? cx('wrapper', 'active') : cx('wrapper', 'active')}
             onMouseOver={() => handleHover()}
             onMouseLeave={() => handleUnHover()}
         >
@@ -133,7 +140,7 @@ function Sidebar() {
                                     <li>
                                         <Link className={cx('link-sub')} to="/users">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Người dùng</span>
+                                            <span>Danh sách người dùng</span>
                                         </Link>
                                     </li>
                                 </ul>
@@ -148,18 +155,44 @@ function Sidebar() {
                                 data-target="#collapseBlog"
                                 type="button"
                             >
-                                <FontAwesomeIcon icon={faUser} className={cx('icon')} />
+                                <FontAwesomeIcon icon={faBlog} className={cx('icon')} />
                                 <span>
-                                    Blog
+                                    Bài viết
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </span>
                             </Link>
                             <div className="collapse" id="collapseBlog">
                                 <ul>
                                     <li>
-                                        <Link className={cx('link-sub')} to="/users">
+                                        <Link className={cx('link-sub')} to="/blog">
                                             <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Danh sách blog</span>
+                                            <span>Danh sách bài viết</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <Link
+                                className={isActiveVideo ? cx('link', 'active') : cx('link')}
+                                onClick={() => handleActiveVideo()}
+                                data-toggle="collapse"
+                                data-target="#collapseVideo"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faVideo} className={cx('icon')} />
+                                <span>
+                                    Video
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </span>
+                            </Link>
+                            <div className="collapse" id="collapseVideo">
+                                <ul>
+                                    <li>
+                                        <Link className={cx('link-sub')} to="/video">
+                                            <FontAwesomeIcon icon={faChevronRight} />
+                                            <span>Danh sách video</span>
                                         </Link>
                                     </li>
                                 </ul>

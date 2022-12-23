@@ -11,6 +11,10 @@ const moduleReducer = createSlice({
             currentUsers: null,
             error: false,
         },
+        allBlogs: {
+            currentBlogs: null,
+            error: false,
+        },
     },
     reducers: {
         getAllCoursesSuccess: (state, action) => {
@@ -26,10 +30,23 @@ const moduleReducer = createSlice({
         getAllUsersFailed: (state) => {
             state.allUsers.error = true;
         },
+        getAllBlogsSuccess: (state, action) => {
+            state.allBlogs.currentBlogs = action.payload;
+            state.allBlogs.error = false;
+        },
+        getAllBlogsFailed: (state) => {
+            state.allBlogs.error = true;
+        },
     },
 });
 
-export const { getAllCoursesSuccess, getAllCoursesFailed, getAllUsersSuccess, getAllUsersFailed } =
-    moduleReducer.actions;
+export const {
+    getAllCoursesSuccess,
+    getAllCoursesFailed,
+    getAllUsersSuccess,
+    getAllUsersFailed,
+    getAllBlogsSuccess,
+    getAllBlogsFailed,
+} = moduleReducer.actions;
 
 export default moduleReducer.reducer;

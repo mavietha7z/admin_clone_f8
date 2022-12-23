@@ -8,7 +8,6 @@ import withReactContent from 'sweetalert2-react-content';
 import styles from '~/GlobalStyles.module.scss';
 import NavMenu from '~/components/NavMenu';
 import { createNewCourse } from '~/services/apiCourse';
-// import { Buffer } from 'buffer';
 
 const cx = classNames.bind(styles);
 
@@ -21,9 +20,6 @@ function CreateCourse() {
     const [status, setStatus] = useState(true);
     const [desc, setDesc] = useState('');
     const [image, setImage] = useState(null);
-
-    // const imageData = Buffer.from(data?.image?.data).toString('base64');
-    // const imageUrl = `data:image/png;base64,${imageData}`;
 
     const MySwal = withReactContent(Swal);
     const fileRef = useRef();

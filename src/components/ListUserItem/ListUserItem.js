@@ -8,9 +8,11 @@ import { deleteUserById } from '~/services/apiAuth';
 import { loginSuccess } from '~/redux/reducer/authReducer';
 import { createAxios } from '~/redux/createInstance';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 function ListUserItem({ data }) {
     const [currentUser, setCurrentUser] = useState({});
+    console.log('currentUser: ', currentUser);
 
     const dispatch = useDispatch();
     const MySwal = withReactContent(Swal);
@@ -19,6 +21,7 @@ function ListUserItem({ data }) {
     const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const handleDelete = async (id) => {
+        console.log('id: ', id);
         const result = await deleteUserById(id, axiosJWT, user.accessToken);
 
         if (result.errCode === 0) {
@@ -51,7 +54,7 @@ function ListUserItem({ data }) {
                         <br />
                         <strong className="text-success">{data.email}</strong>
                         <br />
-                        {!!data.phone && <strong className="text-info">0369574322</strong>}
+                        {!!data.phone && <strong className="text-info">{data.phone}</strong>}
                     </div>
                 </td>
                 <td>
@@ -74,7 +77,8 @@ function ListUserItem({ data }) {
                     </div>
                 </td>
                 <td>
-                    <div className="text-center">{data.createdAt}</div>
+                    <div className="text-center">{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</div>
+                    <div className="text-center">{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</div>
                 </td>
 
                 <td>
@@ -100,7 +104,7 @@ function ListUserItem({ data }) {
                                 <FontAwesomeIcon icon={faComment} />
                             </span>
                         </Link>
-                        <Link to="/users/detail" title="Xem thông tin chi tiết thành viên">
+                        <Link to={`/users/detail/${data._id}`} title="Xem thông tin chi tiết thành viên">
                             <span className="btn btn-sm btn-success">
                                 <span>Chi tiết</span>
                             </span>

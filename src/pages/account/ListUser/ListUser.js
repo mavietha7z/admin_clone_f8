@@ -59,7 +59,7 @@ function ListUser() {
                                                         <div className="text-center">Trạng thái</div>
                                                     </th>
                                                     <th>
-                                                        <div className="text-center">Ngày tạo</div>
+                                                        <div className="text-center">Ngày tạo / cập nhật</div>
                                                     </th>
                                                     <th>
                                                         <div className="text-center">Hành động</div>

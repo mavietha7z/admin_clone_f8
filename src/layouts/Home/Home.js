@@ -11,6 +11,7 @@ import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
 import { useEffect, useState } from 'react';
 import { getAllCourse } from '~/services/apiCourse';
+import { getAllBlogs } from '~/services/apiBlog';
 
 const cx = classNames.bind(styles);
 
@@ -24,13 +25,14 @@ function Home() {
     const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
-    const allCourse = useSelector((state) => state.module.allCourses?.currentCourses);
+    const allCourse = useSelector((state) => state.module?.allCourses?.currentCourses);
+    const allBlog = useSelector((state) => state.module?.allBlogs?.currentBlogs);
 
     useEffect(() => {
         let countCourseFree = 0;
         let countCoursePro = 0;
 
-        for (let i = 0; i < allCourse.length; i++) {
+        for (let i = 0; i < allCourse?.length; i++) {
             if (allCourse[i].price === 0) {
                 countCourseFree++;
             } else {
@@ -44,7 +46,8 @@ function Home() {
     useEffect(() => {
         const fetchApi = async () => {
             await getAllUsers(dispatch, user?.accessToken, axiosJWT);
-            await getAllCourse(dispatch, user?.accessToken, axiosJWT);
+            await getAllCourse(dispatch);
+            await getAllBlogs(dispatch);
         };
         fetchApi();
 
@@ -90,7 +93,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng blog</span>
-                                <span className={cx('info-box-number')}>0đ</span>
+                                <span className={cx('info-box-number')}>{allBlog?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -411,10 +414,10 @@ function Home() {
                                                     <FontAwesomeIcon icon={faEnvelope} className="text-danger" />
                                                     <span className="ml-2">{user.email}</span>
                                                     <br />
-                                                    {!!user.phone && (
+                                                    {user.phone && (
                                                         <>
                                                             <FontAwesomeIcon icon={faPhone} className="text-success" />
-                                                            <span className="ml-2">{!!user.phone}</span>
+                                                            <span className="ml-2">{user.phone}</span>
                                                         </>
                                                     )}
                                                 </li>
