@@ -32,7 +32,11 @@ function ListCourseItem({ data }) {
             <td>
                 <div className="text-center">
                     <div>{data.chapter.length}</div>
-                    <button className="btn btn-success btn-sm mt-3">Thêm chương</button>
+                    <button className="btn btn-success btn-sm mt-3">
+                        <Link to={`/course/chapter/${data._id}`} className="text-white">
+                            Thêm chương
+                        </Link>
+                    </button>
                 </div>
             </td>
             <td>

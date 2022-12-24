@@ -74,7 +74,7 @@ function Sidebar() {
 
     return (
         <div
-            className={isHover ? cx('wrapper', 'active') : cx('wrapper', 'active')}
+            className={isHover ? cx('wrapper', 'active') : cx('wrapper')}
             onMouseOver={() => handleHover()}
             onMouseLeave={() => handleUnHover()}
         >

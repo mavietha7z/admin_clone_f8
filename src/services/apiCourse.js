@@ -20,3 +20,48 @@ export const getAllCourse = async (dispatch) => {
         dispatch(getAllCoursesFailed());
     }
 };
+
+export const getCourseById = async (courseId, token, axiosJWT) => {
+    try {
+        const res = await axiosJWT.get(`http://localhost:8080/api/course/get/${courseId}`, {
+            headers: {
+                token,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error);
+    }
+};
+
+export const createNewChapter = async (courseId, nameChapter, token, axiosJWT) => {
+    try {
+        const res = await axiosJWT.post(
+            `http://localhost:8080/api/course/chapter/${courseId}`,
+            { nameChapter },
+            {
+                headers: {
+                    token,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error);
+        return error.response.data;
+    }
+};
+
+export const createNewLesson = async (courseId, newLesson, token, axiosJWT) => {
+    try {
+        const res = await axiosJWT.post(`http://localhost:8080/api/course/lesson/${courseId}`, newLesson, {
+            headers: {
+                token,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error);
+        return error.response.data;
+    }
+};

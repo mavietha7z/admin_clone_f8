@@ -4,6 +4,7 @@ import Home from '~/layouts/Home';
 // Import components khóa học
 import ListCourse from '~/pages/course/ListCourse';
 import CreateCourse from '~/pages/course/CreateCourse';
+import Chapter from '~/pages/course/Chapter';
 import DetailCourse from '~/pages/course/DetailCourse';
 import EditCourse from '~/pages/course/EditCourse';
 
@@ -71,6 +72,7 @@ const privateRoutes = [
     // Route trang khóa học
     { path: '/course', component: ListCourse },
     { path: '/course/create', component: CreateCourse },
+    { path: '/course/chapter/:id', component: Chapter },
     { path: '/course/detail', component: DetailCourse },
     { path: '/course/edit', component: EditCourse },
 
