@@ -9,11 +9,10 @@ function ChapterItem({ lesson }) {
                                 className="text-dark"
                                 href={`https://www.youtube.com/watch?v=${lesson.urlVideo}`}
                                 target="_blank"
+                                rel="noreferrer"
                             >{`${index + 1}. ${lesson.nameLesson}`}</a>
                         </td>
-                        <td>{`${Math.floor(lesson.timeVideo / 3600)} : ${Math.floor(
-                            (lesson.timeVideo % 3600) / 60
-                        )} : ${lesson.timeVideo % 60}`}</td>
+                        <td>{`${Math.floor((lesson.timeVideo % 3600) / 60)} phút ${lesson.timeVideo % 60} giây`}</td>
                     </tr>
                 ))}
         </tbody>

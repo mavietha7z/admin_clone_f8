@@ -13,16 +13,15 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
 import styles from '~/GlobalStyles.module.scss';
-import ChapterItem from '~/components/ChapterItem/ChapterItem';
+import ChapterItem from '~/components/ChapterItem';
 
 const cx = classNames.bind(styles);
 
 function Chapter() {
     const [currentCourse, setCurrentCourse] = useState(null);
-    console.log('currentCourse: ', currentCourse);
     const [chapters, setChapters] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
-    const [option, setOption] = useState([]);
+    const [options, setOptions] = useState([]);
 
     const [inputNameChapter, setInputNameChapter] = useState('');
     const [nameLesson, setNameLesson] = useState('');
@@ -40,8 +39,8 @@ function Chapter() {
     useEffect(() => {
         const nameChapter = chapters?.map((chapter) => ({ label: chapter.nameChapter }));
 
-        setOption(nameChapter);
-    }, [currentCourse]);
+        setOptions(nameChapter);
+    }, [chapters]);
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -195,7 +194,7 @@ function Chapter() {
                                                     <Select
                                                         value={selectedOption}
                                                         onChange={setSelectedOption}
-                                                        options={option}
+                                                        options={options}
                                                         className="col-11 p-0"
                                                         placeholder="Chọn chương để thêm bài"
                                                     />

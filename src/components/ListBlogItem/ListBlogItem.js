@@ -1,17 +1,11 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import moment from 'moment';
 import styles from '~/GlobalStyles.module.scss';
 import { Link } from 'react-router-dom';
-import { Buffer } from 'buffer';
 
 const cx = classNames.bind(styles);
 
 function ListBlogItem({ data }) {
-    console.log('data: ', data);
-    // const imageData = Buffer.from(data?.image?.data).toString('base64');
-    // const imageUrl = `data:image/png;base64,${imageData}`;
-
     return (
         <tr>
             <td style={{ width: 300 }}>

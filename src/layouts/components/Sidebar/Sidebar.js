@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBlog,
     faBook,
-    faChartColumn,
     faChevronLeft,
     faChevronRight,
     faCog,
@@ -24,7 +23,6 @@ const cx = classNames.bind(styles);
 function Sidebar() {
     const [isHover, setIsHover] = useState(false);
     const [isActivePin, setIsActivePin] = useState(false);
-    const [isActiveStat, setIsActiveStat] = useState(false);
     const [isActiveAccount, setIsActiveAccount] = useState(false);
     const [isActiveTool, setIsActiveTool] = useState(false);
     const [isActiveModun, setIsActiveModun] = useState(false);
@@ -34,10 +32,6 @@ function Sidebar() {
 
     const handleActivePin = () => {
         setIsActivePin(!isActivePin);
-    };
-
-    const handleActiveStat = () => {
-        setIsActiveStat(!isActiveStat);
     };
 
     const handleActiveAccount = () => {
@@ -204,75 +198,6 @@ function Sidebar() {
                                 <FontAwesomeIcon icon={faNewspaper} className={cx('icon')} />
                                 <span>Tin tức</span>
                             </Link>
-                        </li>
-
-                        <li>
-                            <Link
-                                className={isActiveStat ? cx('link', 'active') : cx('link')}
-                                onClick={() => handleActiveStat()}
-                                aria-expanded="false"
-                                data-toggle="collapse"
-                                data-target="#collapseStat"
-                                type="button"
-                            >
-                                <FontAwesomeIcon icon={faChartColumn} className={cx('icon')} />
-                                <span>
-                                    Thống kê
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                </span>
-                            </Link>
-                            <div className="collapse" id="collapseStat">
-                                <ul>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/charging">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê đổi thẻ</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/mtopup">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê nạp cước</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/softcard">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê bán thẻ</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/stockcard">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê kho thẻ</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/deposit">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê nạp tiền</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/withdraw">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Thống kê rút tiền</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/dailystat">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Tổng hợp ngày</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className={cx('link-sub')} to="/statistic/user">
-                                            <FontAwesomeIcon icon={faChevronRight} />
-                                            <span>Sản lượng thành viên</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
 
                         <li>

@@ -65,3 +65,20 @@ export const createNewLesson = async (courseId, newLesson, token, axiosJWT) => {
         return error.response.data;
     }
 };
+
+export const handleToggleStatusCourse = async (courseId, status, token, axiosJWT) => {
+    try {
+        const res = await axiosJWT.post(
+            `http://localhost:8080/api/course/status/${courseId}`,
+            { status },
+            {
+                headers: {
+                    token,
+                },
+            }
+        );
+        return res.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};

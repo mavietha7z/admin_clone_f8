@@ -1,12 +1,12 @@
 import { faBars, faMagnifyingGlass, faRightFromBracket, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
-import { getAllUsers, logoutAdmin } from '~/services/apiAuth';
+import { logoutAdmin } from '~/services/apiAuth';
 import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);

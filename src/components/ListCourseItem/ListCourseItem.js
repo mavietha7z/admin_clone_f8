@@ -1,15 +1,79 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Buffer } from 'buffer';
 import classNames from 'classnames/bind';
 import moment from 'moment';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+import { getAllCourse } from '~/services/apiCourse';
+import { handleToggleStatusCourse } from '~/services/apiCourse';
+import { createAxios } from '~/redux/createInstance';
+import { loginSuccess } from '~/redux/reducer/authReducer';
+
 import styles from '~/GlobalStyles.module.scss';
-import { Link } from 'react-router-dom';
-import { Buffer } from 'buffer';
 
 const cx = classNames.bind(styles);
 
 function ListCourseItem({ data }) {
+    const [numberLesson, setNumberLesson] = useState(0);
+    const [numberChapter, setNumberChapter] = useState(0);
+    const [numberTime, setNumberTime] = useState('');
+
+    const dispatch = useDispatch();
+
+    const MySwal = withReactContent(Swal);
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
+
     const imageData = Buffer.from(data?.image?.data).toString('base64');
     const imageUrl = `data:image/png;base64,${imageData}`;
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllCourse(dispatch);
+        };
+        fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        let countLesson = 0;
+        let totalTime = 0;
+
+        for (let i = 0; i < data.chapter.length; i++) {
+            countLesson += data.chapter[i].lesson.length;
+        }
+        for (let i = 0; i < data.chapter.length; i++) {
+            for (let j = 0; j < data.chapter[i].lesson.length; j++) {
+                totalTime += data.chapter[i].lesson[j].timeVideo;
+            }
+        }
+        const hour = Math.floor(totalTime / 3600);
+        const minutes = Math.floor((totalTime % 3600) / 60);
+
+        setNumberTime(`${hour} giờ ${minutes} phút`);
+        setNumberChapter(data.chapter.length);
+        setNumberLesson(countLesson);
+    }, [data.chapter]);
+
+    const handleStatusCourse = async (status) => {
+        if (typeof status === 'boolean') {
+            const result = await handleToggleStatusCourse(data._id, status, currentUser.accessToken, axiosJWT);
+
+            if (result.errCode === 0) {
+                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                    if (res.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            }
+        } else {
+            MySwal.fire('error', 'Trạng thái khóa học không phải kiểu dữ liệu boolean', 'error');
+        }
+    };
 
     return (
         <tr>
@@ -31,29 +95,28 @@ function ListCourseItem({ data }) {
             </td>
             <td>
                 <div className="text-center">
-                    <div>{data.chapter.length}</div>
-                    <button className="btn btn-success btn-sm mt-3">
-                        <Link to={`/course/chapter/${data._id}`} className="text-white">
-                            Thêm chương
-                        </Link>
-                    </button>
+                    <div>{numberChapter}</div>
                 </div>
             </td>
             <td>
-                <div className="text-center">0</div>
+                <div className="text-center">{numberLesson}</div>
             </td>
             <td>
-                <div className="text-center">03 giờ 26 phút</div>
+                <div className="text-center">{numberTime}</div>
             </td>
             <td>
-                <div className="text-center">{data.price === 0 ? 'Miễn phí' : 'Pro'}</div>
+                <div className="text-center">{data.price === 0 ? 'Free' : 'Pro'}</div>
             </td>
             <td>
                 <div className="text-center">
                     {data.status ? (
-                        <label className="badge badge-success">Bật</label>
+                        <span className="btn btn-success btn-sm" onClick={() => handleStatusCourse(false)}>
+                            Bật
+                        </span>
                     ) : (
-                        <label className="badge badge-danger">Tắt</label>
+                        <span className="btn btn-danger btn-sm" onClick={() => handleStatusCourse(true)}>
+                            Tắt
+                        </span>
                     )}
                 </div>
             </td>
@@ -62,15 +125,15 @@ function ListCourseItem({ data }) {
             </td>
             <td>
                 <div className="text-center">
-                    <span
-                        className={cx('btn btn-success edit-softcard-btn btn-sm', 'btn-action')}
-                        data-toggle="modal"
-                        data-target="#total-order"
-                    >
-                        <Link to={`/course/detail/${data._id}`}>
+                    <Link to={`/course/chapter/${data._id}`}>
+                        <span
+                            className={cx('btn btn-success edit-softcard-btn btn-sm', 'btn-action')}
+                            data-toggle="modal"
+                            data-target="#total-order"
+                        >
                             <span className="text-white">Chi tiết</span>
-                        </Link>
-                    </span>
+                        </span>
+                    </Link>
                 </div>
             </td>
         </tr>

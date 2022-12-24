@@ -1,17 +1,18 @@
 import classNames from 'classnames/bind';
-import Tile from '~/components/Title';
-import { Link } from 'react-router-dom';
-import styles from './Home.module.scss';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faBook, faBookMedical, faMinus, faNewspaper, faPhone, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
+
+import Tile from '~/components/Title';
 import { getAllUsers } from '~/services/apiAuth';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
-import { useEffect, useState } from 'react';
-import { getAllCourse } from '~/services/apiCourse';
 import { getAllBlogs } from '~/services/apiBlog';
+
+import styles from './Home.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -46,7 +47,6 @@ function Home() {
     useEffect(() => {
         const fetchApi = async () => {
             await getAllUsers(dispatch, user?.accessToken, axiosJWT);
-            await getAllCourse(dispatch);
             await getAllBlogs(dispatch);
         };
         fetchApi();

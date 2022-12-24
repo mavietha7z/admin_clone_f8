@@ -1,12 +1,12 @@
+import classNames from 'classnames/bind';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
+import ListCourseItem from '~/components/ListCourseItem';
 import styles from '~/GlobalStyles.module.scss';
-import ListCourseItem from '~/components/ListCourseItem/ListCourseItem';
 
 const cx = classNames.bind(styles);
 
@@ -99,38 +99,6 @@ function ListCourse() {
                                                 ))}
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-12">
-                                        <div className="float-right">
-                                            <ul className="pagination mr-4" role="navigation">
-                                                <li className="page-item">
-                                                    <Link className="page-link" aria-hidden="true">
-                                                        ‹
-                                                    </Link>
-                                                </li>
-                                                <li className="page-item active" aria-current="page">
-                                                    <Link className="page-link">1</Link>
-                                                </li>
-                                                <li className="page-item">
-                                                    <Link className="page-link" to="/softcard/orders?page=2">
-                                                        2
-                                                    </Link>
-                                                </li>
-                                                <li className="page-item">
-                                                    <Link className="page-link" to="/softcard/orders?page=3">
-                                                        3
-                                                    </Link>
-                                                </li>
-                                                <li className="page-item">
-                                                    <Link className="page-link" to="/softcard/orders?page=2" rel="next">
-                                                        ›
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
