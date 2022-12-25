@@ -69,9 +69,11 @@ function ListCourseItem({ data }) {
                         window.location.reload();
                     }
                 });
+            } else {
+                MySwal.fire('Lỗi', `${result.message}`, 'error');
             }
         } else {
-            MySwal.fire('error', 'Trạng thái khóa học không phải kiểu dữ liệu boolean', 'error');
+            MySwal.fire('Lỗi', 'Trạng thái khóa học không phải kiểu dữ liệu boolean', 'error');
         }
     };
 
@@ -127,13 +129,20 @@ function ListCourseItem({ data }) {
                 <div className="text-center">
                     <Link to={`/course/chapter/${data._id}`}>
                         <span
-                            className={cx('btn btn-success edit-softcard-btn btn-sm', 'btn-action')}
+                            className={cx('btn btn-success btn-sm', 'btn-action')}
                             data-toggle="modal"
                             data-target="#total-order"
                         >
                             <span className="text-white">Chi tiết</span>
                         </span>
                     </Link>
+                    <span
+                        className={cx('btn btn-danger btn-sm ml-2', 'btn-action')}
+                        data-toggle="modal"
+                        data-target="#deleteModal"
+                    >
+                        <span className="text-white">Xóa</span>
+                    </span>
                 </div>
             </td>
         </tr>

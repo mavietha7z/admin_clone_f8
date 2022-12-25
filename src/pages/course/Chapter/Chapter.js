@@ -45,8 +45,8 @@ function Chapter() {
     useEffect(() => {
         const fetchApi = async () => {
             const result = await getCourseById(id, currentUser.accessToken, axiosJWT);
-            setCurrentCourse(result);
-            setChapters(result?.chapter);
+            setCurrentCourse(result.data);
+            setChapters(result?.data.chapter);
         };
         fetchApi();
 

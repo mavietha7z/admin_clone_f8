@@ -16,7 +16,6 @@ export const getAllCourse = async (dispatch) => {
         const res = await request.get('http://localhost:8080/api/course/get');
         dispatch(getAllCoursesSuccess(res.data));
     } catch (error) {
-        console.log('error: ', error);
         dispatch(getAllCoursesFailed());
     }
 };
@@ -47,7 +46,6 @@ export const createNewChapter = async (courseId, nameChapter, token, axiosJWT) =
         );
         return res.data;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
@@ -80,5 +78,18 @@ export const handleToggleStatusCourse = async (courseId, status, token, axiosJWT
         return res.data;
     } catch (error) {
         return error.response.data;
+    }
+};
+
+export const handleDeleteACourse = async (courseId, token, axiosJWT) => {
+    try {
+        const res = await axiosJWT.delete(`http://localhost:8080/api/course/delete/${courseId}`, {
+            headers: {
+                token,
+            },
+        });
+        console.log('res: ', res);
+    } catch (error) {
+        console.log('error: ', error);
     }
 };
