@@ -151,14 +151,6 @@ small {
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 
-    // &:first-of-type {
-    //     padding-left: 24px;
-    // }
-
-    // &:last-of-type {
-    //     padding-right: 24px;
-    // }
-
     label {
         padding: 4px 5px;
     }
@@ -231,6 +223,14 @@ small {
         margin: 0;
         width: auto;
         max-width: inherit;
+    }
+}
+
+.rc-md-editor {
+    border: none;
+
+    .rc-md-navigation {
+        border-bottom: none;
     }
 }
 

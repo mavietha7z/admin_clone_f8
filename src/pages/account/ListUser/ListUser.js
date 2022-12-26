@@ -3,14 +3,32 @@ import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import HeaderListUser from '~/components/HeaderListUser';
 import ListUserItem from '~/components/ListUserItem';
+import { useEffect } from 'react';
+
+import { getAllUsers } from '~/services/apiAuth';
+import { createAxios } from '~/redux/createInstance';
+import { loginSuccess } from '~/redux/reducer/authReducer';
 
 const cx = classNames.bind(styles);
 
 function ListUser() {
+    const dispatch = useDispatch();
+
     const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
+    const user = useSelector((state) => state.auth?.login?.currentUser);
+    const axiosJWT = createAxios(user, dispatch, loginSuccess);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllUsers(dispatch, user?.accessToken, axiosJWT);
+        };
+        fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={cx('wrapper')}>

@@ -7,7 +7,6 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import { getAllCourse } from '~/services/apiCourse';
 import { handleToggleStatusCourse } from '~/services/apiCourse';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
@@ -29,15 +28,6 @@ function ListCourseItem({ data }) {
 
     const imageData = Buffer.from(data?.image?.data).toString('base64');
     const imageUrl = `data:image/png;base64,${imageData}`;
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            await getAllCourse(dispatch);
-        };
-        fetchApi();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
         let countLesson = 0;

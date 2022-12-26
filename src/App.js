@@ -2,9 +2,10 @@ import { Fragment } from 'react';
 import { privateRoutes } from './routes';
 import DefaultLayout from './layouts/DefaultLayout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {} from 'react-router';
-
+// import { useSelector } from 'react-redux';
 function App() {
+    // const currentUser = useSelector((state) => state.auth.login.currentUser);
+
     return (
         <div className="App">
             <Router>

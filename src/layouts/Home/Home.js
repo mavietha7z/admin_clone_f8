@@ -3,14 +3,9 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faBook, faBookMedical, faMinus, faNewspaper, faPhone, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import Tile from '~/components/Title';
-import { getAllUsers } from '~/services/apiAuth';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
-import { getAllBlogs } from '~/services/apiBlog';
 
 import styles from './Home.module.scss';
 
@@ -19,11 +14,6 @@ const cx = classNames.bind(styles);
 function Home() {
     const [courseFree, setCourseFree] = useState(0);
     const [coursePro, setCoursePro] = useState(0);
-
-    const dispatch = useDispatch();
-
-    const user = useSelector((state) => state.auth?.login?.currentUser);
-    const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
     const allCourse = useSelector((state) => state.module?.allCourses?.currentCourses);
@@ -43,16 +33,6 @@ function Home() {
             setCoursePro(countCoursePro);
         }
     }, [allCourse]);
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            await getAllUsers(dispatch, user?.accessToken, axiosJWT);
-            await getAllBlogs(dispatch);
-        };
-        fetchApi();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <div className={cx('wrapper')}>

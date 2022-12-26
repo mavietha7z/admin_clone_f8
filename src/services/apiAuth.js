@@ -74,11 +74,37 @@ export const deleteUserById = async (userId, axiosJWT, token) => {
     }
 };
 
-export const getUserById = async (userId) => {
+export const getUserById = async (userId, token) => {
     try {
-        const res = await request.get(`/user/${userId}`);
+        const res = await request.get(`/user/${userId}`, {
+            headers: {
+                token: token,
+            },
+        });
         return res.data;
     } catch (error) {
         console.log('error: ', error);
+    }
+};
+
+export const handleUpdateUser = async (userId, user, navigate) => {
+    try {
+        const res = await request.put(`/user/update/${userId}`, user);
+        navigate('/users');
+        return res;
+    } catch (error) {
+        console.log('error: ', error);
+        return error.response.data;
+    }
+};
+
+export const handleSendEmail = async (email) => {
+    try {
+        const res = await request.post(`/user/verify-email`, { email });
+        console.log('res: ', res);
+        return res;
+    } catch (error) {
+        console.log('error: ', error);
+        return error.response.data;
     }
 };

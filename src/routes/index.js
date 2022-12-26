@@ -40,7 +40,6 @@ const privateRoutes = [
     { path: '/', component: Home },
 
     { path: '/login', component: Login, layout: null },
-
     // Route trang khóa học
     { path: '/course', component: ListCourse },
     { path: '/course/create', component: CreateCourse },

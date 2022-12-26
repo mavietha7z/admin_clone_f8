@@ -1,17 +1,30 @@
 import classNames from 'classnames/bind';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import ListCourseItem from '~/components/ListCourseItem';
+import { getAllCourse } from '~/services/apiCourse';
 import styles from '~/GlobalStyles.module.scss';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
 function ListCourse() {
     const allCourse = useSelector((state) => state.module.allCourses?.currentCourses);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllCourse(dispatch);
+        };
+        fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={cx('wrapper')}>
