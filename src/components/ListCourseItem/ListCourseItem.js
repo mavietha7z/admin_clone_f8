@@ -26,9 +26,6 @@ function ListCourseItem({ data }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
-    const imageData = Buffer.from(data?.image?.data).toString('base64');
-    const imageUrl = `data:image/png;base64,${imageData}`;
-
     useEffect(() => {
         let countLesson = 0;
         let totalTime = 0;
@@ -75,7 +72,7 @@ function ListCourseItem({ data }) {
             <td>
                 <div className="text-center">
                     <img
-                        src={imageUrl}
+                        src={data.image}
                         alt={data.name}
                         style={{
                             width: '160px',

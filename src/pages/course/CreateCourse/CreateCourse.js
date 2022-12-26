@@ -8,6 +8,9 @@ import withReactContent from 'sweetalert2-react-content';
 import styles from '~/GlobalStyles.module.scss';
 import NavMenu from '~/components/NavMenu';
 import { createNewCourse } from '~/services/apiCourse';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAxios } from '~/redux/createInstance';
+import { loginSuccess } from '~/redux/reducer/authReducer';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +26,10 @@ function CreateCourse() {
 
     const MySwal = withReactContent(Swal);
     const fileRef = useRef();
+    const dispatch = useDispatch();
+
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     const addInput = () => {
         if (inputCount < 10) {
@@ -52,7 +59,7 @@ function CreateCourse() {
         formData.append('description', desc);
         formData.append('image', image);
 
-        const result = await createNewCourse(formData);
+        const result = await createNewCourse(formData, currentUser.accessToken, axiosJWT);
 
         if (result.errCode === 0) {
             MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {

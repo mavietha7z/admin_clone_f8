@@ -1,12 +1,15 @@
 import * as request from '~/utils/request';
 import { getAllCoursesFailed, getAllCoursesSuccess } from '~/redux/reducer/moduleReducer';
 
-export const createNewCourse = async (course) => {
+export const createNewCourse = async (course, token, axiosJWT) => {
     try {
-        const res = await request.post('/course/create', course);
-        return res;
+        const res = await axiosJWT.post('http://localhost:8080/api/course/create', course, {
+            headers: {
+                token,
+            },
+        });
+        return res.data;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
