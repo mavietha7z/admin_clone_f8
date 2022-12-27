@@ -32,15 +32,23 @@ function CreateVideo() {
     const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     const iso8601ToTimeString = (timeVideo) => {
-        const regexp = /^PT(?:(\d+)M)?(?:(\d+)S)?$/;
+        const regexp = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
         const matches = regexp.exec(timeVideo);
 
-        if (!matches) return '00:00';
-
-        let minutes = matches[1] ? parseInt(matches[1]) : 0;
-        let seconds = matches[2] ? parseInt(matches[2]) : 0;
-        if (seconds < 10) seconds = `0${seconds}`;
-        return `${minutes}:${seconds}`;
+        if (!matches) return '';
+        let hours = matches[1] ? parseInt(matches[1]) : 0;
+        let minutes = matches[2] ? parseInt(matches[2]) : 0;
+        let seconds = matches[3] ? parseInt(matches[3]) : 0;
+        if (hours > 0) {
+            if (hours < 10) hours = `0${hours}`;
+            if (minutes < 10) minutes = `0${minutes}`;
+            if (seconds < 10) seconds = `0${seconds}`;
+            return `${hours}:${minutes}:${seconds}`;
+        } else {
+            if (minutes < 10) minutes = `0${minutes}`;
+            if (seconds < 10) seconds = `0${seconds}`;
+            return `${minutes}:${seconds}`;
+        }
     };
 
     const handleGetVideo = async () => {
@@ -57,6 +65,8 @@ function CreateVideo() {
                     setViewVideo(item.statistics.viewCount);
                     setLikeVideo(item.statistics.likeCount);
                     setCmtVideo(item.statistics.commentCount);
+
+                    return item;
                 });
 
                 setDataVideo(result.data);

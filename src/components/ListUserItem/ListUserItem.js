@@ -32,7 +32,7 @@ function ListUserItem({ data }) {
             </td>
             <td>
                 <div className="text-center">
-                    <strong>{data.blog?.length}</strong>
+                    <strong>{data.myBlogs?.length}</strong>
                 </div>
             </td>
             <td>

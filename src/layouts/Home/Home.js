@@ -1,8 +1,7 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faBook, faBookMedical, faMinus, faNewspaper, faPhone, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faMinus, faNewspaper, faPhone, faUsers, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tile from '~/components/Title';
@@ -12,27 +11,10 @@ import styles from './Home.module.scss';
 const cx = classNames.bind(styles);
 
 function Home() {
-    const [courseFree, setCourseFree] = useState(0);
-    const [coursePro, setCoursePro] = useState(0);
-
     const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
     const allCourse = useSelector((state) => state.module?.allCourses?.currentCourses);
     const allBlog = useSelector((state) => state.module?.allBlogs?.currentBlogs);
-
-    useEffect(() => {
-        let countCourseFree = 0;
-        let countCoursePro = 0;
-
-        for (let i = 0; i < allCourse?.length; i++) {
-            if (allCourse[i].price === 0) {
-                countCourseFree++;
-            } else {
-                countCoursePro++;
-            }
-            setCourseFree(countCourseFree);
-            setCoursePro(countCoursePro);
-        }
-    }, [allCourse]);
+    const allVideos = useSelector((state) => state.module?.allVideos?.currentVideos);
 
     return (
         <div className={cx('wrapper')}>
@@ -50,19 +32,19 @@ function Home() {
                                 <FontAwesomeIcon icon={faBook} />
                             </span>
                             <div className={cx('box-content')}>
-                                <span className={cx('info-box-text')}>Khóa học miễn phí</span>
-                                <span className={cx('info-box-number')}>{courseFree}</span>
+                                <span className={cx('info-box-text')}>Tổng khóa học</span>
+                                <span className={cx('info-box-number')}>{allCourse?.length}</span>
                             </div>
                         </div>
                     </div>
                     <div className="col-3">
                         <div className={cx('info-box')}>
                             <span className={cx('info-box-icon', 'bg-danger')}>
-                                <FontAwesomeIcon icon={faBookMedical} />
+                                <FontAwesomeIcon icon={faVideo} />
                             </span>
                             <div className={cx('box-content')}>
-                                <span className={cx('info-box-text')}>Khóa học có phí</span>
-                                <span className={cx('info-box-number')}>{coursePro}</span>
+                                <span className={cx('info-box-text')}>Tổng video</span>
+                                <span className={cx('info-box-number')}>{allVideos?.length}</span>
                             </div>
                         </div>
                     </div>

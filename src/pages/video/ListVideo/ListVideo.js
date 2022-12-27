@@ -5,10 +5,24 @@ import styles from '~/GlobalStyles.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import ListVideoItem from '~/components/ListVideoItem';
+import { useEffect } from 'react';
+import { getAllVideos } from '~/services/apiVideo';
+import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function ListVideo() {
+    const allVideos = useSelector((state) => state.module?.allVideos?.currentVideos);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            await getAllVideos(dispatch);
+        };
+        fetchApi();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -80,10 +94,9 @@ function ListVideo() {
                                             </thead>
 
                                             <tbody>
-                                                {/* {allBlogs?.slice(-10).map((blog) => (
-                                                    <ListBlogItem key={blog._id} data={blog} />
-                                                ))} */}
-                                                <ListVideoItem />
+                                                {allVideos?.map((video) => (
+                                                    <ListVideoItem key={video._id} data={video} />
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>
