@@ -79,21 +79,15 @@ function ListBlog() {
                                                     <th>
                                                         <div className="text-center">Tiêu đề bài viết</div>
                                                     </th>
-                                                    <th>
-                                                        <div className="text-center">Ảnh nền</div>
-                                                    </th>
 
                                                     <th>
                                                         <div className="text-center">Tác giả</div>
                                                     </th>
                                                     <th>
-                                                        <div className="text-center">Topic</div>
+                                                        <div className="text-center">Trạng thái</div>
                                                     </th>
                                                     <th>
-                                                        <div className="text-center">Trạng thái / Action</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Ngày tạo</div>
+                                                        <div className="text-center">Ngày tạo / Cập nhật</div>
                                                     </th>
                                                     <th>
                                                         <div className="text-center">Hành động</div>

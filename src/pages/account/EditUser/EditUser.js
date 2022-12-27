@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
@@ -24,11 +23,10 @@ function EditUser() {
     const navigate = useNavigate();
     const pathName = useLocation().pathname;
     const id = pathName.split('/').pop();
-    const user = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await getUserById(id, user.accessToken);
+            const result = await getUserById(id);
             setUsername(result.username);
             setName(result.name);
             setEmail(result.email);
@@ -38,7 +36,7 @@ function EditUser() {
             setStatus(result.status);
         };
         fetchApi();
-    }, [id, user.accessToken]);
+    }, [id]);
 
     const handleSubmitUpdate = async () => {
         const newUser = {

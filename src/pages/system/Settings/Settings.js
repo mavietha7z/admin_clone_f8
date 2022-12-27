@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import Editor from '~/components/Editor';
+import EditorBlog from '~/components/EditorBlog';
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
@@ -1752,7 +1752,7 @@ function Settings() {
                                                             <tr>
                                                                 <td colSpan={2}>
                                                                     <div className="form-group">
-                                                                        <Editor />
+                                                                        <EditorBlog />
                                                                     </div>
                                                                 </td>
                                                             </tr>

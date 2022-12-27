@@ -68,18 +68,25 @@
             background: #4caf50;
         }
 
-        .title-post {
-            input {
-                border: none;
-                outline: none;
-                color: #292929;
-                font-size: 3.2rem;
-                font-weight: 500;
-                min-height: 48px;
-                width: 100%;
-                background-color: transparent;
-                line-height: 1.4;
-                padding: 6px 10px;
+        .wrapper-editor {
+            .title-post {
+                input {
+                    border: none;
+                    outline: none;
+                    color: #292929;
+                    font-size: 3.2rem;
+                    font-weight: 500;
+                    min-height: 48px;
+                    width: 100%;
+                    background-color: transparent;
+                    line-height: 1.4;
+                    padding: 6px 10px;
+                }
+            }
+
+            a[href] {
+                color: #f05123;
+                text-decoration: underline;
             }
         }
     }

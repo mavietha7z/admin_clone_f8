@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import Editor from '~/components/Editor';
+import EditorBlog from '~/components/EditorBlog';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
 
@@ -120,7 +120,7 @@ function NewsCreate() {
                                             </div>
                                             <div className="col-md-6 mb-4">
                                                 <label htmlFor="description">Mô tả ngắn:</label>
-                                                <Editor />
+                                                <EditorBlog />
                                             </div>
                                             <div className="col-md-6">
                                                 <label htmlFor="sort">Sắp xếp:</label>

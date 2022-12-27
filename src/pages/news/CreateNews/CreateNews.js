@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import Editor from '~/components/Editor';
+import EditorBlog from '~/components/EditorBlog';
 import Title from '~/components/Title';
 import styles from '~/GlobalStyles.module.scss';
 
@@ -177,7 +177,7 @@ function CreateNews() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="content">Nội dung:</label>
-                                                <Editor />
+                                                <EditorBlog />
                                             </div>
                                             <div className="form-group">
                                                 <div className="row">
