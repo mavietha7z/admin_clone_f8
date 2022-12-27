@@ -6,9 +6,9 @@ import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import ListBlogItem from '~/components/ListBlogItem';
 import { getAllBlogs } from '~/services/apiBlog';
+import { useEffect } from 'react';
 
 import styles from '~/GlobalStyles.module.scss';
-import { useEffect } from 'react';
 const cx = classNames.bind(styles);
 
 function ListBlog() {

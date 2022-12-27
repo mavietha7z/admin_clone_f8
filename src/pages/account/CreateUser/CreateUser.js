@@ -92,7 +92,7 @@ function CreateUser() {
                 <div className="row">
                     <div className="col-12">
                         <div className="col-md-12">
-                            <div className="card card-light">
+                            <div className="card">
                                 <div className="card-header" style={{ backgroundColor: '#f8f9fa', borderBottom: 0 }}>
                                     <h2>Thông tin người dùng</h2>
                                 </div>

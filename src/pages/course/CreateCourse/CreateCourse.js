@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import styles from '~/GlobalStyles.module.scss';
+
 import NavMenu from '~/components/NavMenu';
 import { createNewCourse } from '~/services/apiCourse';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
-
+import styles from '~/GlobalStyles.module.scss';
 const cx = classNames.bind(styles);
 
 function CreateCourse() {
