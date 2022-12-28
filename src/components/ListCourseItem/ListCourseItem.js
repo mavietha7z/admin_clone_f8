@@ -26,25 +26,25 @@ function ListCourseItem({ data }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
-    useEffect(() => {
-        let countLesson = 0;
-        let totalTime = 0;
+    // useEffect(() => {
+    //     let countLesson = 0;
+    //     let totalTime = 0;
 
-        for (let i = 0; i < data.chapter.length; i++) {
-            countLesson += data.chapter[i].lesson.length;
-        }
-        for (let i = 0; i < data.chapter.length; i++) {
-            for (let j = 0; j < data.chapter[i].lesson.length; j++) {
-                totalTime += data.chapter[i].lesson[j].timeVideo;
-            }
-        }
-        const hour = Math.floor(totalTime / 3600);
-        const minutes = Math.floor((totalTime % 3600) / 60);
+    //     for (let i = 0; i < data.chapter.length; i++) {
+    //         countLesson += data.chapter[i].lesson.length;
+    //     }
+    //     for (let i = 0; i < data.chapter.length; i++) {
+    //         for (let j = 0; j < data.chapter[i].lesson.length; j++) {
+    //             totalTime += data.chapter[i].lesson[j].timeVideo;
+    //         }
+    //     }
+    //     const hour = Math.floor(totalTime / 3600);
+    //     const minutes = Math.floor((totalTime % 3600) / 60);
 
-        setNumberTime(`${hour} giờ ${minutes} phút`);
-        setNumberChapter(data.chapter.length);
-        setNumberLesson(countLesson);
-    }, [data.chapter]);
+    //     setNumberTime(`${hour} giờ ${minutes} phút`);
+    //     setNumberChapter(data.chapter.length);
+    //     setNumberLesson(countLesson);
+    // }, [data.chapter]);
 
     const handleStatusCourse = async (status) => {
         if (typeof status === 'boolean') {

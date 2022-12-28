@@ -8,93 +8,36 @@ import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
-import { createNewChapter, createNewLesson, getCourseById } from '~/services/apiCourse';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import Select from 'react-select';
+import { getCourseById } from '~/services/apiCourse';
+
 import styles from '~/GlobalStyles.module.scss';
 import ChapterItem from '~/components/ChapterItem';
+import CreateChapter from './CreateChapter';
+import CreateLesson from './CreateLesson';
 
 const cx = classNames.bind(styles);
 
 function Chapter() {
     const [currentCourse, setCurrentCourse] = useState(null);
     const [chapters, setChapters] = useState([]);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [options, setOptions] = useState([]);
 
-    const [inputNameChapter, setInputNameChapter] = useState('');
-    const [nameLesson, setNameLesson] = useState('');
-    const [timeVideo, setTimeVideo] = useState(0);
-    const [urlVideo, setUrlVideo] = useState('');
-
-    const MySwal = withReactContent(Swal);
-    const dispatch = useDispatch();
     const pathName = useLocation().pathname;
-    const id = pathName.split('/').pop();
+    const courseId = pathName.split('/').pop();
+    const dispatch = useDispatch();
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     useEffect(() => {
-        const nameChapter = chapters?.map((chapter) => ({ label: chapter.nameChapter }));
-
-        setOptions(nameChapter);
-    }, [chapters]);
-
-    useEffect(() => {
         const fetchApi = async () => {
-            const result = await getCourseById(id, currentUser.accessToken, axiosJWT);
+            const result = await getCourseById(courseId, currentUser.accessToken, axiosJWT);
             setCurrentCourse(result.data);
             setChapters(result?.data.chapter);
         };
         fetchApi();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
-
-    const handleCreateNewChapter = async () => {
-        if (inputNameChapter !== '') {
-            const result = await createNewChapter(id, inputNameChapter, currentUser.accessToken, axiosJWT);
-
-            if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            } else {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
-            }
-        } else {
-            MySwal.fire('Lỗi', 'Tên chương không được để trống', 'error');
-        }
-    };
-
-    const handleCreateNewLesson = async () => {
-        const label = selectedOption.label;
-        if (label && nameLesson && timeVideo && urlVideo) {
-            const newLesson = {
-                nameChapter: label,
-                nameLesson: nameLesson,
-                timeVideo: Number(timeVideo),
-                urlVideo: urlVideo,
-            };
-
-            const result = await createNewLesson(id, newLesson, currentUser.accessToken, axiosJWT);
-            if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            } else {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
-            }
-        } else {
-            MySwal.fire('Lỗi', 'Thông tin không được để trống', 'error');
-        }
-    };
+    }, [courseId]);
 
     return (
         <div className={cx('wrapper')}>
@@ -140,108 +83,9 @@ function Chapter() {
 
                             <div className="card-body">
                                 <div className="row mb-5">
-                                    <div className="col-6">
-                                        <div className="card">
-                                            <div
-                                                className="card-header"
-                                                data-toggle="collapse"
-                                                data-target="#add-new-chapter"
-                                                aria-expanded="false"
-                                                aria-controls="add-new-chapter"
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <h3>Thêm chương mới</h3>
-                                            </div>
-                                        </div>
-                                        <div className="collapse" id="add-new-chapter">
-                                            <div className="card-body">
-                                                <div className="form-group">
-                                                    <label>Tên chương:</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Tên chương mới"
-                                                        value={inputNameChapter}
-                                                        onChange={(e) => setInputNameChapter(e.target.value)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="card-footer">
-                                                <button className="btn btn-primary" onClick={handleCreateNewChapter}>
-                                                    Thêm chương
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <CreateChapter courseId={courseId} />
 
-                                    <div className="col-6">
-                                        <div className="card">
-                                            <div
-                                                className="card-header"
-                                                data-toggle="collapse"
-                                                data-target="#add-new-lesson"
-                                                aria-expanded="false"
-                                                aria-controls="add-new-lesson"
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <h3>Thêm bài mới</h3>
-                                            </div>
-                                        </div>
-
-                                        <div className="collapse" id="add-new-lesson">
-                                            <div className="card-body">
-                                                <div className="form-group" style={{ fontSize: '1.6rem' }}>
-                                                    <Select
-                                                        value={selectedOption}
-                                                        onChange={setSelectedOption}
-                                                        options={options}
-                                                        className="col-11 p-0"
-                                                        placeholder="Chọn chương để thêm bài"
-                                                    />
-                                                </div>
-
-                                                <div className="form-group">
-                                                    <label className=" w-100">Tên bài:</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control mb-2 col-11"
-                                                        placeholder="Tên bài học"
-                                                        style={{ display: 'inline-block' }}
-                                                        value={nameLesson}
-                                                        onChange={(e) => setNameLesson(e.target.value)}
-                                                    />
-                                                </div>
-
-                                                <div className="form-group">
-                                                    <label className=" w-100">Thời gian:</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control mb-2 col-11"
-                                                        placeholder="Thời gian bài học được tính theo giây"
-                                                        style={{ display: 'inline-block' }}
-                                                        value={timeVideo}
-                                                        onChange={(e) => setTimeVideo(e.target.value)}
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className=" w-100">Url video:</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control mb-2 col-11"
-                                                        placeholder="Vd: R6plN3FvzFY"
-                                                        style={{ display: 'inline-block' }}
-                                                        value={urlVideo}
-                                                        onChange={(e) => setUrlVideo(e.target.value)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="card-footer">
-                                                <button className="btn btn-primary" onClick={handleCreateNewLesson}>
-                                                    Thêm bài
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <CreateLesson courseId={courseId} chapters={chapters} />
                                 </div>
 
                                 <div className="row">

@@ -20,11 +20,12 @@ function ListBlogItem({ data }) {
 
     useEffect(() => {
         const fetchApi = async () => {
-            const author = await getUserById(data.author);
+            const author = await getUserById(data.author._id);
+
             setAuthor(author?.name);
         };
         fetchApi();
-    }, [data.author]);
+    }, [data.author._id]);
 
     const handleToggleStatusBlog = async (status) => {
         const result = await handleToggleStatus(data._id, status, currentUser.accessToken, axiosJWT);

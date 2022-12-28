@@ -12,7 +12,7 @@ function ChapterItem({ lesson }) {
                                 rel="noreferrer"
                             >{`${index + 1}. ${lesson.nameLesson}`}</a>
                         </td>
-                        <td>{`${Math.floor((lesson.timeVideo % 3600) / 60)} phút ${lesson.timeVideo % 60} giây`}</td>
+                        <td>{lesson.timeVideo}</td>
                     </tr>
                 ))}
         </tbody>

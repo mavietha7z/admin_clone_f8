@@ -13,6 +13,11 @@ const mdParser = new MarkdownIt();
 function EditorBlog({ title }) {
     const [text, setText] = useState('');
     const [html, setHtml] = useState('');
+    const [content, setContent] = useState('');
+    const [image, setImage] = useState('');
+
+    const words = content.split(' ');
+    const wordCount = words.length / 60;
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const MySwal = withReactContent(Swal);
@@ -21,6 +26,7 @@ function EditorBlog({ title }) {
     const handleEditorChange = ({ html, text }) => {
         setText(text);
         setHtml(html);
+        setContent(text);
     };
 
     const handlePublic = async () => {
@@ -29,6 +35,8 @@ function EditorBlog({ title }) {
             author: currentUser._id,
             contentHTML: html,
             contentMarkdown: text,
+            readingTime: wordCount.toFixed(),
+            image,
         };
 
         const result = await handleCreateNewBlog(newPost);
@@ -51,6 +59,7 @@ function EditorBlog({ title }) {
         const result = await handleSelectImage(formData);
 
         if (result.errCode === 0) {
+            setImage(result.data.urlImage);
             return result.data.urlImage;
         } else if (result.errCode === 1) {
             MySwal.fire('Lỗi', `${result.message}`, 'error');

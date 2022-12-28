@@ -36,30 +36,28 @@ export const getCourseById = async (courseId, token, axiosJWT) => {
     }
 };
 
-export const createNewChapter = async (courseId, nameChapter, token, axiosJWT) => {
+export const createNewChapter = async (newChapter, token, axiosJWT) => {
     try {
-        const res = await axiosJWT.post(
-            `http://localhost:8080/api/course/chapter/${courseId}`,
-            { nameChapter },
-            {
-                headers: {
-                    token,
-                },
-            }
-        );
+        const res = await axiosJWT.post(`http://localhost:8080/api/course/chapter/create`, newChapter, {
+            headers: {
+                token,
+            },
+        });
+        console.log('res: ', res);
         return res.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const createNewLesson = async (courseId, newLesson, token, axiosJWT) => {
+export const createNewLesson = async (newLesson, token, axiosJWT) => {
     try {
-        const res = await axiosJWT.post(`http://localhost:8080/api/course/lesson/${courseId}`, newLesson, {
+        const res = await axiosJWT.post(`http://localhost:8080/api/course/lesson/create`, newLesson, {
             headers: {
                 token,
             },
         });
+        console.log('res: ', res);
         return res.data;
     } catch (error) {
         console.log('error: ', error);
