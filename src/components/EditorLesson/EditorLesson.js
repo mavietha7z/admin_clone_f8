@@ -8,14 +8,12 @@ const mdParser = new MarkdownIt();
 function EditorLesson({ handleGetDataChild }) {
     const [text, setText] = useState('');
     const [html, setHtml] = useState('');
-    // const [content, setContent] = useState('');
 
     handleGetDataChild({ text, html });
 
     const handleEditorChange = ({ html, text }) => {
         setText(text);
         setHtml(html);
-        // setContent(text);
     };
 
     return (

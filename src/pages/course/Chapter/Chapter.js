@@ -83,9 +83,50 @@ function Chapter() {
 
                             <div className="card-body">
                                 <div className="row mb-5">
-                                    <CreateChapter courseId={courseId} />
-
-                                    <CreateLesson courseId={courseId} chapters={chapters} />
+                                    <nav className="col-12">
+                                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <a
+                                                className="nav-item nav-link active"
+                                                id="nav-chapter-tab"
+                                                data-toggle="tab"
+                                                href="#nav-chapter"
+                                                role="tab"
+                                                aria-controls="nav-chapter"
+                                                aria-selected="true"
+                                            >
+                                                Chương
+                                            </a>
+                                            <a
+                                                className="nav-item nav-link"
+                                                id="nav-lesson-tab"
+                                                data-toggle="tab"
+                                                href="#nav-lesson"
+                                                role="tab"
+                                                aria-controls="nav-lesson"
+                                                aria-selected="false"
+                                            >
+                                                Bài học
+                                            </a>
+                                        </div>
+                                    </nav>
+                                    <div className="tab-content col-12 mt-2" id="nav-tabContent">
+                                        <div
+                                            className="tab-pane fade show active"
+                                            id="nav-chapter"
+                                            role="tabpanel"
+                                            aria-labelledby="nav-chapter-tab"
+                                        >
+                                            <CreateChapter courseId={courseId} />
+                                        </div>
+                                        <div
+                                            className="tab-pane fade row"
+                                            id="nav-lesson"
+                                            role="tabpanel"
+                                            aria-labelledby="nav-lesson-tab"
+                                        >
+                                            <CreateLesson courseId={courseId} chapters={chapters} />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="row">

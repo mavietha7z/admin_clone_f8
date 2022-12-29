@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
@@ -12,6 +12,7 @@ import EditorLesson from '~/components/EditorLesson';
 function CreateLesson({ courseId, chapters }) {
     const [activeBtn, setActiveBtn] = useState(false);
 
+    const [thumbNail, setThumbNail] = useState('');
     const [timeVideo, setTimeVideo] = useState('');
     const [nameLesson, setNameLesson] = useState('');
     const [urlVideo, setUrlVideo] = useState('');
@@ -19,6 +20,7 @@ function CreateLesson({ courseId, chapters }) {
     const [descMarkdown, setDescMarkdown] = useState('');
 
     const [selectedOption, setSelectedOption] = useState(null);
+    console.log('selectedOption: ', selectedOption);
     const [options, setOptions] = useState([]);
 
     const MySwal = withReactContent(Swal);
@@ -59,128 +61,170 @@ function CreateLesson({ courseId, chapters }) {
     };
 
     const handleCreateNewLesson = async () => {
-        const chapterId = selectedOption.id;
-        if (chapterId && nameLesson && timeVideo && urlVideo) {
-            const newLesson = {
-                nameLesson: nameLesson,
-                timeVideo: iso8601ToTimeString(timeVideo),
-                urlVideo: urlVideo,
-                chapterId: chapterId,
-                descHTML: descHTML,
-                descMarkdown: descMarkdown,
-            };
+        if (selectedOption) {
+            const chapterId = selectedOption.id;
+            console.log('chapterId: ', chapterId);
 
-            const result = await createNewLesson(newLesson, currentUser.accessToken, axiosJWT);
-            if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success');
+            if (chapterId && nameLesson && timeVideo && urlVideo) {
+                const newLesson = {
+                    nameLesson: nameLesson,
+                    timeVideo: iso8601ToTimeString(timeVideo),
+                    urlVideo: urlVideo,
+                    thumbNail: thumbNail,
+                    chapterId: chapterId,
+                    descHTML: descHTML,
+                    descMarkdown: descMarkdown,
+                };
+                console.log('newLesson: ', newLesson);
+
+                const result = await createNewLesson(newLesson, currentUser.accessToken, axiosJWT);
+                if (result.errCode === 0) {
+                    MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                        if (res.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    MySwal.fire('Lỗi', `${result.message}`, 'error');
+                }
             } else {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
+                MySwal.fire('Lỗi', 'Thông tin không được để trống', 'error');
             }
-        } else {
-            MySwal.fire('Lỗi', 'Thông tin không được để trống', 'error');
         }
     };
 
     const handleGetDataVideo = async () => {
-        if (urlVideo !== '') {
-            const result = await handleGetInfoVideo(urlVideo);
-            setActiveBtn(true);
-            if (result.errCode === 200) {
-                MySwal.fire('Thành công', 'Lấy dữ liệu video thành công', 'success');
+        if (selectedOption) {
+            if (urlVideo !== '') {
+                const result = await handleGetInfoVideo(urlVideo);
+                setActiveBtn(true);
+                if (result.errCode === 200) {
+                    MySwal.fire('Thành công', 'Lấy dữ liệu video thành công', 'success');
 
-                result.data.map((item) => {
-                    console.log('item: ', item);
-                    setNameLesson(item.snippet.title);
-                    setTimeVideo(item.contentDetails.duration);
-                });
-            } else if (result.errCode === 1) {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
+                    result.data.map((item) => {
+                        console.log('item: ', item);
+                        setNameLesson(item.snippet.title);
+                        setTimeVideo(item.contentDetails.duration);
+                        setThumbNail(item.snippet.thumbnails.maxres.url);
+
+                        return item;
+                    });
+                } else if (result.errCode === 1) {
+                    MySwal.fire('Lỗi', `${result.message}`, 'error');
+                } else {
+                    MySwal.fire('Lỗi', 'Lấy dữ liệu video thất bại', 'error');
+                }
             } else {
-                MySwal.fire('Lỗi', 'Lấy dữ liệu video thất bại', 'error');
+                MySwal.fire('Lỗi', 'Url video không được để trống', 'error');
             }
         } else {
-            MySwal.fire('Lỗi', 'Url video không được để trống', 'error');
+            MySwal.fire('Lỗi', 'Vui lòng chọn chương', 'error');
         }
     };
 
     return (
-        <div className="col-6">
-            <div className="card">
-                <div
-                    className="card-header"
-                    data-toggle="collapse"
-                    data-target="#add-new-lesson"
-                    aria-expanded="false"
-                    aria-controls="add-new-lesson"
-                    style={{ cursor: 'pointer' }}
-                >
-                    <h3>Thêm bài mới</h3>
+        <Fragment>
+            <div className="row">
+                <div className="col-6">
+                    <div className="card">
+                        <div
+                            className="card-header"
+                            data-toggle="collapse"
+                            data-target="#add-new-lesson"
+                            aria-expanded="false"
+                            aria-controls="add-new-lesson"
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <h3>Thêm bài mới</h3>
+                        </div>
+                    </div>
+
+                    <div className="collapse" id="add-new-lesson">
+                        <div className="card-body">
+                            <div className="form-group" style={{ fontSize: '1.6rem' }}>
+                                <label className=" w-100">Chọn chương:</label>
+                                <Select
+                                    value={selectedOption}
+                                    onChange={setSelectedOption}
+                                    options={options}
+                                    className="col-12 p-0"
+                                    placeholder="Chọn chương để thêm bài"
+                                />
+                            </div>
+
+                            {activeBtn && (
+                                <>
+                                    <div className="form-group">
+                                        <label className=" w-100">Tên bài:</label>
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2 col-12"
+                                            placeholder="Tên bài học"
+                                            style={{ display: 'inline-block' }}
+                                            value={nameLesson}
+                                            onChange={(e) => setNameLesson(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className=" w-100">Thời gian:</label>
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2 col-12"
+                                            placeholder="Thời gian bài học được tính theo giây"
+                                            style={{ display: 'inline-block' }}
+                                            value={iso8601ToTimeString(timeVideo)}
+                                            onChange={(e) => setTimeVideo(e.target.value)}
+                                            disabled
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            <div className="form-group">
+                                <label className=" w-100">Url video:</label>
+                                <input
+                                    type="text"
+                                    className="form-control mb-2 col-12"
+                                    placeholder="Vd: R6plN3FvzFY"
+                                    style={{ display: 'inline-block' }}
+                                    value={urlVideo}
+                                    onChange={(e) => setUrlVideo(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        {!activeBtn && (
+                            <div className="card-footer">
+                                <button className="btn btn-success" onClick={handleGetDataVideo}>
+                                    Lấy dữ liệu video
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="col-6">
+                    <div className="form-group">
+                        <label>Thumb nails</label>
+                        {thumbNail && (
+                            <div className="mt-3 col-12">
+                                <img src={thumbNail} width="74%" alt="" />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-
-            <div className="collapse" id="add-new-lesson">
-                <div className="card-body">
-                    <div className="form-group" style={{ fontSize: '1.6rem' }}>
-                        <label className=" w-100">Chọn chương:</label>
-                        <Select
-                            value={selectedOption}
-                            onChange={setSelectedOption}
-                            options={options}
-                            className="col-11 p-0"
-                            placeholder="Chọn chương để thêm bài"
-                        />
-                    </div>
-
-                    {activeBtn && (
-                        <>
-                            <div className="form-group">
-                                <label className=" w-100">Tên bài:</label>
-                                <input
-                                    type="text"
-                                    className="form-control mb-2 col-11"
-                                    placeholder="Tên bài học"
-                                    style={{ display: 'inline-block' }}
-                                    value={nameLesson}
-                                    onChange={(e) => setNameLesson(e.target.value)}
-                                    disabled
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label className=" w-100">Thời gian:</label>
-                                <input
-                                    type="text"
-                                    className="form-control mb-2 col-11"
-                                    placeholder="Thời gian bài học được tính theo giây"
-                                    style={{ display: 'inline-block' }}
-                                    value={iso8601ToTimeString(timeVideo)}
-                                    onChange={(e) => setTimeVideo(e.target.value)}
-                                    disabled
-                                />
-                            </div>
-                        </>
-                    )}
-                    <div className="form-group">
-                        <label className=" w-100">Url video:</label>
-                        <input
-                            type="text"
-                            className="form-control mb-2 col-11"
-                            placeholder="Vd: R6plN3FvzFY"
-                            style={{ display: 'inline-block' }}
-                            value={urlVideo}
-                            onChange={(e) => setUrlVideo(e.target.value)}
-                        />
-                    </div>
+            <div className="row mb-4">
+                <div className="col-12">
                     {activeBtn && (
                         <div className="form-group">
                             <div
-                                className="btn btn-secondary"
+                                className="btn btn-secondary mb-4"
                                 data-toggle="collapse"
                                 data-target="#add-description"
                                 aria-expanded="false"
                                 aria-controls="add-description"
                             >
-                                Thêm mô tả
+                                Thêm mô tả bài học
                             </div>
                             <div className="collapse" id="add-description">
                                 <EditorLesson handleGetDataChild={handleGetDataChild} />
@@ -188,19 +232,14 @@ function CreateLesson({ courseId, chapters }) {
                         </div>
                     )}
                 </div>
-                <div className="card-footer">
-                    {activeBtn ? (
-                        <button className="btn btn-success" onClick={handleCreateNewLesson}>
-                            Thêm bài học
-                        </button>
-                    ) : (
-                        <button className="btn btn-success" onClick={handleGetDataVideo}>
-                            Lấy dữ liệu video
-                        </button>
-                    )}
-                </div>
             </div>
-        </div>
+
+            {activeBtn && (
+                <button className="btn btn-success" onClick={handleCreateNewLesson}>
+                    Thêm bài học
+                </button>
+            )}
+        </Fragment>
     );
 }
 

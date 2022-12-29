@@ -5,8 +5,8 @@ import { faBook, faMinus, faNewspaper, faPhone, faUsers, faVideo } from '@fortaw
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Tile from '~/components/Title';
-
 import styles from './Home.module.scss';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +15,14 @@ function Home() {
     const allCourse = useSelector((state) => state.module?.allCourses?.currentCourses);
     const allBlog = useSelector((state) => state.module?.allBlogs?.currentBlogs);
     const allVideos = useSelector((state) => state.module?.allVideos?.currentVideos);
+
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    useEffect(() => {
+        if (!currentUser) {
+            window.location.href = '/login';
+        }
+    }, [currentUser]);
 
     return (
         <div className={cx('wrapper')}>

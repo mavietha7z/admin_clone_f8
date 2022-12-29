@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Buffer } from 'buffer';
 import classNames from 'classnames/bind';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
 import { handleToggleStatusCourse } from '~/services/apiCourse';
 import { createAxios } from '~/redux/createInstance';
 import { loginSuccess } from '~/redux/reducer/authReducer';
@@ -21,30 +19,32 @@ function ListCourseItem({ data }) {
     const [numberTime, setNumberTime] = useState('');
 
     const dispatch = useDispatch();
-
     const MySwal = withReactContent(Swal);
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
-    // useEffect(() => {
-    //     let countLesson = 0;
-    //     let totalTime = 0;
+    useEffect(() => {
+        let countLesson = 0;
+        let totalTime = 0;
 
-    //     for (let i = 0; i < data.chapter.length; i++) {
-    //         countLesson += data.chapter[i].lesson.length;
-    //     }
-    //     for (let i = 0; i < data.chapter.length; i++) {
-    //         for (let j = 0; j < data.chapter[i].lesson.length; j++) {
-    //             totalTime += data.chapter[i].lesson[j].timeVideo;
-    //         }
-    //     }
-    //     const hour = Math.floor(totalTime / 3600);
-    //     const minutes = Math.floor((totalTime % 3600) / 60);
+        for (let i = 0; i < data.chapter.length; i++) {
+            countLesson += data.chapter[i].lesson.length;
+        }
 
-    //     setNumberTime(`${hour} giờ ${minutes} phút`);
-    //     setNumberChapter(data.chapter.length);
-    //     setNumberLesson(countLesson);
-    // }, [data.chapter]);
+        data.chapter.forEach((chapter) => {
+            chapter.lesson.forEach((lesson) => {
+                const time = lesson.timeVideo;
+                const timeInSeconds = parseInt(time.split(':')[0]) * 60 + parseInt(time.split(':')[1]);
+                totalTime += timeInSeconds;
+            });
+        });
+
+        const formatted = moment.utc(totalTime * 1000).format('HH : mm : ss');
+
+        setNumberTime(formatted);
+        setNumberChapter(data.chapter.length);
+        setNumberLesson(countLesson);
+    }, [data.chapter]);
 
     const handleStatusCourse = async (status) => {
         if (typeof status === 'boolean') {
