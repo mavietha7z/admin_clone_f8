@@ -1,14 +1,14 @@
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
 
 function ListUserItem({ data }) {
     return (
         <tr>
             <td>
                 <div className="text-center">
-                    <strong>{data._id}</strong>
+                    <strong>{data.username}</strong>
                 </div>
             </td>
             <td>
@@ -18,11 +18,7 @@ function ListUserItem({ data }) {
             </td>
             <td>
                 <div className="text-center">
-                    <strong>{data.username}</strong>
-                    <br />
                     <strong className="text-success">{data.email}</strong>
-                    <br />
-                    {!!data.phone && <strong className="text-info">{data.phone}</strong>}
                 </div>
             </td>
             <td>
@@ -32,23 +28,22 @@ function ListUserItem({ data }) {
             </td>
             <td>
                 <div className="text-center">
-                    <strong>{data.myBlogs?.length}</strong>
+                    <label className={`badge badge-${data.status ? 'success' : 'danger'}`}>
+                        {data.status ? 'Hoạt động' : 'Bị khóa'}
+                    </label>
                 </div>
             </td>
             <td>
                 <div className="text-center">
-                    {data.status ? (
-                        <label className="badge badge-success">Hoạt động</label>
-                    ) : (
-                        <label className="badge badge-danger">Bị khóa</label>
-                    )}
+                    <label className={`badge badge-${data.status ? 'success' : 'danger'}`}>
+                        {data.tick ? 'Bật' : 'Tắt'}
+                    </label>
                 </div>
             </td>
             <td>
                 <div className="text-center">{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</div>
                 <div className="text-center">{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</div>
             </td>
-
             <td>
                 <div className="action-buttons text-center">
                     <Link to={`/users/edit/${data._id}`} title="Chỉnh sửa thông tin thành viên">

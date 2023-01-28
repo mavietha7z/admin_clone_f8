@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
+import { useSelector } from 'react-redux';
 import { createNewChapter } from '~/services/apiCourse';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -10,10 +8,7 @@ function CreateChapter({ courseId }) {
     const [nameChapter, setNameChapter] = useState('');
 
     const MySwal = withReactContent(Swal);
-    const dispatch = useDispatch();
-
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     const handleCreateNewChapter = async () => {
         if (nameChapter !== '') {
@@ -21,7 +16,7 @@ function CreateChapter({ courseId }) {
                 nameChapter,
                 courseId,
             };
-            const result = await createNewChapter(newChapter, currentUser.accessToken, axiosJWT);
+            const result = await createNewChapter(newChapter, currentUser.accessToken);
 
             if (result.errCode === 0) {
                 MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {

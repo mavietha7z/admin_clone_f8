@@ -1,9 +1,8 @@
 import * as request from '~/utils/request';
-import { getAllCoursesFailed, getAllCoursesSuccess } from '~/redux/reducer/moduleReducer';
 
-export const createNewCourse = async (course, token, axiosJWT) => {
+export const createNewCourse = async (course, token) => {
     try {
-        const res = await axiosJWT.post('http://localhost:8080/api/course/create', course, {
+        const res = await request.post('/course/create', course, {
             headers: {
                 token,
             },
@@ -14,18 +13,28 @@ export const createNewCourse = async (course, token, axiosJWT) => {
     }
 };
 
-export const getAllCourse = async (dispatch) => {
+// OK
+export const getCourseByType = async (token, type, id = null) => {
     try {
-        const res = await request.get('http://localhost:8080/api/course/get');
-        dispatch(getAllCoursesSuccess(res.data));
+        const res = await request.get('/course', {
+            headers: {
+                token,
+            },
+            params: {
+                type,
+                id,
+            },
+        });
+
+        return res;
     } catch (error) {
-        dispatch(getAllCoursesFailed());
+        return error.response.data;
     }
 };
 
-export const getCourseById = async (courseId, token, axiosJWT) => {
+export const getCourseById = async (courseId, token) => {
     try {
-        const res = await axiosJWT.get(`http://localhost:8080/api/course/get/${courseId}`, {
+        const res = await request.get(`/course/get/${courseId}`, {
             headers: {
                 token,
             },
@@ -36,9 +45,9 @@ export const getCourseById = async (courseId, token, axiosJWT) => {
     }
 };
 
-export const createNewChapter = async (newChapter, token, axiosJWT) => {
+export const createNewChapter = async (newChapter, token) => {
     try {
-        const res = await axiosJWT.post(`http://localhost:8080/api/course/chapter/create`, newChapter, {
+        const res = await request.post(`/course/chapter/create`, newChapter, {
             headers: {
                 token,
             },
@@ -50,47 +59,50 @@ export const createNewChapter = async (newChapter, token, axiosJWT) => {
     }
 };
 
-export const createNewLesson = async (newLesson, token, axiosJWT) => {
+export const createNewLesson = async (newLesson, token) => {
     try {
-        const res = await axiosJWT.post(`http://localhost:8080/api/course/lesson/create`, newLesson, {
+        const res = await request.post(`/course/lesson/create`, newLesson, {
             headers: {
                 token,
             },
         });
-        console.log('res: ', res);
+
         return res.data;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
 
-export const handleToggleStatusCourse = async (courseId, status, token, axiosJWT) => {
+export const toggleStatusCourse = async (courseId, token) => {
     try {
-        const res = await axiosJWT.post(
-            `http://localhost:8080/api/course/status/${courseId}`,
-            { status },
+        const res = await request.post(
+            `/course/status`,
+            {},
             {
                 headers: {
                     token,
                 },
+                params: {
+                    id: courseId,
+                },
             }
         );
-        return res.data;
+        return res;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const handleDeleteACourse = async (courseId, token, axiosJWT) => {
+export const handleDeleteACourse = async (courseId, token) => {
     try {
-        const res = await axiosJWT.delete(`http://localhost:8080/api/course/delete/${courseId}`, {
+        const res = await request.remove(`/course/delete/${courseId}`, {
             headers: {
                 token,
             },
         });
-        console.log('res: ', res);
+
+        return res;
     } catch (error) {
-        console.log('error: ', error);
+        return error.response.data;
     }
 };

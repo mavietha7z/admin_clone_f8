@@ -1,31 +1,26 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames/bind';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
-import { handleToggleStatusCourse } from '~/services/apiCourse';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
+import { toggleStatusCourse } from '~/services/apiCourse';
 
-import styles from '~/GlobalStyles.module.scss';
-
-const cx = classNames.bind(styles);
+const MySwal = withReactContent(Swal);
 
 function ListCourseItem({ data }) {
     const [numberLesson, setNumberLesson] = useState(0);
     const [numberChapter, setNumberChapter] = useState(0);
+    const [status, setStatus] = useState(false);
     const [numberTime, setNumberTime] = useState('');
 
-    const dispatch = useDispatch();
-    const MySwal = withReactContent(Swal);
+    const navigate = useNavigate();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     useEffect(() => {
         let countLesson = 0;
         let totalTime = 0;
+        setStatus(data.status);
 
         for (let i = 0; i < data.chapter.length; i++) {
             countLesson += data.chapter[i].lesson.length;
@@ -44,13 +39,15 @@ function ListCourseItem({ data }) {
         setNumberTime(formatted);
         setNumberChapter(data.chapter.length);
         setNumberLesson(countLesson);
-    }, [data.chapter]);
 
-    const handleStatusCourse = async (status) => {
-        if (typeof status === 'boolean') {
-            const result = await handleToggleStatusCourse(data._id, status, currentUser.accessToken, axiosJWT);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-            if (result.errCode === 0) {
+    const handleStatusCourse = async () => {
+        if (currentUser) {
+            const result = await toggleStatusCourse(data._id, currentUser.accessToken);
+
+            if (result.statusCode === 0) {
                 MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
                     if (res.isConfirmed) {
                         window.location.reload();
@@ -60,20 +57,20 @@ function ListCourseItem({ data }) {
                 MySwal.fire('Lỗi', `${result.message}`, 'error');
             }
         } else {
-            MySwal.fire('Lỗi', 'Trạng thái khóa học không phải kiểu dữ liệu boolean', 'error');
+            navigate('/login');
         }
     };
 
     return (
         <tr>
             <td>
-                <div className="text-center">{data.name}</div>
+                <div className="text-center">{data.title}</div>
             </td>
             <td>
                 <div className="text-center">
                     <img
                         src={data.image}
-                        alt={data.name}
+                        alt={data.title}
                         style={{
                             width: '160px',
                             height: 'auto',
@@ -94,19 +91,13 @@ function ListCourseItem({ data }) {
                 <div className="text-center">{numberTime}</div>
             </td>
             <td>
-                <div className="text-center">{data.price === 0 ? 'Free' : 'Pro'}</div>
+                <div className="text-center">{data.pro ? 'Pro' : 'Free'}</div>
             </td>
             <td>
                 <div className="text-center">
-                    {data.status ? (
-                        <span className="btn btn-success btn-sm" onClick={() => handleStatusCourse(false)}>
-                            Bật
-                        </span>
-                    ) : (
-                        <span className="btn btn-danger btn-sm" onClick={() => handleStatusCourse(true)}>
-                            Tắt
-                        </span>
-                    )}
+                    <span className={`btn btn-sm btn-${status ? 'success' : 'danger'}`} onClick={handleStatusCourse}>
+                        {status ? 'Bật' : 'Tắt'}
+                    </span>
                 </div>
             </td>
             <td>
@@ -115,19 +106,11 @@ function ListCourseItem({ data }) {
             <td>
                 <div className="text-center">
                     <Link to={`/course/chapter/${data._id}`}>
-                        <span
-                            className={cx('btn btn-success btn-sm', 'btn-action')}
-                            data-toggle="modal"
-                            data-target="#total-order"
-                        >
+                        <span className="btn btn-success btn-sm">
                             <span className="text-white">Chi tiết</span>
                         </span>
                     </Link>
-                    <span
-                        className={cx('btn btn-danger btn-sm ml-2', 'btn-action')}
-                        data-toggle="modal"
-                        data-target="#deleteModal"
-                    >
+                    <span className="btn btn-danger btn-sm ml-2">
                         <span className="text-white">Xóa</span>
                     </span>
                 </div>

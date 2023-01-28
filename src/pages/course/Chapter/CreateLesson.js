@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import Select from 'react-select';
+import { useSelector } from 'react-redux';
+import React, { Fragment, useEffect, useState } from 'react';
+import withReactContent from 'sweetalert2-react-content';
+
 import { createNewLesson } from '~/services/apiCourse';
-import { useDispatch, useSelector } from 'react-redux';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
 import { handleGetInfoVideo } from '~/services/apiVideo';
 import EditorLesson from '~/components/EditorLesson';
 
@@ -19,15 +18,12 @@ function CreateLesson({ courseId, chapters }) {
     const [descHTML, setDescHTML] = useState('');
     const [descMarkdown, setDescMarkdown] = useState('');
 
-    const [selectedOption, setSelectedOption] = useState(null);
-    console.log('selectedOption: ', selectedOption);
+    const [selected, setSelected] = useState(null);
     const [options, setOptions] = useState([]);
 
     const MySwal = withReactContent(Swal);
-    const dispatch = useDispatch();
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     useEffect(() => {
         const nameChapter = chapters?.map((chapter) => ({ label: chapter.nameChapter, id: chapter._id }));
@@ -61,9 +57,8 @@ function CreateLesson({ courseId, chapters }) {
     };
 
     const handleCreateNewLesson = async () => {
-        if (selectedOption) {
-            const chapterId = selectedOption.id;
-            console.log('chapterId: ', chapterId);
+        if (selected) {
+            const chapterId = selected.id;
 
             if (chapterId && nameLesson && timeVideo && urlVideo) {
                 const newLesson = {
@@ -77,7 +72,7 @@ function CreateLesson({ courseId, chapters }) {
                 };
                 console.log('newLesson: ', newLesson);
 
-                const result = await createNewLesson(newLesson, currentUser.accessToken, axiosJWT);
+                const result = await createNewLesson(newLesson, currentUser.accessToken);
                 if (result.errCode === 0) {
                     MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
                         if (res.isConfirmed) {
@@ -94,7 +89,7 @@ function CreateLesson({ courseId, chapters }) {
     };
 
     const handleGetDataVideo = async () => {
-        if (selectedOption) {
+        if (selected) {
             if (urlVideo !== '') {
                 const result = await handleGetInfoVideo(urlVideo);
                 setActiveBtn(true);
@@ -144,8 +139,8 @@ function CreateLesson({ courseId, chapters }) {
                             <div className="form-group" style={{ fontSize: '1.6rem' }}>
                                 <label className=" w-100">Chọn chương:</label>
                                 <Select
-                                    value={selectedOption}
-                                    onChange={setSelectedOption}
+                                    value={selected}
+                                    onChange={setSelected}
                                     options={options}
                                     className="col-12 p-0"
                                     placeholder="Chọn chương để thêm bài"

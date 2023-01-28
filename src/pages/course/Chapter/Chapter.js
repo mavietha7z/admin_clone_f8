@@ -1,43 +1,41 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import NavMenu from '~/components/NavMenu';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import Title from '~/components/Title';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
-import { getCourseById } from '~/services/apiCourse';
+import CreateLesson from './CreateLesson';
+import NavMenu from '~/components/NavMenu';
+import CreateChapter from './CreateChapter';
+import ChapterItem from '~/components/ChapterItem';
+import { getCourseByType } from '~/services/apiCourse';
 
 import styles from '~/GlobalStyles.module.scss';
-import ChapterItem from '~/components/ChapterItem';
-import CreateChapter from './CreateChapter';
-import CreateLesson from './CreateLesson';
 
 const cx = classNames.bind(styles);
 
 function Chapter() {
-    const [currentCourse, setCurrentCourse] = useState(null);
+    const [course, setCourse] = useState(null);
     const [chapters, setChapters] = useState([]);
 
-    const pathName = useLocation().pathname;
-    const courseId = pathName.split('/').pop();
-    const dispatch = useDispatch();
-
+    const { id } = useParams();
+    const navigate = useNavigate();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await getCourseById(courseId, currentUser.accessToken, axiosJWT);
-            setCurrentCourse(result.data);
-            setChapters(result?.data.chapter);
-        };
-        fetchApi();
+        if (currentUser) {
+            const fetchApi = async () => {
+                const result = await getCourseByType(currentUser.accessToken, 'uid', id);
+                setCourse(result.data);
+                setChapters(result?.data.chapter);
+            };
+            fetchApi();
+        } else {
+            navigate('/login');
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [courseId]);
+    }, [id]);
 
     return (
         <div className={cx('wrapper')}>
@@ -48,6 +46,7 @@ function Chapter() {
                     <NavMenu nameHome="Trang chủ" pathHome="/course" colorHome="warning" float="float-right" />
                 </div>
             </div>
+
             <div className={cx('content')}>
                 <div className="row">
                     <div className="col-12">
@@ -55,29 +54,8 @@ function Chapter() {
                             <div className={cx('card-header', 'bg-white', 'header-card')}>
                                 <div className="col-md-6 float-left">
                                     <h2 className="mb-0 mt-2">
-                                        {!currentCourse ? 'Khóa học này không tồn tại' : currentCourse?.name}
+                                        {!course ? 'Khóa học này không tồn tại' : course?.title}
                                     </h2>
-                                </div>
-                                <div className="col-md-6 float-right">
-                                    <div className="float-right">
-                                        <div className="input-group">
-                                            <select name="type" className="form-control">
-                                                <option value="order">Tên khóa học</option>
-                                                <option value="order">Tên bài học</option>
-                                            </select>
-                                            <input
-                                                type="text"
-                                                name="keyword"
-                                                className="form-control"
-                                                placeholder="Search"
-                                            />
-                                            <div className="input-group-append">
-                                                <button type="submit" className="btn btn-warning">
-                                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -109,6 +87,7 @@ function Chapter() {
                                             </a>
                                         </div>
                                     </nav>
+
                                     <div className="tab-content col-12 mt-2" id="nav-tabContent">
                                         <div
                                             className="tab-pane fade show active"
@@ -116,7 +95,7 @@ function Chapter() {
                                             role="tabpanel"
                                             aria-labelledby="nav-chapter-tab"
                                         >
-                                            <CreateChapter courseId={courseId} />
+                                            <CreateChapter courseId={id} />
                                         </div>
                                         <div
                                             className="tab-pane fade row"
@@ -124,7 +103,7 @@ function Chapter() {
                                             role="tabpanel"
                                             aria-labelledby="nav-lesson-tab"
                                         >
-                                            <CreateLesson courseId={courseId} chapters={chapters} />
+                                            <CreateLesson courseId={id} chapters={chapters} />
                                         </div>
                                     </div>
                                 </div>

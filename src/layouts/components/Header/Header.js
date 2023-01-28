@@ -4,8 +4,6 @@ import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
 import { logoutAdmin } from '~/services/apiAuth';
 import styles from './Header.module.scss';
 
@@ -18,7 +16,6 @@ function Header() {
     const navigate = useNavigate();
 
     const user = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(user, dispatch, loginSuccess);
 
     const id = user?._id;
     const accessToken = user?.accessToken;
@@ -28,7 +25,7 @@ function Header() {
     };
 
     const handleLogoutAdmin = async () => {
-        await logoutAdmin(dispatch, id, navigate, accessToken, axiosJWT);
+        await logoutAdmin(dispatch, id, navigate, accessToken);
     };
 
     return (

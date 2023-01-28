@@ -1,50 +1,60 @@
-import { getAllBlogsFailed, getAllBlogsSuccess } from '~/redux/reducer/moduleReducer';
 import * as request from '~/utils/request';
 
-export const getAllBlogs = async (dispatch) => {
+export const getBlogByType = async (token, page, type = 'all') => {
     try {
-        const res = await request.get('/blog/get');
-        dispatch(getAllBlogsSuccess(res.data));
+        const res = await request.get('/post', {
+            headers: {
+                token,
+            },
+            params: {
+                page,
+                type,
+            },
+        });
+
+        return res;
     } catch (error) {
-        console.log('error: ', error);
-        dispatch(getAllBlogsFailed());
+        return error.response.data;
     }
 };
 
 export const handleCreateNewBlog = async (data) => {
     try {
         const res = await request.post('/blog/create', data);
+
         return res;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
 
 export const handleSelectImage = async (data) => {
     try {
-        const res = await request.post('/image/upload', data);
+        const res = await request.post('/upload/image', data);
+
         return res;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
 
-export const handleToggleStatus = async (blogId, status, token, axiosJWT) => {
+export const toggleStatus = async (postId, token) => {
     try {
-        const res = await axiosJWT.post(
-            `http://localhost:8080/api/blog/status/${blogId}`,
-            { status },
+        const res = await request.post(
+            `/post/status`,
+            {},
             {
                 headers: {
                     token,
                 },
+                params: {
+                    id: postId,
+                },
             }
         );
-        return res.data;
+
+        return res;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };

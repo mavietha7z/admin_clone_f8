@@ -1,8 +1,7 @@
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import authReducer from './reducer/authReducer';
-import moduleReducer from './reducer/moduleReducer';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 const persistConfig = {
     key: 'root',
@@ -11,7 +10,6 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
     auth: authReducer,
-    module: moduleReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

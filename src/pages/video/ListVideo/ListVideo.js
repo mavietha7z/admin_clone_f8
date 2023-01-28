@@ -1,25 +1,56 @@
-import NavMenu from '~/components/NavMenu';
-import Title from '~/components/Title';
+import Swal from 'sweetalert2';
 import classNames from 'classnames/bind';
-import styles from '~/GlobalStyles.module.scss';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import withReactContent from 'sweetalert2-react-content';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+import Title from '~/components/Title';
+import NavMenu from '~/components/NavMenu';
+import { getVideoByType } from '~/services/apiVideo';
 import ListVideoItem from '~/components/ListVideoItem';
-import { useEffect } from 'react';
-import { getAllVideos } from '~/services/apiVideo';
-import { useDispatch, useSelector } from 'react-redux';
+
+import styles from '~/GlobalStyles.module.scss';
 
 const cx = classNames.bind(styles);
 
+const MySwal = withReactContent(Swal);
+
 function ListVideo() {
-    const allVideos = useSelector((state) => state.module?.allVideos?.currentVideos);
-    const dispatch = useDispatch();
+    const [videos, setVideos] = useState([]);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const page = new URLSearchParams(location.search).get('page');
 
     useEffect(() => {
-        const fetchApi = async () => {
-            await getAllVideos(dispatch);
-        };
-        fetchApi();
+        if (!page) {
+            navigate(`${location.pathname}?page=1`);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page]);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (page) {
+                const fetchApi = async () => {
+                    const result = await getVideoByType(currentUser.accessToken, page);
+
+                    if (result.data.statusCode === 0) {
+                        setVideos(result.data.data);
+                    } else {
+                        MySwal.fire('Lỗi', `${result.data.message}`, 'error');
+                    }
+                };
+                fetchApi();
+            }
+        } else {
+            navigate('/login');
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -75,9 +106,11 @@ function ListVideo() {
                                             <thead>
                                                 <tr>
                                                     <th>
+                                                        <div className="text-center">STT</div>
+                                                    </th>
+                                                    <th>
                                                         <div className="text-center">Tiêu đề video</div>
                                                     </th>
-
                                                     <th>
                                                         <div className="text-center">Link youtube</div>
                                                     </th>
@@ -94,8 +127,8 @@ function ListVideo() {
                                             </thead>
 
                                             <tbody>
-                                                {allVideos?.map((video) => (
-                                                    <ListVideoItem key={video._id} data={video} />
+                                                {videos?.map((video, index) => (
+                                                    <ListVideoItem key={video._id} data={video} stt={index} />
                                                 ))}
                                             </tbody>
                                         </table>

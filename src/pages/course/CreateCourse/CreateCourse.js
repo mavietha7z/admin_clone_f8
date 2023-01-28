@@ -5,37 +5,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
 import NavMenu from '~/components/NavMenu';
 import { createNewCourse } from '~/services/apiCourse';
-import { useDispatch, useSelector } from 'react-redux';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
+import { useSelector } from 'react-redux';
 import styles from '~/GlobalStyles.module.scss';
 const cx = classNames.bind(styles);
 
 function CreateCourse() {
     const [inputCount, setInputCount] = useState(1);
+
     const [name, setName] = useState('');
-    const [pathName, setPathName] = useState('');
+    const [slug, setSlug] = useState('');
+    const [video, setVideo] = useState('');
     const [isWhatLearn, setIsWhatLearn] = useState([]);
     const [price, setPrice] = useState(0);
-    const [status, setStatus] = useState(true);
-    const [desc, setDesc] = useState('');
+    const [priority, setPriority] = useState('');
     const [image, setImage] = useState(null);
+    const [icon, setIcon] = useState(null);
+    const [desc, setDesc] = useState('');
 
     const MySwal = withReactContent(Swal);
     const fileRef = useRef();
-    const dispatch = useDispatch();
+    const iconRef = useRef();
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     const addInput = () => {
-        if (inputCount < 10) {
+        if (inputCount < 100) {
             setInputCount(inputCount + 1);
         } else {
-            MySwal.fire('Lỗi', 'Tối đa chỉ được 10 thẻ input', 'error');
+            MySwal.fire('Lỗi', 'Tối đa chỉ được 100 thẻ input', 'error');
         }
     };
 
@@ -52,14 +51,16 @@ function CreateCourse() {
         const arrAsJson = JSON.stringify(whatLearn);
 
         formData.append('name', name);
-        formData.append('pathName', pathName);
+        formData.append('slug', slug);
+        formData.append('video', video);
         formData.append('whatLearn', arrAsJson);
         formData.append('price', price);
-        formData.append('status', status);
-        formData.append('description', desc);
+        formData.append('priority', priority);
         formData.append('image', image);
+        formData.append('icon', icon);
+        formData.append('description', desc);
 
-        const result = await createNewCourse(formData, currentUser.accessToken, axiosJWT);
+        const result = await createNewCourse(formData, currentUser.accessToken);
 
         if (result.errCode === 0) {
             MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
@@ -77,6 +78,13 @@ function CreateCourse() {
         file.preview = URL.createObjectURL(file);
 
         setImage(file);
+    };
+
+    const handlePrevIcon = (e) => {
+        const file = e.target.files[0];
+        file.preview = URL.createObjectURL(file);
+
+        setIcon(file);
     };
 
     const handleChange = (e, i) => {
@@ -115,7 +123,7 @@ function CreateCourse() {
                         <div className="card-body row">
                             <div className="col-md-7 col-md-offset-3">
                                 <div className="card">
-                                    <form onSubmit={handleCreateNewCourse} encType="multipart/form-data">
+                                    <form encType="multipart/form-data">
                                         <div className="card-body row">
                                             <div className="form-group col-md-12">
                                                 <label>Tên khóa học:</label>
@@ -128,15 +136,28 @@ function CreateCourse() {
                                                     onChange={(e) => setName(e.target.value)}
                                                 />
                                             </div>
+
                                             <div className="form-group col-md-12">
-                                                <label>Đường dẫn pathName:</label>
+                                                <label>Đường dẫn slug:</label>
                                                 <input
-                                                    name="pathName"
+                                                    name="slug"
                                                     type="text"
                                                     className="form-control"
                                                     placeholder="Vd: javascript-nang-cao"
-                                                    value={pathName}
-                                                    onChange={(e) => setPathName(e.target.value)}
+                                                    value={slug}
+                                                    onChange={(e) => setSlug(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="form-group col-md-12">
+                                                <label>Đường dẫn video giới thiệu:</label>
+                                                <input
+                                                    name="video"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Vd: fZMqdQhFqp8"
+                                                    value={video}
+                                                    onChange={(e) => setVideo(e.target.value)}
                                                 />
                                             </div>
 
@@ -191,6 +212,18 @@ function CreateCourse() {
                                             </div>
 
                                             <div className="form-group col-md-12">
+                                                <label>Sự ưu tiên:</label>
+                                                <input
+                                                    name="priority"
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Thứ tự ưu tiên khóa học"
+                                                    value={priority}
+                                                    onChange={(e) => setPriority(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="form-group col-md-12">
                                                 <label>Ảnh nền:</label>
                                                 {image?.preview && (
                                                     <img
@@ -221,18 +254,39 @@ function CreateCourse() {
                                                     />
                                                 </div>
                                             </div>
+
                                             <div className="form-group col-md-12">
-                                                <label style={{ width: '100%' }}>Trạng thái:</label>
-                                                <select
-                                                    className="form-control col-4"
-                                                    name="status"
-                                                    value={status}
-                                                    onChange={(e) => setStatus(e.target.value)}
-                                                >
-                                                    <option value={true}>Bật</option>
-                                                    <option value={false}>Tắt</option>
-                                                </select>
+                                                <label>Icon:</label>
+                                                {icon?.preview && (
+                                                    <img
+                                                        className="ml-4 mb-4"
+                                                        src={icon.preview}
+                                                        alt="Preview"
+                                                        style={{
+                                                            width: '22px',
+                                                            height: '22px',
+                                                            borderRadius: 4,
+                                                        }}
+                                                    />
+                                                )}
+                                                <div style={{ marginLeft: 15 }}>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-info"
+                                                        onClick={() => iconRef.current.click()}
+                                                    >
+                                                        Chọn ảnh
+                                                    </button>
+                                                    <input
+                                                        ref={iconRef}
+                                                        onChange={handlePrevIcon}
+                                                        type="file"
+                                                        name="image"
+                                                        style={{ display: 'none' }}
+                                                    />
+                                                </div>
                                             </div>
+
                                             <div className="form-group col-md-12">
                                                 <label>Mô tả ngắn:</label>
                                                 <textarea
@@ -246,7 +300,11 @@ function CreateCourse() {
                                             </div>
                                         </div>
                                         <div className="card-footer" style={{ borderTop: 0 }}>
-                                            <button type="submit" className="btn btn-primary">
+                                            <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                onClick={handleCreateNewCourse}
+                                            >
                                                 Thêm
                                             </button>
                                         </div>

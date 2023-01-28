@@ -7,9 +7,7 @@ import { createNewVideo, handleGetInfoVideo } from '~/services/apiVideo';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useDispatch, useSelector } from 'react-redux';
-import { createAxios } from '~/redux/createInstance';
-import { loginSuccess } from '~/redux/reducer/authReducer';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
@@ -26,10 +24,8 @@ function CreateVideo() {
     const [cmtVideo, setCmtVideo] = useState('');
 
     const MySwal = withReactContent(Swal);
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const axiosJWT = createAxios(currentUser, dispatch, loginSuccess);
 
     const iso8601ToTimeString = (timeVideo) => {
         const regexp = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
@@ -91,7 +87,7 @@ function CreateVideo() {
                 like: likeVideo,
                 comment: cmtVideo,
             };
-            const result = await createNewVideo(newVideo, currentUser.accessToken, axiosJWT);
+            const result = await createNewVideo(newVideo, currentUser.accessToken);
 
             if (result.errCode === 0) {
                 MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {

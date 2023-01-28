@@ -1,29 +1,55 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useDispatch, useSelector } from 'react-redux';
-import NavMenu from '~/components/NavMenu';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
 import Title from '~/components/Title';
+import NavMenu from '~/components/NavMenu';
+import { getBlogByType } from '~/services/apiBlog';
 import ListBlogItem from '~/components/ListBlogItem';
-import { getAllBlogs } from '~/services/apiBlog';
-import { useEffect } from 'react';
 
 import styles from '~/GlobalStyles.module.scss';
+
 const cx = classNames.bind(styles);
 
 function ListBlog() {
-    const allBlogs = useSelector((state) => state.module.allBlogs?.currentBlogs);
+    const [allBlogs, setAllBlogs] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
 
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const page = new URLSearchParams(location.search).get('page');
 
     useEffect(() => {
-        const fetchApi = async () => {
-            await getAllBlogs(dispatch);
-        };
-        fetchApi();
+        if (!page) {
+            navigate(`${location.pathname}?page=1`);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [page]);
+
+    useEffect(() => {
+        if (currentUser) {
+            if (page) {
+                const fetchApi = async () => {
+                    const result = await getBlogByType(currentUser.accessToken, page);
+
+                    if (result.statusCode === 0) {
+                        setAllBlogs(result.data);
+                        setTotalPages(result.totalPages);
+                    }
+                };
+                fetchApi();
+            }
+        } else {
+            navigate('/login');
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page]);
 
     return (
         <div className={cx('wrapper')}>
@@ -77,9 +103,11 @@ function ListBlog() {
                                             <thead>
                                                 <tr>
                                                     <th>
+                                                        <div className="text-center">STT</div>
+                                                    </th>
+                                                    <th>
                                                         <div className="text-center">Tiêu đề bài viết</div>
                                                     </th>
-
                                                     <th>
                                                         <div className="text-center">Tác giả</div>
                                                     </th>
@@ -96,8 +124,8 @@ function ListBlog() {
                                             </thead>
 
                                             <tbody>
-                                                {allBlogs?.slice(-10).map((blog) => (
-                                                    <ListBlogItem key={blog._id} data={blog} />
+                                                {allBlogs?.map((blog, index) => (
+                                                    <ListBlogItem key={blog._id} data={blog} stt={index} />
                                                 ))}
                                             </tbody>
                                         </table>

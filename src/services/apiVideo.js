@@ -1,6 +1,4 @@
-// import * as request from '~/utils/request';
 import axios from 'axios';
-import { getAllVideosFailed, getAllVideosSuccess } from '~/redux/reducer/moduleReducer';
 import request from '~/utils/request';
 
 const URL_API_YOUTUBE = 'https://www.googleapis.com/youtube/v3/videos';
@@ -33,26 +31,33 @@ export const handleGetInfoVideo = async (uidVideo) => {
     }
 };
 
-export const createNewVideo = async (data, token, axiosJWT) => {
+export const createNewVideo = async (data, token) => {
     try {
-        const res = await axiosJWT.post('http://localhost:8080/api/video/create', data, {
+        const res = await request.post('/video/create', data, {
             headers: {
                 token,
             },
         });
-        return res.data;
+
+        return res;
     } catch (error) {
-        console.log('error: ', error);
-        return error.response;
+        return error.response.data;
     }
 };
 
-export const getAllVideos = async (dispatch) => {
+export const getVideoByType = async (token, page) => {
     try {
-        const res = await request.get('/video/get');
-        dispatch(getAllVideosSuccess(res.data.data));
+        const res = await request.get('/video', {
+            headers: {
+                token,
+            },
+            params: {
+                page,
+            },
+        });
+
+        return res;
     } catch (error) {
-        console.log('error: ', error);
-        dispatch(getAllVideosFailed());
+        return error.response.data;
     }
 };

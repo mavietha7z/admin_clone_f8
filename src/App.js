@@ -1,8 +1,29 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { privateRoutes } from './routes';
 import DefaultLayout from './layouts/DefaultLayout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshUser } from './services/apiAuth';
+
 function App() {
+    const dispatch = useDispatch();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    useEffect(() => {
+        if (window.performance) {
+            if (performance.navigation.type === 1) {
+                if (currentUser) {
+                    const fetchApi = async () => {
+                        await refreshUser(currentUser.accessToken, dispatch);
+                    };
+                    fetchApi();
+                }
+            }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className="App">
             <Router>

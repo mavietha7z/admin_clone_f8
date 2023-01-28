@@ -1,27 +1,42 @@
 import classNames from 'classnames/bind';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import ListCourseItem from '~/components/ListCourseItem';
-import { getAllCourse } from '~/services/apiCourse';
+import { getCourseByType } from '~/services/apiCourse';
 import styles from '~/GlobalStyles.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useNavigate } from 'react-router-dom';
+
+const MySwal = withReactContent(Swal);
 
 const cx = classNames.bind(styles);
 
 function ListCourse() {
-    const allCourse = useSelector((state) => state.module.allCourses?.currentCourses);
+    const [courses, setCourses] = useState([]);
 
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            await getAllCourse(dispatch);
-        };
-        fetchApi();
+        if (currentUser) {
+            const fetchApi = async () => {
+                const result = await getCourseByType(currentUser.accessToken, 'all');
+
+                if (result.statusCode === 0) {
+                    setCourses(result.data);
+                } else {
+                    MySwal.fire('error', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
+                }
+            };
+            fetchApi();
+        } else {
+            navigate('/login');
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -107,7 +122,7 @@ function ListCourse() {
                                             </thead>
 
                                             <tbody>
-                                                {allCourse?.slice(-10).map((course) => (
+                                                {courses.map((course) => (
                                                     <ListCourseItem key={course._id} data={course} />
                                                 ))}
                                             </tbody>

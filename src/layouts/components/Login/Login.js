@@ -1,9 +1,11 @@
+import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginAdmin } from '~/services/apiAuth';
-import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -11,24 +13,19 @@ function Login() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const MySwal = withReactContent(Swal);
-
-    const alert = MySwal.mixin({
-        timer: 1000,
-    });
 
     const handleLogin = async () => {
         const user = {
             email,
             password,
         };
-        const result = await loginAdmin(user, dispatch, navigate);
-        if (result.errCode === 0) {
-            alert.fire('Thành công', `${result.message}`, 'success');
-        } else if (result.errCode === 2 || result.errCode === 1 || result.errCode === 3) {
-            MySwal.fire('Lỗi', `${result.message}`, 'error');
+        const result = await loginAdmin(user, dispatch);
+
+        if (result.statusCode === 0) {
+            navigate('/');
+            MySwal.fire('Thành công', `${result.message}`, 'success');
         } else {
-            MySwal.fire('Lỗi', 'Lỗi kết nỗi database', 'error');
+            MySwal.fire('Lỗi', `${result.message || 'Lỗi kết nỗi database'}`, 'error');
         }
     };
 
@@ -40,7 +37,6 @@ function Login() {
                     <input
                         type="email"
                         className="form-control"
-                        name="email"
                         placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -51,7 +47,6 @@ function Login() {
                     <input
                         type="password"
                         className="form-control"
-                        name="password"
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

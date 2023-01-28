@@ -1,26 +1,29 @@
 import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faBook, faMinus, faNewspaper, faPhone, faUsers, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+
 import Tile from '~/components/Title';
+
 import styles from './Home.module.scss';
-import { useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Home() {
-    const allUser = useSelector((state) => state.module?.allUsers?.currentUsers);
-    const allCourse = useSelector((state) => state.module?.allCourses?.currentCourses);
-    const allBlog = useSelector((state) => state.module?.allBlogs?.currentBlogs);
-    const allVideos = useSelector((state) => state.module?.allVideos?.currentVideos);
+    const [users, setUsers] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [videos, setVideos] = useState([]);
 
+    const navigate = useNavigate();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
         if (!currentUser) {
-            window.location.href = '/login';
+            navigate('/login');
         }
     }, [currentUser]);
 
@@ -41,7 +44,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng khóa học</span>
-                                <span className={cx('info-box-number')}>{allCourse?.length}</span>
+                                <span className={cx('info-box-number')}>{courses?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -52,7 +55,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng video</span>
-                                <span className={cx('info-box-number')}>{allVideos?.length}</span>
+                                <span className={cx('info-box-number')}>{videos?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -63,7 +66,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng blog</span>
-                                <span className={cx('info-box-number')}>{allBlog?.length}</span>
+                                <span className={cx('info-box-number')}>{posts?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -74,7 +77,7 @@ function Home() {
                             </span>
                             <div className={cx('box-content')}>
                                 <span className={cx('info-box-text')}>Tổng người dùng</span>
-                                <span className={cx('info-box-number')}>{allUser?.length}</span>
+                                <span className={cx('info-box-number')}>{users?.length}</span>
                             </div>
                         </div>
                     </div>
@@ -359,7 +362,7 @@ function Home() {
                                             padding: '6px 10px',
                                         }}
                                     >
-                                        Tổng {allUser?.length}
+                                        Tổng {users?.length}
                                     </span>
                                     <button
                                         className={cx('btn-tool')}
@@ -375,7 +378,7 @@ function Home() {
                                 <div className="card-body p-0">
                                     <div className={cx('table-responsive')}>
                                         <ul className={cx('transfer-list')}>
-                                            {allUser?.slice(-5)?.map((user) => (
+                                            {users?.slice(-5)?.map((user) => (
                                                 <li className={cx('transfer-item')} key={user._id}>
                                                     <strong className="text-uppercase">
                                                         <Link to="/users/449/edit">{user.name}</Link>
