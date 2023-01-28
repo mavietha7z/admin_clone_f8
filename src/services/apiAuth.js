@@ -17,13 +17,18 @@ export const loginAdmin = async (user, dispatch) => {
     }
 };
 
+// Ok
 export const logoutAdmin = async (dispatch, id, navigate, token) => {
     try {
-        const res = await request.post('/user/logout', id, {
-            headers: {
-                token: token,
-            },
-        });
+        const res = await request.post(
+            '/auth/logout',
+            {},
+            {
+                headers: {
+                    token: token,
+                },
+            }
+        );
 
         dispatch(logoutSuccess());
         navigate('/login');

@@ -55,7 +55,7 @@ function ListBlogItem({ data, stt }) {
                 <div className="text-center">
                     <span
                         title={data.status ? 'Tắt trạng thái' : 'Bật  trạng thái'}
-                        className="btn btn-danger btn-sm mr-2"
+                        className={`btn btn-sm mr-2 btn-${data.status ? 'danger' : 'success'}`}
                         onClick={handleToggleStatus}
                     >
                         {data.status ? 'Tắt' : 'Bật'}

@@ -10,7 +10,6 @@ import EditCourse from '~/pages/course/EditCourse';
 
 // Import components bài viết
 import ListBlog from '~/pages/blog/ListBlog';
-import CreateBlog from '~/pages/blog/CreateBlog';
 
 // Import components video
 import ListVideo from '~/pages/video/ListVideo';
@@ -50,7 +49,6 @@ const privateRoutes = [
 
     // Route trang đổi thẻ cào
     { path: '/blog', component: ListBlog },
-    { path: '/blog/create', component: CreateBlog },
 
     // Route trang thống kê
     { path: '/video', component: ListVideo },

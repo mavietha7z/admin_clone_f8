@@ -1,71 +1,73 @@
-import { Fragment, useRef, useState } from 'react';
-import classNames from 'classnames/bind';
-import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Title from '~/components/Title';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import NavMenu from '~/components/NavMenu';
-import { createNewCourse } from '~/services/apiCourse';
+import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Fragment, useRef, useState } from 'react';
+import withReactContent from 'sweetalert2-react-content';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
+import Title from '~/components/Title';
+import NavMenu from '~/components/NavMenu';
+import FileControl from '~/components/FileControl';
+import { createCourse } from '~/services/apiCourse';
+import InputControl from '~/components/InputControl';
+
 import styles from '~/GlobalStyles.module.scss';
+
 const cx = classNames.bind(styles);
+
+const MySwal = withReactContent(Swal);
 
 function CreateCourse() {
     const [inputCount, setInputCount] = useState(1);
 
-    const [name, setName] = useState('');
+    const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
     const [video, setVideo] = useState('');
-    const [isWhatLearn, setIsWhatLearn] = useState([]);
+    const [priority, setPriority] = useState(0);
     const [price, setPrice] = useState(0);
-    const [priority, setPriority] = useState('');
+    const [oldPrice, setOldPrice] = useState(0);
+    const [preOrderPrice, setPreOrderPrice] = useState(0);
+    const [isWhatLearn, setIsWhatLearn] = useState([]);
     const [image, setImage] = useState(null);
     const [icon, setIcon] = useState(null);
     const [desc, setDesc] = useState('');
 
-    const MySwal = withReactContent(Swal);
     const fileRef = useRef();
     const iconRef = useRef();
+    const navigate = useNavigate();
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
-    const addInput = () => {
-        if (inputCount < 100) {
-            setInputCount(inputCount + 1);
-        } else {
-            MySwal.fire('Lỗi', 'Tối đa chỉ được 100 thẻ input', 'error');
-        }
-    };
-
-    const removeInput = () => {
-        setInputCount(inputCount - 1);
-    };
-
-    const handleCreateNewCourse = async (e) => {
+    const handleCreateCourse = async (e) => {
         e.preventDefault();
+
         const formData = new FormData();
+
         const whatLearn = isWhatLearn.map((desc) => {
             return { description: desc };
         });
         const arrAsJson = JSON.stringify(whatLearn);
 
-        formData.append('name', name);
+        formData.append('title', title);
         formData.append('slug', slug);
         formData.append('video', video);
-        formData.append('whatLearn', arrAsJson);
-        formData.append('price', price);
         formData.append('priority', priority);
+        formData.append('price', price);
+        formData.append('oldPrice', oldPrice);
+        formData.append('preOrderPrice', preOrderPrice);
+        formData.append('whatLearn', arrAsJson);
         formData.append('image', image);
         formData.append('icon', icon);
         formData.append('description', desc);
 
-        const result = await createNewCourse(formData, currentUser.accessToken);
+        const result = await createCourse(formData, currentUser.accessToken);
 
-        if (result.errCode === 0) {
+        if (result.statusCode === 0) {
             MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
                 if (res.isConfirmed) {
-                    window.location.reload();
+                    navigate('/course');
                 }
             });
         } else {
@@ -87,7 +89,7 @@ function CreateCourse() {
         setIcon(file);
     };
 
-    const handleChange = (e, i) => {
+    const handleChangeWhatLearn = (e, i) => {
         const updatedWhatLearn = [...isWhatLearn];
         updatedWhatLearn[i] = e.target.value;
         setIsWhatLearn(updatedWhatLearn);
@@ -120,198 +122,141 @@ function CreateCourse() {
                             </div>
                         </div>
 
-                        <div className="card-body row">
-                            <div className="col-md-7 col-md-offset-3">
-                                <div className="card">
-                                    <form encType="multipart/form-data">
-                                        <div className="card-body row">
-                                            <div className="form-group col-md-12">
-                                                <label>Tên khóa học:</label>
-                                                <input
-                                                    name="name"
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Tên khóa học"
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
-                                                />
-                                            </div>
+                        <form encType="multipart/form-data">
+                            <div className="card-body row">
+                                <div className="col-md-5">
+                                    <div className="card row">
+                                        <InputControl
+                                            type="title"
+                                            name="title"
+                                            label="Tên khóa học:"
+                                            placeholder="Nhập tên khóa học"
+                                            value={title}
+                                            setValue={setTitle}
+                                        />
 
-                                            <div className="form-group col-md-12">
-                                                <label>Đường dẫn slug:</label>
-                                                <input
-                                                    name="slug"
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Vd: javascript-nang-cao"
-                                                    value={slug}
-                                                    onChange={(e) => setSlug(e.target.value)}
-                                                />
-                                            </div>
+                                        <InputControl
+                                            type="slug"
+                                            name="slug"
+                                            label="Đường dẫn slug:"
+                                            placeholder="javascript-co-ban"
+                                            value={slug}
+                                            setValue={setSlug}
+                                        />
 
-                                            <div className="form-group col-md-12">
-                                                <label>Đường dẫn video giới thiệu:</label>
-                                                <input
-                                                    name="video"
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Vd: fZMqdQhFqp8"
-                                                    value={video}
-                                                    onChange={(e) => setVideo(e.target.value)}
-                                                />
-                                            </div>
+                                        <InputControl
+                                            type="video"
+                                            name="video"
+                                            label="Url video giới thiệu:"
+                                            placeholder="fZMqdQhFqp8"
+                                            value={video}
+                                            setValue={setVideo}
+                                        />
 
-                                            <div className="form-group col-md-12">
-                                                <label className=" w-100">
-                                                    Học được gì sau khóa học:
-                                                    <FontAwesomeIcon
-                                                        className="btn btn-success float-right"
-                                                        onClick={addInput}
-                                                        icon={faCirclePlus}
-                                                        title="Thêm 1 ô input mới"
-                                                    />
-                                                </label>
-                                                <div>
-                                                    {Array.from({ length: inputCount }, (_, i) => (
-                                                        <Fragment key={i}>
-                                                            <input
-                                                                name="whatLearn"
-                                                                type="text"
-                                                                className="form-control mb-2 col-10"
-                                                                placeholder="Mô tả những gì sẽ học được"
-                                                                style={{ display: 'inline-block' }}
-                                                                defaultValue={isWhatLearn[i]}
-                                                                onChange={(e) => handleChange(e, i)}
+                                        <InputControl
+                                            type="priority"
+                                            name="priority"
+                                            label="Sự ưu tiên: ( Mặc định sẽ là 0 )"
+                                            placeholder="Thứ tự ưu tiên khóa học"
+                                            value={priority}
+                                            setValue={setPriority}
+                                        />
+
+                                        <InputControl
+                                            type="price"
+                                            name="price"
+                                            label="Giá: ( Nếu để mặc định 0 thì sẽ là miễn phí )"
+                                            placeholder="Giá khóa học"
+                                            value={price}
+                                            setValue={setPrice}
+                                        />
+
+                                        <InputControl
+                                            type="oldPrice"
+                                            name="oldPrice"
+                                            label="Giá cũ: ( Nếu là khóa pro )"
+                                            placeholder="Giá cũ khóa học"
+                                            value={oldPrice}
+                                            setValue={setOldPrice}
+                                        />
+
+                                        <InputControl
+                                            type="preOrderPrice"
+                                            name="preOrderPrice"
+                                            label="Giá đặt trước: ( Nếu là khóa pro )"
+                                            placeholder="Giá đặt trước khóa học"
+                                            value={preOrderPrice}
+                                            setValue={setPreOrderPrice}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col-md-7">
+                                    <div className="card row">
+                                        <div className="form-group col-md-12 mt-3">
+                                            <label className=" w-100">
+                                                Học được gì sau khóa học:
+                                                <FontAwesomeIcon
+                                                    className="btn btn-success float-right"
+                                                    onClick={() => setInputCount(inputCount + 1)}
+                                                    icon={faCirclePlus}
+                                                    title="Thêm 1 ô input mới"
+                                                />
+                                            </label>
+                                            <div>
+                                                {Array.from({ length: inputCount }, (_, i) => (
+                                                    <Fragment key={i}>
+                                                        <input
+                                                            name="whatLearn"
+                                                            type="text"
+                                                            className="form-control mb-2 col-10"
+                                                            placeholder="Mô tả những gì sẽ học được"
+                                                            style={{ display: 'inline-block' }}
+                                                            defaultValue={isWhatLearn[i]}
+                                                            onChange={(e) => handleChangeWhatLearn(e, i)}
+                                                        />
+                                                        {inputCount > 1 && (
+                                                            <FontAwesomeIcon
+                                                                className={cx(
+                                                                    'btn btn-danger float-right',
+                                                                    'removeInput'
+                                                                )}
+                                                                onClick={() => setInputCount(inputCount - 1)}
+                                                                icon={faCircleMinus}
+                                                                title="Xóa ô input này"
                                                             />
-                                                            {inputCount > 1 && (
-                                                                <FontAwesomeIcon
-                                                                    className={cx(
-                                                                        'btn btn-danger float-right',
-                                                                        'removeInput'
-                                                                    )}
-                                                                    onClick={removeInput}
-                                                                    icon={faCircleMinus}
-                                                                    title="Xóa ô input này"
-                                                                />
-                                                            )}
-                                                        </Fragment>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            <div className="form-group col-md-12">
-                                                <label>Giá: ( Nếu để mặc định 0 thì sẽ là miễn phí )</label>
-                                                <input
-                                                    name="price"
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Giá khóa học"
-                                                    value={price}
-                                                    onChange={(e) => setPrice(e.target.value)}
-                                                />
-                                            </div>
-
-                                            <div className="form-group col-md-12">
-                                                <label>Sự ưu tiên:</label>
-                                                <input
-                                                    name="priority"
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Thứ tự ưu tiên khóa học"
-                                                    value={priority}
-                                                    onChange={(e) => setPriority(e.target.value)}
-                                                />
-                                            </div>
-
-                                            <div className="form-group col-md-12">
-                                                <label>Ảnh nền:</label>
-                                                {image?.preview && (
-                                                    <img
-                                                        className="ml-4 mb-4"
-                                                        src={image.preview}
-                                                        alt="Preview"
-                                                        style={{
-                                                            width: '160px',
-                                                            height: 'auto',
-                                                            borderRadius: 4,
-                                                        }}
-                                                    />
-                                                )}
-                                                <div style={{ marginLeft: 15 }}>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-info"
-                                                        onClick={() => fileRef.current.click()}
-                                                    >
-                                                        Chọn ảnh
-                                                    </button>
-                                                    <input
-                                                        ref={fileRef}
-                                                        onChange={handlePrevImage}
-                                                        type="file"
-                                                        name="image"
-                                                        style={{ display: 'none' }}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="form-group col-md-12">
-                                                <label>Icon:</label>
-                                                {icon?.preview && (
-                                                    <img
-                                                        className="ml-4 mb-4"
-                                                        src={icon.preview}
-                                                        alt="Preview"
-                                                        style={{
-                                                            width: '22px',
-                                                            height: '22px',
-                                                            borderRadius: 4,
-                                                        }}
-                                                    />
-                                                )}
-                                                <div style={{ marginLeft: 15 }}>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-info"
-                                                        onClick={() => iconRef.current.click()}
-                                                    >
-                                                        Chọn ảnh
-                                                    </button>
-                                                    <input
-                                                        ref={iconRef}
-                                                        onChange={handlePrevIcon}
-                                                        type="file"
-                                                        name="image"
-                                                        style={{ display: 'none' }}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="form-group col-md-12">
-                                                <label>Mô tả ngắn:</label>
-                                                <textarea
-                                                    name="description"
-                                                    className="form-control"
-                                                    rows={5}
-                                                    placeholder="Mô tả ngắn khóa học"
-                                                    value={desc}
-                                                    onChange={(e) => setDesc(e.target.value)}
-                                                />
+                                                        )}
+                                                    </Fragment>
+                                                ))}
                                             </div>
                                         </div>
-                                        <div className="card-footer" style={{ borderTop: 0 }}>
-                                            <button
-                                                type="submit"
-                                                className="btn btn-primary"
-                                                onClick={handleCreateNewCourse}
-                                            >
-                                                Thêm
-                                            </button>
-                                        </div>
-                                    </form>
+
+                                        <FileControl
+                                            label="Ảnh xem trước"
+                                            image={image}
+                                            ref={fileRef}
+                                            onChang={handlePrevImage}
+                                        />
+
+                                        <FileControl label="Icon" image={icon} ref={iconRef} onChang={handlePrevIcon} />
+
+                                        <InputControl
+                                            type="description"
+                                            name="description"
+                                            label="Mô tả khóa học:"
+                                            placeholder="Nhập mô tả khóa học"
+                                            value={desc}
+                                            setValue={setDesc}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div className="card-footer" style={{ borderTop: 0 }}>
+                                <button type="submit" className="btn btn-primary" onClick={handleCreateCourse}>
+                                    Thêm khóa học
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

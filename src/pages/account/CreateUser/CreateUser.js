@@ -14,7 +14,6 @@ function CreateUser() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phone, setPhone] = useState('');
     const [role, setRole] = useState('0');
     const [code, setCode] = useState('');
 
@@ -40,7 +39,6 @@ function CreateUser() {
             name: name,
             email: email,
             password: password,
-            phone: phone,
             role: role,
             code: code,
         };
@@ -60,7 +58,6 @@ function CreateUser() {
                         setEmail('');
                         setName('');
                         setPassword('');
-                        setPhone('');
                         setRole('0');
                         inputRef.current.focus();
                     }
@@ -122,17 +119,6 @@ function CreateUser() {
                                                 onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </div>
-                                        <div className="form-group">
-                                            <label>Điện thoại: ( Có thể bỏ qua )</label>
-                                            <input
-                                                name="phone"
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Số di động nhận sms, bắt đầu bằng 0"
-                                                value={phone}
-                                                onChange={(e) => setPhone(e.target.value)}
-                                            />
-                                        </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group ">
@@ -173,7 +159,7 @@ function CreateUser() {
                                 </div>
                                 <div className="card-footer">
                                     <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-                                        Tạo mới
+                                        Thêm người dùng
                                     </button>
                                     <button
                                         type="button"

@@ -57,15 +57,7 @@ function ListBlog() {
                 <div className="row">
                     <Title name="Danh sách khóa học" />
 
-                    <NavMenu
-                        nameHome="Trang chủ"
-                        pathHome="/blog"
-                        colorHome="warning"
-                        namePlus="Thêm mới"
-                        pathPlus="/blog/create"
-                        colorPlus="success"
-                        float="float-right"
-                    />
+                    <NavMenu nameHome="Trang chủ" pathHome="/blog" colorHome="warning" float="float-right" />
                 </div>
             </div>
             <div className={cx('content')}>

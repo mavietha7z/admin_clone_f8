@@ -45,6 +45,7 @@ export const createNewVideo = async (data, token) => {
     }
 };
 
+// Ok
 export const getVideoByType = async (token, page) => {
     try {
         const res = await request.get('/video', {

@@ -1,13 +1,15 @@
 import * as request from '~/utils/request';
 
-export const createNewCourse = async (course, token) => {
+// OK
+export const createCourse = async (course, token) => {
     try {
         const res = await request.post('/course/create', course, {
             headers: {
                 token,
             },
         });
-        return res.data;
+
+        return res;
     } catch (error) {
         return error.response.data;
     }
@@ -32,16 +34,24 @@ export const getCourseByType = async (token, type, id = null) => {
     }
 };
 
-export const getCourseById = async (courseId, token) => {
+// OK
+export const toggleStatusCourse = async (courseId, token) => {
     try {
-        const res = await request.get(`/course/get/${courseId}`, {
-            headers: {
-                token,
-            },
-        });
-        return res.data;
+        const res = await request.post(
+            `/course/status`,
+            {},
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    id: courseId,
+                },
+            }
+        );
+        return res;
     } catch (error) {
-        console.log('error: ', error);
+        return error.response.data;
     }
 };
 
@@ -68,40 +78,6 @@ export const createNewLesson = async (newLesson, token) => {
         });
 
         return res.data;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
-export const toggleStatusCourse = async (courseId, token) => {
-    try {
-        const res = await request.post(
-            `/course/status`,
-            {},
-            {
-                headers: {
-                    token,
-                },
-                params: {
-                    id: courseId,
-                },
-            }
-        );
-        return res;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
-export const handleDeleteACourse = async (courseId, token) => {
-    try {
-        const res = await request.remove(`/course/delete/${courseId}`, {
-            headers: {
-                token,
-            },
-        });
-
-        return res;
     } catch (error) {
         return error.response.data;
     }
