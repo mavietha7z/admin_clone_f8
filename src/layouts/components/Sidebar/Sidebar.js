@@ -9,12 +9,10 @@ import {
     faChevronLeft,
     faChevronRight,
     faCog,
-    faCubes,
     faGauge,
     faNewspaper,
     faUser,
     faVideo,
-    faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Sidebar.module.scss';
 
@@ -24,8 +22,6 @@ function Sidebar() {
     const [isHover, setIsHover] = useState(false);
     const [isActivePin, setIsActivePin] = useState(false);
     const [isActiveAccount, setIsActiveAccount] = useState(false);
-    const [isActiveTool, setIsActiveTool] = useState(false);
-    const [isActiveModun, setIsActiveModun] = useState(false);
     const [isActiveConfig, setIsActiveConfig] = useState(false);
     const [isActiveBlog, setIsActiveBlog] = useState(false);
     const [isActiveVideo, setIsActiveVideo] = useState(false);
@@ -44,14 +40,6 @@ function Sidebar() {
 
     const handleActiveVideo = () => {
         setIsActiveVideo(!isActiveVideo);
-    };
-
-    const handleActiveTool = () => {
-        setIsActiveTool(!isActiveTool);
-    };
-
-    const handleActiveModun = () => {
-        setIsActiveModun(!isActiveModun);
     };
 
     const handleActiveConfig = () => {
@@ -194,9 +182,9 @@ function Sidebar() {
                         </li>
 
                         <li>
-                            <Link className={cx('link')} to="/news">
+                            <Link className={cx('link')} to="/slideshow">
                                 <FontAwesomeIcon icon={faNewspaper} className={cx('icon')} />
-                                <span>Tin tức</span>
+                                <span>Slideshow</span>
                             </Link>
                         </li>
 

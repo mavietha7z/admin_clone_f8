@@ -1,46 +1,50 @@
+import Swal from 'sweetalert2';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
+import SlideItem from './SlideItem';
 import Title from '~/components/Title';
 import NavMenu from '~/components/NavMenu';
-import { getBlogByType } from '~/services/apiBlog';
-import ListBlogItem from '~/components/ListBlogItem';
+import HeadingTable from '~/components/HeadingTable';
+import { getAllSlideshow } from '~/services/slideshow';
 
 import styles from '~/GlobalStyles.module.scss';
-import HeadingTable from '~/components/HeadingTable';
 
 const cx = classNames.bind(styles);
 
-function ListBlog() {
-    const [allBlogs, setAllBlogs] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
+const MySwal = withReactContent(Swal);
+
+function Slideshow() {
+    const [slideshows, setSlideshows] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const page = new URLSearchParams(location.search).get('page');
+    const type = new URLSearchParams(location.search).get('type');
 
     useEffect(() => {
-        if (!page) {
-            navigate(`${location.pathname}?page=1`);
+        if (!type) {
+            navigate(`${location.pathname}?type=all`);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [type]);
 
     useEffect(() => {
         if (currentUser) {
-            if (page) {
+            if (type) {
                 const fetchApi = async () => {
-                    const result = await getBlogByType(currentUser.accessToken, page);
+                    const result = await getAllSlideshow(currentUser.accessToken, type);
 
                     if (result.statusCode === 0) {
-                        setAllBlogs(result.data);
-                        setTotalPages(result.totalPages);
+                        setSlideshows(result.data);
+                    } else {
+                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu slideshow'}`, 'error');
                     }
                 };
                 fetchApi();
@@ -50,7 +54,7 @@ function ListBlog() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [type]);
 
     return (
         <div className={cx('wrapper')}>
@@ -58,7 +62,15 @@ function ListBlog() {
                 <div className="row">
                     <Title name="Danh sách khóa học" />
 
-                    <NavMenu nameHome="Trang chủ" pathHome="/blog" colorHome="warning" float="float-right" />
+                    <NavMenu
+                        nameHome="Trang chủ"
+                        pathHome="/slideshow"
+                        colorHome="warning"
+                        namePlus="Thêm mới"
+                        pathPlus="/slideshow/create"
+                        colorPlus="success"
+                        float="float-right"
+                    />
                 </div>
             </div>
             <div className={cx('content')}>
@@ -70,8 +82,7 @@ function ListBlog() {
                                     <div className="float-right">
                                         <div className="input-group">
                                             <select name="type" className="form-control">
-                                                <option value="order">Tiêu đề bài viết</option>
-                                                <option value="order">Tác giả bài viết</option>
+                                                <option value="order">Tên slideshow</option>
                                             </select>
                                             <input
                                                 type="text"
@@ -95,9 +106,9 @@ function ListBlog() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <HeadingTable
                                                 headings={[
-                                                    { title: 'STT' },
-                                                    { title: 'Tiêu đề bài viết' },
-                                                    { title: 'Tác giả' },
+                                                    { title: 'Tiêu đề' },
+                                                    { title: 'Ảnh' },
+                                                    { title: 'Mô tả' },
                                                     { title: 'Trạng thái' },
                                                     { title: 'Ngày tạo / Cập nhật' },
                                                     { title: 'Hành động' },
@@ -105,8 +116,8 @@ function ListBlog() {
                                             />
 
                                             <tbody>
-                                                {allBlogs?.map((blog, index) => (
-                                                    <ListBlogItem key={blog._id} data={blog} stt={index} />
+                                                {slideshows.map((slideshow) => (
+                                                    <SlideItem key={slideshow._id} data={slideshow} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -121,4 +132,4 @@ function ListBlog() {
     );
 }
 
-export default ListBlog;
+export default Slideshow;

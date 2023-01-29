@@ -1,45 +1,60 @@
-import classNames from 'classnames/bind';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
-import NavMenu from '~/components/NavMenu';
-import Title from '~/components/Title';
-import ListCourseItem from '~/components/ListCourseItem';
-import { getCourseByType } from '~/services/apiCourse';
-import styles from '~/GlobalStyles.module.scss';
-import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import classNames from 'classnames/bind';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
-import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-const MySwal = withReactContent(Swal);
+import Title from '~/components/Title';
+import NavMenu from '~/components/NavMenu';
+import HeadingTable from '~/components/HeadingTable';
+import { getCourseByType } from '~/services/apiCourse';
+import ListCourseItem from '~/components/ListCourseItem';
+
+import styles from '~/GlobalStyles.module.scss';
 
 const cx = classNames.bind(styles);
+
+const MySwal = withReactContent(Swal);
 
 function ListCourse() {
     const [courses, setCourses] = useState([]);
 
     const navigate = useNavigate();
+    const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const type = new URLSearchParams(location.search).get('type');
+
+    useEffect(() => {
+        if (!type) {
+            navigate(`${location.pathname}?type=all`);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [type]);
 
     useEffect(() => {
         if (currentUser) {
-            const fetchApi = async () => {
-                const result = await getCourseByType(currentUser.accessToken, 'all');
+            if (type) {
+                const fetchApi = async () => {
+                    const result = await getCourseByType(currentUser.accessToken, type);
 
-                if (result.statusCode === 0) {
-                    setCourses(result.data);
-                } else {
-                    MySwal.fire('error', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
-                }
-            };
-            fetchApi();
+                    if (result.statusCode === 0) {
+                        setCourses(result.data);
+                    } else {
+                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
+                    }
+                };
+                fetchApi();
+            }
         } else {
             navigate('/login');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [type]);
 
     return (
         <div className={cx('wrapper')}>
@@ -68,6 +83,8 @@ function ListCourse() {
                                         <div className="input-group">
                                             <select name="type" className="form-control">
                                                 <option value="order">Tên khóa học</option>
+                                                <option value="order">Khóa học Pro</option>
+                                                <option value="order">Tên miễn phí</option>
                                             </select>
                                             <input
                                                 type="text"
@@ -89,37 +106,19 @@ function ListCourse() {
                                 <div className="row table-responsive p-0">
                                     <div className="col-sm-12 pr-0">
                                         <table id="example1" className="table table-bordered table-striped dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="text-center">Tên khóa học</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Ảnh nền</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Chương</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Bài học</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Thời lượng</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Loại</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Trạng thái</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Ngày tạo</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Hành động</div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                            <HeadingTable
+                                                headings={[
+                                                    { title: 'Tên khóa học' },
+                                                    { title: 'Ảnh xem trước' },
+                                                    { title: 'Chương' },
+                                                    { title: 'Bài học' },
+                                                    { title: 'Thời lượng' },
+                                                    { title: 'Loại' },
+                                                    { title: 'Trạng thái' },
+                                                    { title: 'Ngày tạo / Cập nhật' },
+                                                    { title: 'Hành động' },
+                                                ]}
+                                            />
 
                                             <tbody>
                                                 {courses.map((course) => (

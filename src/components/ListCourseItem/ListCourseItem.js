@@ -1,9 +1,10 @@
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
+
 import { toggleStatusCourse } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
@@ -101,12 +102,17 @@ function ListCourseItem({ data }) {
                 </div>
             </td>
             <td>
-                <div className="text-center">{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</div>
+                <div className="text-center">
+                    <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
+                <div className="text-center">
+                    <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
             </td>
             <td>
                 <div className="text-center">
-                    <Link to={`/course/chapter/${data._id}`}>
-                        <span className="btn btn-success btn-sm">
+                    <Link>
+                        <span className="btn btn-success btn-sm" data-toggle="modal" data-target=".bd-example-modal-xl">
                             <span className="text-white">Chi tiết</span>
                         </span>
                     </Link>

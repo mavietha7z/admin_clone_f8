@@ -28,10 +28,14 @@ function ListBlogItem({ data, stt }) {
     return (
         <tr>
             <td>
-                <div className="text-center">{stt + 1}</div>
+                <div className="text-center">
+                    <strong>{stt + 1}</strong>
+                </div>
             </td>
             <td style={{ minWidth: 500 }}>
-                <div className="text-center">{data.metaTitle}</div>
+                <div className="text-center">
+                    <strong>{data.metaTitle}</strong>
+                </div>
             </td>
             <td>
                 <div className="text-center">
@@ -48,8 +52,12 @@ function ListBlogItem({ data, stt }) {
             </td>
 
             <td>
-                <div className="text-center">{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</div>
-                <div className="text-center">{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</div>
+                <div className="text-center">
+                    <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
+                <div className="text-center">
+                    <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
             </td>
             <td>
                 <div className="text-center">

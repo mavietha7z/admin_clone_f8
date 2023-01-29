@@ -1,30 +1,30 @@
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
-function ListVideoItem({ data, stt }) {
-    const handleToggleStatus = () => {};
-
+function SlideItem({ data }) {
     return (
         <tr>
             <td>
-                <div className="text-center">
-                    <strong className="text-center">{stt + 1}</strong>
-                </div>
-            </td>
-            <td style={{ minWidth: 500 }}>
                 <div className="text-center">
                     <strong>{data.title}</strong>
                 </div>
             </td>
             <td>
                 <div className="text-center">
-                    <a
-                        className="text-dark"
-                        href={`https://youtu.be/${data.urlVideo}`}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <strong>{data.urlVideo}</strong>
-                    </a>
+                    <img
+                        src={data.image}
+                        alt={data.title}
+                        style={{
+                            width: '160px',
+                            height: 'auto',
+                            borderRadius: 4,
+                        }}
+                    />
+                </div>
+            </td>
+            <td>
+                <div className="text-center" style={{ maxWidth: 700 }}>
+                    {data.description}
                 </div>
             </td>
             <td>
@@ -44,12 +44,13 @@ function ListVideoItem({ data, stt }) {
             </td>
             <td>
                 <div className="text-center">
-                    <span
-                        title={`${data.status ? 'Tắt' : 'Bật'} trạng thái`}
-                        className={`btn btn-sm btn-${data.status ? 'danger' : 'success'}`}
-                        onClick={handleToggleStatus}
-                    >
-                        {data.status ? 'Tắt' : 'Bật'}
+                    <Link>
+                        <span className="btn btn-success btn-sm" data-toggle="modal" data-target=".bd-example-modal-xl">
+                            <span className="text-white">Chi tiết</span>
+                        </span>
+                    </Link>
+                    <span className="btn btn-danger btn-sm ml-2">
+                        <span className="text-white">Xóa</span>
                     </span>
                 </div>
             </td>
@@ -57,4 +58,4 @@ function ListVideoItem({ data, stt }) {
     );
 }
 
-export default ListVideoItem;
+export default SlideItem;

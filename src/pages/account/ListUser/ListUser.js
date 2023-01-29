@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Title from '~/components/Title';
 import NavMenu from '~/components/NavMenu';
 import { getUserByType } from '~/services/apiAuth';
+import HeadingTable from '~/components/HeadingTable';
 import ListUserItem from '~/components/ListUserItem';
 import HeaderListUser from '~/components/HeaderListUser';
 
@@ -83,34 +84,18 @@ function ListUser() {
                                 <div className="row p-0">
                                     <div className="col-sm-12 table-responsive">
                                         <table className="table table-bordered table-striped dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="text-center">Username</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Họ tên</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Email</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Vai trò</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Trạng thái</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Tick</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Ngày tạo / cập nhật</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Hành động</div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                            <HeadingTable
+                                                headings={[
+                                                    { title: 'Username' },
+                                                    { title: 'Họ tên' },
+                                                    { title: 'Email' },
+                                                    { title: 'Vai trò' },
+                                                    { title: 'Trạng thái' },
+                                                    { title: 'Tick' },
+                                                    { title: 'Ngày tạo / cập nhật' },
+                                                    { title: 'Hành động' },
+                                                ]}
+                                            />
 
                                             <tbody>
                                                 {users.map((user) => (

@@ -9,6 +9,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import Title from '~/components/Title';
 import NavMenu from '~/components/NavMenu';
+import HeadingTable from '~/components/HeadingTable';
 import { getVideoByType } from '~/services/apiVideo';
 import ListVideoItem from '~/components/ListVideoItem';
 
@@ -53,7 +54,8 @@ function ListVideo() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [page]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -103,28 +105,16 @@ function ListVideo() {
                                 <div className="row table-responsive p-0">
                                     <div className="col-sm-12 pr-0">
                                         <table id="example1" className="table table-bordered table-striped dataTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <div className="text-center">STT</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Tiêu đề video</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Link youtube</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Trạng thái</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Ngày tạo / Cập nhật</div>
-                                                    </th>
-                                                    <th>
-                                                        <div className="text-center">Hành động</div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                            <HeadingTable
+                                                headings={[
+                                                    { title: 'STT' },
+                                                    { title: 'Tiêu đề video' },
+                                                    { title: 'Link youtube' },
+                                                    { title: 'Trạng thái' },
+                                                    { title: 'Ngày tạo / Cập nhật' },
+                                                    { title: 'Hành động' },
+                                                ]}
+                                            />
 
                                             <tbody>
                                                 {videos?.map((video, index) => (

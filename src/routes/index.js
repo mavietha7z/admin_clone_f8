@@ -15,12 +15,6 @@ import ListBlog from '~/pages/blog/ListBlog';
 import ListVideo from '~/pages/video/ListVideo';
 import CreateVideo from '~/pages/video/CreateVideo';
 
-// Import components tin tức
-import NewsCreate from '~/pages/news/NewsCreate';
-import NewsEdit from '~/pages/news/NewsEdit';
-import CreateNews from '~/pages/news/CreateNews';
-import EditNews from '~/pages/news/EditNews';
-
 // Import components tài khoản
 import ListUser from '~/pages/account/ListUser';
 import CreateUser from '~/pages/account/CreateUser';
@@ -33,11 +27,11 @@ import EditMail from '~/pages/system/ConfigMail/EditMail';
 // Export components 404 not found
 import NotFound from '~/layouts/NotFound';
 import Login from '~/layouts/components/Login';
+import Slideshow from '~/pages/Slideshow';
 
 const privateRoutes = [
     // Route trang chủ
     { path: '/', component: Home },
-
     { path: '/login', component: Login, layout: null },
 
     // Route trang khóa học
@@ -47,17 +41,14 @@ const privateRoutes = [
     { path: '/course/detail', component: DetailCourse },
     { path: '/course/edit', component: EditCourse },
 
-    // Route trang đổi thẻ cào
+    // Route trang blog
     { path: '/blog', component: ListBlog },
 
     // Route trang thống kê
     { path: '/video', component: ListVideo },
     { path: '/video/create', component: CreateVideo },
 
-    { path: '/news_cat/create', component: NewsCreate },
-    { path: '/news_cat/2/edit', component: NewsEdit },
-    { path: '/news/create', component: CreateNews },
-    { path: '/news/7/edit', component: EditNews },
+    { path: '/slideshow', component: Slideshow },
 
     // Route trang tài khoản
     { path: '/users', component: ListUser },

@@ -41,8 +41,12 @@ function ListUserItem({ data }) {
                 </div>
             </td>
             <td>
-                <div className="text-center">{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</div>
-                <div className="text-center">{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</div>
+                <div className="text-center">
+                    <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
+                <div className="text-center">
+                    <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
+                </div>
             </td>
             <td>
                 <div className="action-buttons text-center">
