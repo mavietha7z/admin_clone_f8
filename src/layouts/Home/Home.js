@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import config from '~/configs';
-import Tile from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 
 function Home() {
     const navigate = useNavigate();
@@ -20,14 +20,14 @@ function Home() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Tile name="Bảng quản trị" />
+                    <TitleGlobal name="Bảng quản trị" />
                 </div>
             </div>
 
             <div className="content-global">
                 <div className="row">
-                    {config.home.map((child) => (
-                        <div className="col-3">
+                    {config.home.map((child, index) => (
+                        <div className="col-3" key={index}>
                             <div className="home-box">
                                 <span className={`home-box-icon bg-${child.bg}`}>
                                     <FontAwesomeIcon icon={child.icon} />

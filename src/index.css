@@ -157,7 +157,7 @@ small {
 }
 
 .card-body {
-    padding: 20px;
+    padding: 0;
 }
 
 .card-footer {
@@ -259,7 +259,7 @@ small {
     margin-top: 4px;
 }
 
-.remove-input:nth-child(2) {
+.remove-input:nth-child(1) {
     display: none;
 }
 

@@ -1,4 +1,4 @@
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ function DetailCourse() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Thông tin chi tiết" />
+                    <TitleGlobal name="Thông tin chi tiết" />
                 </div>
             </div>
 

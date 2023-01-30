@@ -1,44 +1,44 @@
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import Title from '~/components/Title';
-import ListItem from '~/components/ListItem';
+import TitleGlobal from '~/components/TitleGlobal';
+import TableItem from '~/components/TableItem';
 import HeadingTable from '~/components/HeadingTable';
-import { getCourseByType } from '~/services/apiCourse';
+import { getVideoByType } from '~/services/apiVideo';
 
 const MySwal = withReactContent(Swal);
 
-function CourseList() {
-    const [courses, setCourses] = useState([]);
+function Videos() {
+    const [videos, setVideos] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const type = new URLSearchParams(location.search).get('type');
+    const page = new URLSearchParams(location.search).get('page');
 
     useEffect(() => {
-        if (!type) {
-            navigate(`${location.pathname}?type=all`);
+        if (!page) {
+            navigate(`${location.pathname}?page=1`);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+    }, [page]);
 
     useEffect(() => {
         if (currentUser) {
-            if (type) {
+            if (page) {
                 const fetchApi = async () => {
-                    const result = await getCourseByType(currentUser.accessToken, type);
+                    const result = await getVideoByType(currentUser.accessToken, page);
 
-                    if (result.statusCode === 0) {
-                        setCourses(result.data);
+                    if (result.data.statusCode === 0) {
+                        setVideos(result.data.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
+                        MySwal.fire('Lỗi', `${result.data.message}`, 'error');
                     }
                 };
                 fetchApi();
@@ -48,37 +48,38 @@ function CourseList() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+    }, [page]);
 
     return (
         <div className={'wrapper-global'}>
-            <div className={'header-global'}>
+            <div className={'header'}>
                 <div className="row">
-                    <Title name="Danh sách khóa học" />
+                    <TitleGlobal name="Danh sách khóa học" />
                 </div>
             </div>
+
             <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
                             <div className={'card-header bg-white'}>
-                                <div className="col-md-3 float-end">
-                                    <div className="input-group">
-                                        <select name="type" className="form-control">
-                                            <option value="order">-- Tên khóa học --</option>
-                                            <option value="order">-- Khóa học Pro --</option>
-                                            <option value="order">-- Tên miễn phí --</option>
-                                        </select>
-                                        <input
-                                            type="text"
-                                            name="keyword"
-                                            className="form-control"
-                                            placeholder="Search"
-                                        />
-                                        <div className="input-group-append">
-                                            <button type="submit" className="btn btn-warning">
-                                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                            </button>
+                                <div className="col-md-6 float-right">
+                                    <div className="float-right">
+                                        <div className="input-group">
+                                            <select className="form-control">
+                                                <option value="order">Tiêu đề video</option>
+                                            </select>
+                                            <input
+                                                type="text"
+                                                name="keyword"
+                                                className="form-control"
+                                                placeholder="Search"
+                                            />
+                                            <div className="input-group-append">
+                                                <button type="submit" className="btn btn-warning">
+                                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,12 +91,8 @@ function CourseList() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <HeadingTable
                                                 headings={[
-                                                    { title: 'Tên khóa học' },
-                                                    { title: 'Ảnh xem trước' },
-                                                    { title: 'Chương' },
-                                                    { title: 'Bài học' },
-                                                    { title: 'Thời lượng' },
-                                                    { title: 'Loại' },
+                                                    { title: 'Tiêu đề video' },
+                                                    { title: 'Link youtube' },
                                                     { title: 'Trạng thái' },
                                                     { title: 'Ngày tạo / Cập nhật' },
                                                     { title: 'Hành động' },
@@ -103,8 +100,8 @@ function CourseList() {
                                             />
 
                                             <tbody>
-                                                {courses.map((course) => (
-                                                    <ListItem key={course._id} type="courses" data={course} />
+                                                {videos?.map((video) => (
+                                                    <TableItem key={video._id} type="video" data={video} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -119,4 +116,4 @@ function CourseList() {
     );
 }
 
-export default CourseList;
+export default Videos;

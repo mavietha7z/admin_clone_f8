@@ -6,10 +6,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 
 import { toggleStatusCourse } from '~/services/apiCourse';
+import { deleteUserByType } from '~/services/apiAuth';
+import { Button, Modal, Table } from 'react-bootstrap';
+import RenderDate from '../RenderDate';
+import ModalDetail from '../ModalDetail';
 
 const MySwal = withReactContent(Swal);
 
-function ListItem({ type, data }) {
+function TableItem({ type, data }) {
+    const [showDetail, setShowDetail] = useState(false);
+
+    const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
     const [numberChapter, setNumberChapter] = useState(0);
     const [status, setStatus] = useState(false);
@@ -72,6 +79,36 @@ function ListItem({ type, data }) {
             navigate('/login');
         }
     }, [data._id, currentUser]);
+
+    const handleAgreeDelete = useCallback(async () => {
+        setShow(false);
+
+        if (type === 'account') {
+            const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
+
+            if (result.statusCode === 0) {
+                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then((res) => {
+                    if (res.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
+            }
+        } else if (type === 'courses') {
+            const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
+
+            if (result.statusCode === 0) {
+                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then((res) => {
+                    if (res.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
+            }
+        }
+    }, [data._id]);
 
     return (
         <tr>
@@ -146,9 +183,9 @@ function ListItem({ type, data }) {
                     {type === 'account' && <strong>{data.admin ? 'ADMIN' : 'USER'}</strong>}
 
                     {(type === 'posts' || type === 'video' || type === 'slide') && (
-                        <span className={`btn btn-sm btn-${data.status ? 'success' : 'danger'}`}>
+                        <Button variant={`${data.status ? 'success' : 'danger'}`} size="sm">
                             {data.status ? 'Bật' : 'Tắt'}
-                        </span>
+                        </Button>
                     )}
                 </div>
             </td>
@@ -159,20 +196,13 @@ function ListItem({ type, data }) {
                         {type === 'courses' && <strong>{numberTime}</strong>}
 
                         {type === 'account' && (
-                            <span className={`btn btn-sm btn-${data.status ? 'success' : 'danger'}`}>
+                            <Button variant={`${data.status ? 'success' : 'danger'}`} size="sm">
                                 {data.status ? 'Hoạt động' : 'Bị khóa'}
-                            </span>
+                            </Button>
                         )}
 
                         {(type === 'posts' || type === 'slide') && (
-                            <>
-                                <div className="text-center">
-                                    <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                                </div>
-                                <div className="text-center">
-                                    <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                                </div>
-                            </>
+                            <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />
                         )}
                     </div>
                 </td>
@@ -182,14 +212,14 @@ function ListItem({ type, data }) {
                 <td>
                     <div className="text-center">
                         {type === 'courses' && (
-                            <div className="text-center">
+                            <span className="text-center">
                                 <strong>{data.pro ? 'Pro' : 'Free'}</strong>
-                            </div>
+                            </span>
                         )}
                         {type === 'account' && (
-                            <span className={`btn btn-sm btn-${data.tick ? 'success' : 'danger'}`}>
+                            <Button variant={`${data.tick ? 'success' : 'danger'}`} size="sm">
                                 {data.tick ? 'Bật' : 'Tắt'}
-                            </span>
+                            </Button>
                         )}
                     </div>
                 </td>
@@ -199,19 +229,13 @@ function ListItem({ type, data }) {
                 <td>
                     <div className="text-center">
                         {type === 'courses' && (
-                            <span className={`btn btn-sm btn-${status ? 'success' : 'danger'}`}>
+                            <Button variant={`${status ? 'success' : 'danger'}`} size="sm">
                                 {status ? 'Bật' : 'Tắt'}
-                            </span>
+                            </Button>
                         )}
+
                         {(type === 'account' || type === 'video') && (
-                            <>
-                                <div className="text-center">
-                                    <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                                </div>
-                                <div className="text-center">
-                                    <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                                </div>
-                            </>
+                            <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />
                         )}
                     </div>
                 </td>
@@ -219,29 +243,41 @@ function ListItem({ type, data }) {
 
             {type === 'courses' && (
                 <td>
-                    <div className="text-center">
-                        <strong>{moment(data.createdAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                    </div>
-                    <div className="text-center">
-                        <strong>{moment(data.updatedAt).format('DD/MM/YYYY - hh:mm')}</strong>
-                    </div>
+                    <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />
                 </td>
             )}
 
             <td>
                 <div className="text-center">
-                    <Link>
-                        <span className="btn btn-success btn-sm" data-toggle="modal" data-target=".bd-example-modal-xl">
-                            <span className="text-white">Chi tiết</span>
-                        </span>
-                    </Link>
-                    <span className="btn btn-danger btn-sm ml-2">
-                        <span className="text-white">Xóa</span>
-                    </span>
+                    <Button variant="success" className="me-2" size="sm" onClick={() => setShowDetail(true)}>
+                        Chi tiết
+                    </Button>
+                    <Button onClick={() => setShow(true)} variant="danger" size="sm">
+                        Xóa
+                    </Button>
                 </div>
             </td>
+
+            <Modal show={show} onHide={() => setShow(false)} backdrop="static" keyboard={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Xác nhận xóa</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Delete: <strong>{data.name || data.title || data.metaTitle}</strong>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" size="sm" onClick={() => setShow(false)}>
+                        Đóng
+                    </Button>
+                    <Button title="Hành động không thể hoàn tác" size="sm" variant="danger" onClick={handleAgreeDelete}>
+                        Đồng ý
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {showDetail && <ModalDetail data={data} show={showDetail} setShow={setShowDetail} />}
         </tr>
     );
 }
 
-export default ListItem;
+export default TableItem;

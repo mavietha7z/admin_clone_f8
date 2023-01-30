@@ -1,20 +1,17 @@
-import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import Title from '~/components/Title';
-import ListItem from '~/components/ListItem';
+import TitleGlobal from '~/components/TitleGlobal';
+import TableItem from '~/components/TableItem';
+import { getBlogByType } from '~/services/apiBlog';
 import HeadingTable from '~/components/HeadingTable';
-import { getVideoByType } from '~/services/apiVideo';
 
-const MySwal = withReactContent(Swal);
-
-function VideoList() {
-    const [videos, setVideos] = useState([]);
+function Posts() {
+    const [posts, setPosts] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,12 +30,11 @@ function VideoList() {
         if (currentUser) {
             if (page) {
                 const fetchApi = async () => {
-                    const result = await getVideoByType(currentUser.accessToken, page);
+                    const result = await getBlogByType(currentUser.accessToken, page);
 
-                    if (result.data.statusCode === 0) {
-                        setVideos(result.data.data);
-                    } else {
-                        MySwal.fire('Lỗi', `${result.data.message}`, 'error');
+                    if (result.statusCode === 0) {
+                        setPosts(result.data);
+                        setTotalPages(result.totalPages);
                     }
                 };
                 fetchApi();
@@ -52,12 +48,11 @@ function VideoList() {
 
     return (
         <div className={'wrapper-global'}>
-            <div className={'header'}>
+            <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Danh sách khóa học" />
+                    <TitleGlobal name="Danh sách khóa học" />
                 </div>
             </div>
-
             <div className="content-global">
                 <div className="row">
                     <div className="col-12">
@@ -66,8 +61,9 @@ function VideoList() {
                                 <div className="col-md-6 float-right">
                                     <div className="float-right">
                                         <div className="input-group">
-                                            <select className="form-control">
-                                                <option value="order">Tiêu đề video</option>
+                                            <select name="type" className="form-control">
+                                                <option value="order">Tiêu đề bài viết</option>
+                                                <option value="order">Tác giả bài viết</option>
                                             </select>
                                             <input
                                                 type="text"
@@ -91,8 +87,8 @@ function VideoList() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <HeadingTable
                                                 headings={[
-                                                    { title: 'Tiêu đề video' },
-                                                    { title: 'Link youtube' },
+                                                    { title: 'Tiêu đề bài viết' },
+                                                    { title: 'Tác giả' },
                                                     { title: 'Trạng thái' },
                                                     { title: 'Ngày tạo / Cập nhật' },
                                                     { title: 'Hành động' },
@@ -100,8 +96,8 @@ function VideoList() {
                                             />
 
                                             <tbody>
-                                                {videos?.map((video) => (
-                                                    <ListItem key={video._id} type="video" data={video} />
+                                                {posts?.map((post) => (
+                                                    <TableItem key={post._id} type="posts" data={post} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -116,4 +112,4 @@ function VideoList() {
     );
 }
 
-export default VideoList;
+export default Posts;

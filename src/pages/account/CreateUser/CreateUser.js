@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -67,7 +67,7 @@ function CreateUser() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Tạo người dùng" />
+                    <TitleGlobal name="Tạo người dùng" />
                 </div>
             </div>
 

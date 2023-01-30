@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 import { createNewVideo, handleGetInfoVideo } from '~/services/apiVideo';
 
 import Swal from 'sweetalert2';
@@ -102,7 +102,7 @@ function CreateVideo() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Thêm video" />
+                    <TitleGlobal name="Thêm video" />
                 </div>
             </div>
 

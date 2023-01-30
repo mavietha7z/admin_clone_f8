@@ -6,8 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import Title from '~/components/Title';
-import ListItem from '~/components/ListItem';
+import TitleGlobal from '~/components/TitleGlobal';
+import TableItem from '~/components/TableItem';
 import HeadingTable from '~/components/HeadingTable';
 import { getAllSlideshow } from '~/services/slideshow';
 
@@ -54,7 +54,7 @@ function Slideshow() {
         <div className={'wrapper-global'}>
             <div className={'header'}>
                 <div className="row">
-                    <Title name="Danh sách khóa học" />
+                    <TitleGlobal name="Danh sách khóa học" />
                 </div>
             </div>
             <div className="content-global">
@@ -101,7 +101,7 @@ function Slideshow() {
 
                                             <tbody>
                                                 {slideshows.map((slideshow) => (
-                                                    <ListItem key={slideshow._id} type="slide" data={slideshow} />
+                                                    <TableItem key={slideshow._id} type="slide" data={slideshow} />
                                                 ))}
                                             </tbody>
                                         </table>

@@ -4,15 +4,15 @@ import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 import { getUserByType } from '~/services/apiAuth';
 import HeadingTable from '~/components/HeadingTable';
-import ListItem from '~/components/ListItem';
 import HeaderListUser from '~/components/HeaderListUser';
+import TableItem from '~/components/TableItem';
 
 const MySwal = withReactContent(Swal);
 
-function AccountList() {
+function Accounts() {
     const [users, setUsers] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -55,7 +55,7 @@ function AccountList() {
         <div className="wrapper-global">
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Người dùng" />
+                    <TitleGlobal name="Người dùng" />
                 </div>
             </div>
 
@@ -84,7 +84,7 @@ function AccountList() {
 
                                             <tbody>
                                                 {users.map((user) => (
-                                                    <ListItem key={user._id} type="account" data={user} />
+                                                    <TableItem key={user._id} type="account" data={user} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -122,4 +122,4 @@ function AccountList() {
     );
 }
 
-export default AccountList;
+export default Accounts;

@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 import CreateLesson from './CreateLesson';
 import CreateChapter from './CreateChapter';
 import ChapterItem from '~/components/ChapterItem';
@@ -35,7 +35,7 @@ function Chapter() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Chương & bài học" />
+                    <TitleGlobal name="Chương & bài học" />
                 </div>
             </div>
 

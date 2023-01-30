@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { getUserById, handleUpdateUser } from '~/services/apiAuth';
@@ -57,7 +57,7 @@ function EditUser() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Sửa người dùng" />
+                    <TitleGlobal name="Sửa người dùng" />
                 </div>
             </div>
 

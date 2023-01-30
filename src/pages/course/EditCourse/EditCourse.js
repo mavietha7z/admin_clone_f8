@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Title from '~/components/Title';
+import TitleGlobal from '~/components/TitleGlobal';
 
 function EditCourse() {
     const [inputCount, setInputCount] = useState(1);
@@ -26,7 +26,7 @@ function EditCourse() {
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
                 <div className="row">
-                    <Title name="Sửa khóa học" />
+                    <TitleGlobal name="Sửa khóa học" />
                 </div>
             </div>
 

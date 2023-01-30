@@ -67,11 +67,16 @@ export const registerNewUser = async (user) => {
     }
 };
 
-export const deleteUserById = async (userId, token) => {
+// Ok
+export const deleteUserByType = async (userId, type, token) => {
     try {
-        const res = await request.remove(`/user/${userId}`, {
+        const res = await request.remove(`/user/delete`, {
             headers: {
                 token: token,
+            },
+            params: {
+                type,
+                id: userId,
             },
         });
 
