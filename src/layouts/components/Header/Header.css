@@ -1,0 +1,75 @@
+.wrapper-header {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-icon-menu {
+    padding: 0 20px;
+    height: 34px;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.header-icon-menu:hover {
+    color: var(--back);
+}
+
+.header-icon-menu svg {
+    font-size: 1.6rem;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.header-title a {
+    margin-right: 20px;
+    padding: 14px 0;
+    cursor: pointer;
+    color: var(--gray);
+    transition: all 0.2s;
+}
+
+.title a:hover {
+    color: var(--back);
+}
+
+.header-profile {
+    margin-right: 20px;
+}
+
+.avt {
+    background: url('../../../assets/image/avt-admin.jpg') center center no-repeat;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+    background-size: cover;
+    width: 36px;
+    height: 36px;
+    margin-right: 20px;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.avt::after {
+    display: none !important;
+}
+
+.header-profile button {
+    text-align: left;
+}
+
+.header-profile svg {
+    margin-right: 6px;
+}
+
+.dropdown-text {
+    font-size: 1.4rem;
+}

@@ -1,0 +1,18 @@
+.content-crumb {
+    list-style: none;
+    display: flex;
+}
+
+.crumb-separate {
+    padding: 0 4px;
+    color: #6c757d;
+}
+
+.link-next {
+    color: #6c757d;
+}
+
+.link-next:hover {
+    color: #6c757d;
+    cursor: text;
+}

@@ -1,18 +1,16 @@
-import classNames from 'classnames/bind';
+import { Fragment } from 'react';
 import Header from '~/layouts/components/Header';
 import Footer from '~/layouts/components/Footer';
 import Sidebar from '~/layouts/components/Sidebar';
-import styles from './DefaultLayout.module.scss';
-
-const cx = classNames.bind(styles);
+import './DefaultLayout.css';
 
 function DefaultLayout({ children }) {
     return (
         <>
             <Sidebar />
-            <div className={cx('container')}>
+            <div className={'defaultLayout'}>
                 <Header />
-                <div className={cx('content')}>{children}</div>
+                <Fragment>{children}</Fragment>
                 <Footer />
             </div>
         </>

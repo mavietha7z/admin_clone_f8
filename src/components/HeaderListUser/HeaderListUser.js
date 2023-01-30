@@ -16,12 +16,6 @@ function HeaderListUser() {
                 <div className="card-tools ">
                     <div className="input-group input-group-sm dataTables_filter">
                         <div className="float-left" style={{ marginRight: 10 }}>
-                            <Link to="/users?role=">
-                                <button className="btn btn-info">
-                                    <FontAwesomeIcon icon={faClock} />
-                                    <span>Chờ xác thực</span>
-                                </button>
-                            </Link>
                             <Link to="/users?role=&group_user=&status=status0&type=&keyword=">
                                 <button className="btn btn-dark ml-3">
                                     <FontAwesomeIcon icon={faUsers} />

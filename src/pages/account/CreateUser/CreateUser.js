@@ -1,14 +1,9 @@
-import classNames from 'classnames/bind';
 import { useRef, useState } from 'react';
-import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import styles from '~/GlobalStyles.module.scss';
 import { handleSendEmail, registerNewUser } from '~/services/apiAuth';
-
-const cx = classNames.bind(styles);
 
 function CreateUser() {
     const [name, setName] = useState('');
@@ -22,7 +17,7 @@ function CreateUser() {
 
     const handleSendEmailVerify = async () => {
         const result = await handleSendEmail(email);
-        console.log('result: ', result);
+
         if (result.errCode === 0) {
             MySwal.fire('Thành công', `${result.message}`, 'success');
         } else {
@@ -69,23 +64,14 @@ function CreateUser() {
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Tạo người dùng" />
-                    <NavMenu
-                        nameHome="Tất cả"
-                        pathHome="/users"
-                        colorHome="warning"
-                        namePlus="Thêm mới"
-                        pathPlus="/users/create"
-                        colorPlus="success"
-                        float="float-right"
-                    />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="col-md-12">

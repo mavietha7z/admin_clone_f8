@@ -1,12 +1,9 @@
-import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-import styles from './Footer.module.scss';
-
-const cx = classNames.bind(styles);
+import './Footer.css';
 
 function Footer() {
     return (
-        <div className={cx('wrapper')}>
+        <div className={'wrapper-footer'}>
             <strong>
                 <span>Copyright © 2010-2022 </span>
                 <Link to="/">2CM Dev</Link>

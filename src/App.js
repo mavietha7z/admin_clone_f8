@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { privateRoutes } from './routes';
 import { refreshUser } from './services/apiAuth';
-import ModalDetail from './components/ModalDetail';
 import DefaultLayout from './layouts/DefaultLayout';
 
 function App() {
@@ -28,8 +27,6 @@ function App() {
 
     return (
         <div className="App">
-            <ModalDetail />
-
             <Router>
                 <Routes>
                     {privateRoutes.map((route, index) => {

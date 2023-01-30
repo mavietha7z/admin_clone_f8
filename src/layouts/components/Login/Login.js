@@ -1,9 +1,12 @@
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginAdmin } from '~/services/apiAuth';
 import withReactContent from 'sweetalert2-react-content';
+
+import { loginAdmin } from '~/services/apiAuth';
 
 const MySwal = withReactContent(Swal);
 
@@ -31,33 +34,30 @@ function Login() {
 
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
-            <div className="mb-5 row">
-                <div className="form-group col-8">
-                    <label>Email:</label>
-                    <input
+            <Form style={{ width: 400 }}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        placeholder="Enter email"
                         type="email"
-                        className="form-control"
-                        placeholder="Enter your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                </div>
-                <div className="form-group col-8">
-                    <label>Password:</label>
-                    <input
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
                         type="password"
-                        className="form-control"
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                </div>
-                <div className="form-group mb-5 col-8">
-                    <button type="submit" className="btn btn-success" onClick={handleLogin}>
-                        Đăng nhập
-                    </button>
-                </div>
-            </div>
+                </Form.Group>
+                <Button variant="primary" onClick={handleLogin} type="button">
+                    Đăng nhập
+                </Button>
+            </Form>
         </div>
     );
 }

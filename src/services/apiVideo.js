@@ -24,7 +24,6 @@ export const handleGetInfoVideo = async (uidVideo) => {
             };
         }
     } catch (error) {
-        console.log('error: ', error);
         return {
             errCode: 2,
         };

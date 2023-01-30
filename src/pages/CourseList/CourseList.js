@@ -1,20 +1,20 @@
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
+import withReactContent from 'sweetalert2-react-content';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import Title from '~/components/Title';
 import ListItem from '~/components/ListItem';
 import HeadingTable from '~/components/HeadingTable';
-import { getAllSlideshow } from '~/services/slideshow';
+import { getCourseByType } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
 
-function Slideshow() {
-    const [slideshows, setSlideshows] = useState([]);
+function CourseList() {
+    const [courses, setCourses] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,12 +33,12 @@ function Slideshow() {
         if (currentUser) {
             if (type) {
                 const fetchApi = async () => {
-                    const result = await getAllSlideshow(currentUser.accessToken, type);
+                    const result = await getCourseByType(currentUser.accessToken, type);
 
                     if (result.statusCode === 0) {
-                        setSlideshows(result.data);
+                        setCourses(result.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu slideshow'}`, 'error');
+                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
                     }
                 };
                 fetchApi();
@@ -52,7 +52,7 @@ function Slideshow() {
 
     return (
         <div className={'wrapper-global'}>
-            <div className={'header'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Danh sách khóa học" />
                 </div>
@@ -62,23 +62,23 @@ function Slideshow() {
                     <div className="col-12">
                         <div className="card">
                             <div className={'card-header bg-white'}>
-                                <div className="col-md-6 float-right">
-                                    <div className="float-right">
-                                        <div className="input-group">
-                                            <select name="type" className="form-control">
-                                                <option value="order">Tên slideshow</option>
-                                            </select>
-                                            <input
-                                                type="text"
-                                                name="keyword"
-                                                className="form-control"
-                                                placeholder="Search"
-                                            />
-                                            <div className="input-group-append">
-                                                <button type="submit" className="btn btn-warning">
-                                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                                </button>
-                                            </div>
+                                <div className="col-md-3 float-end">
+                                    <div className="input-group">
+                                        <select name="type" className="form-control">
+                                            <option value="order">-- Tên khóa học --</option>
+                                            <option value="order">-- Khóa học Pro --</option>
+                                            <option value="order">-- Tên miễn phí --</option>
+                                        </select>
+                                        <input
+                                            type="text"
+                                            name="keyword"
+                                            className="form-control"
+                                            placeholder="Search"
+                                        />
+                                        <div className="input-group-append">
+                                            <button type="submit" className="btn btn-warning">
+                                                <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -90,9 +90,12 @@ function Slideshow() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <HeadingTable
                                                 headings={[
-                                                    { title: 'Tiêu đề' },
-                                                    { title: 'Ảnh' },
-                                                    { title: 'Mô tả' },
+                                                    { title: 'Tên khóa học' },
+                                                    { title: 'Ảnh xem trước' },
+                                                    { title: 'Chương' },
+                                                    { title: 'Bài học' },
+                                                    { title: 'Thời lượng' },
+                                                    { title: 'Loại' },
                                                     { title: 'Trạng thái' },
                                                     { title: 'Ngày tạo / Cập nhật' },
                                                     { title: 'Hành động' },
@@ -100,8 +103,8 @@ function Slideshow() {
                                             />
 
                                             <tbody>
-                                                {slideshows.map((slideshow) => (
-                                                    <ListItem key={slideshow._id} type="slide" data={slideshow} />
+                                                {courses.map((course) => (
+                                                    <ListItem key={course._id} type="courses" data={course} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -116,4 +119,4 @@ function Slideshow() {
     );
 }
 
-export default Slideshow;
+export default CourseList;

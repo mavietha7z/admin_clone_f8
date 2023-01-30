@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import classNames from 'classnames/bind';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from '~/components/Title';
-
-import styles from '~/GlobalStyles.module.scss';
-
-const cx = classNames.bind(styles);
 
 function EditCourse() {
     const [inputCount, setInputCount] = useState(1);
@@ -28,14 +23,14 @@ function EditCourse() {
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Sửa khóa học" />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="col-12">

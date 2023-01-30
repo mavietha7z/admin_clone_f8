@@ -1,85 +1,58 @@
-import { faBars, faMagnifyingGlass, faRightFromBracket, faUserPen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames/bind';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate } from 'react-router-dom';
-import { logoutAdmin } from '~/services/apiAuth';
-import styles from './Header.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import withReactContent from 'sweetalert2-react-content';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-const cx = classNames.bind(styles);
+import { logoutAdmin } from '~/services/apiAuth';
+import './Header.css';
+
+const MySwal = withReactContent(Swal);
 
 function Header() {
-    const [left, setLeft] = useState(false);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const user = useSelector((state) => state.auth.login.currentUser);
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
 
-    const id = user?._id;
-    const accessToken = user?.accessToken;
+    const handleLogout = async () => {
+        const result = await logoutAdmin(dispatch, currentUser.accessToken);
 
-    const handleLeft = () => {
-        setLeft(!left);
-    };
-
-    const handleLogoutAdmin = async () => {
-        await logoutAdmin(dispatch, id, navigate, accessToken);
+        if (result.statusCode === 0) {
+            navigate('/login');
+            MySwal.fire('Thành công', 'Đăng xuất thành công', 'success');
+        } else {
+            MySwal.fire('Lỗi', `${result.message || 'Đăng xuất thất bại'}`, 'error');
+        }
     };
 
     return (
-        <div className={left ? cx('wrapper', 'active') : cx('wrapper')}>
-            <nav className={cx('header-nav')}>
-                <div className={cx('nav-left')}>
-                    <div className={cx('icon-menu')} onClick={() => handleLeft()}>
-                        <FontAwesomeIcon icon={faBars} />
-                    </div>
-                    <div className={cx('title')}>
-                        <Link to="/">Trang chủ</Link>
-                    </div>
-                    <div className={cx('title')}>
-                        <Link to="/orders">Thanh toán</Link>
-                    </div>
-                    <form action="" className="form-inline" method="GET">
-                        <div className={cx('input-group', 'input')}>
-                            <input
-                                className="form-control"
-                                type="search"
-                                placeholder="Nhập mã đơn hàng"
-                                style={{ height: 28 }}
-                            />
-                            <div className="input-group-append">
-                                <button className="btn btn-navbar" type="submit">
-                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+        <div className={'wrapper-header'}>
+            <div className={'header-left'}>
+                <div className={'header-icon-menu'}>
+                    <FontAwesomeIcon icon={faBars} />
                 </div>
+                <div className={'header-title'}>
+                    <Link to="/">Trang chủ</Link>
+                </div>
+            </div>
 
-                <div className={cx('profile')}>
-                    <div className="btn-group">
-                        <div className={cx('avt')} data-toggle="dropdown" aria-expanded="false"></div>
-                        <div className={cx('dropdown-menu', 'dropdown-menu-right', 'menu-dropdown')}>
-                            <button className={cx('btn dropdown-item', 'btn-drop')} type="button">
-                                <Link to={`/users/edit/${user?._id}`}>
-                                    <FontAwesomeIcon icon={faUserPen} className={cx('icon-drop')} />
-                                    <span className="text">Sửa thông tin</span>
-                                </Link>
+            <div className="header-profile">
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className="avt"></Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item>
+                            <button className="btn btn-sm w-100" type="button" onClick={handleLogout}>
+                                <FontAwesomeIcon icon={faRightFromBracket} className={'icon-drop'} />
+                                <span className="dropdown-text">Đăng xuất</span>
                             </button>
-                            <button
-                                className={cx('btn dropdown-item', 'btn-drop')}
-                                type="button"
-                                onClick={handleLogoutAdmin}
-                            >
-                                <FontAwesomeIcon icon={faRightFromBracket} className={cx('icon-drop')} />
-                                <span>Thoát</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
         </div>
     );
 }

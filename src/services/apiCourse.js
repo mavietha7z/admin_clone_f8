@@ -62,7 +62,6 @@ export const createNewChapter = async (newChapter, token) => {
                 token,
             },
         });
-        console.log('res: ', res);
         return res.data;
     } catch (error) {
         return error.response.data;

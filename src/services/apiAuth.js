@@ -18,7 +18,7 @@ export const loginAdmin = async (user, dispatch) => {
 };
 
 // Ok
-export const logoutAdmin = async (dispatch, id, navigate, token) => {
+export const logoutAdmin = async (dispatch, token) => {
     try {
         const res = await request.post(
             '/auth/logout',
@@ -31,7 +31,6 @@ export const logoutAdmin = async (dispatch, id, navigate, token) => {
         );
 
         dispatch(logoutSuccess());
-        navigate('/login');
         return res;
     } catch (error) {
         return error.response.data;

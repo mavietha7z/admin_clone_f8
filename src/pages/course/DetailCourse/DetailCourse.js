@@ -1,21 +1,17 @@
-import classNames from 'classnames/bind';
 import Title from '~/components/Title';
 
-import styles from '~/GlobalStyles.module.scss';
 import { Link } from 'react-router-dom';
-
-const cx = classNames.bind(styles);
 
 function DetailCourse() {
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Thông tin chi tiết" />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="col-12">

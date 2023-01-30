@@ -9,36 +9,36 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Title from '~/components/Title';
 import ListItem from '~/components/ListItem';
 import HeadingTable from '~/components/HeadingTable';
-import { getAllSlideshow } from '~/services/slideshow';
+import { getVideoByType } from '~/services/apiVideo';
 
 const MySwal = withReactContent(Swal);
 
-function Slideshow() {
-    const [slideshows, setSlideshows] = useState([]);
+function VideoList() {
+    const [videos, setVideos] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const type = new URLSearchParams(location.search).get('type');
+    const page = new URLSearchParams(location.search).get('page');
 
     useEffect(() => {
-        if (!type) {
-            navigate(`${location.pathname}?type=all`);
+        if (!page) {
+            navigate(`${location.pathname}?page=1`);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+    }, [page]);
 
     useEffect(() => {
         if (currentUser) {
-            if (type) {
+            if (page) {
                 const fetchApi = async () => {
-                    const result = await getAllSlideshow(currentUser.accessToken, type);
+                    const result = await getVideoByType(currentUser.accessToken, page);
 
-                    if (result.statusCode === 0) {
-                        setSlideshows(result.data);
+                    if (result.data.statusCode === 0) {
+                        setVideos(result.data.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu slideshow'}`, 'error');
+                        MySwal.fire('Lỗi', `${result.data.message}`, 'error');
                     }
                 };
                 fetchApi();
@@ -48,7 +48,7 @@ function Slideshow() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+    }, [page]);
 
     return (
         <div className={'wrapper-global'}>
@@ -57,6 +57,7 @@ function Slideshow() {
                     <Title name="Danh sách khóa học" />
                 </div>
             </div>
+
             <div className="content-global">
                 <div className="row">
                     <div className="col-12">
@@ -65,8 +66,8 @@ function Slideshow() {
                                 <div className="col-md-6 float-right">
                                     <div className="float-right">
                                         <div className="input-group">
-                                            <select name="type" className="form-control">
-                                                <option value="order">Tên slideshow</option>
+                                            <select className="form-control">
+                                                <option value="order">Tiêu đề video</option>
                                             </select>
                                             <input
                                                 type="text"
@@ -90,9 +91,8 @@ function Slideshow() {
                                         <table id="example1" className="table table-bordered table-striped dataTable">
                                             <HeadingTable
                                                 headings={[
-                                                    { title: 'Tiêu đề' },
-                                                    { title: 'Ảnh' },
-                                                    { title: 'Mô tả' },
+                                                    { title: 'Tiêu đề video' },
+                                                    { title: 'Link youtube' },
                                                     { title: 'Trạng thái' },
                                                     { title: 'Ngày tạo / Cập nhật' },
                                                     { title: 'Hành động' },
@@ -100,8 +100,8 @@ function Slideshow() {
                                             />
 
                                             <tbody>
-                                                {slideshows.map((slideshow) => (
-                                                    <ListItem key={slideshow._id} type="slide" data={slideshow} />
+                                                {videos?.map((video) => (
+                                                    <ListItem key={video._id} type="video" data={video} />
                                                 ))}
                                             </tbody>
                                         </table>
@@ -116,4 +116,4 @@ function Slideshow() {
     );
 }
 
-export default Slideshow;
+export default VideoList;

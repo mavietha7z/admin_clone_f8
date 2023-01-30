@@ -1,18 +1,12 @@
-import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Title from '~/components/Title';
 import CreateLesson from './CreateLesson';
-import NavMenu from '~/components/NavMenu';
 import CreateChapter from './CreateChapter';
 import ChapterItem from '~/components/ChapterItem';
 import { getCourseByType } from '~/services/apiCourse';
-
-import styles from '~/GlobalStyles.module.scss';
-
-const cx = classNames.bind(styles);
 
 function Chapter() {
     const [course, setCourse] = useState(null);
@@ -38,20 +32,18 @@ function Chapter() {
     }, [id]);
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Chương & bài học" />
-
-                    <NavMenu nameHome="Trang chủ" pathHome="/course" colorHome="warning" float="float-right" />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <div className={cx('card-header', 'bg-white', 'header-card')}>
+                            <div className={'card-header bg-white'}>
                                 <div className="col-md-6 float-left">
                                     <h2 className="mb-0 mt-2">
                                         {!course ? 'Khóa học này không tồn tại' : course?.title}

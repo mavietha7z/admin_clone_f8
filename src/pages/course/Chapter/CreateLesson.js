@@ -70,7 +70,6 @@ function CreateLesson({ courseId, chapters }) {
                     descHTML: descHTML,
                     descMarkdown: descMarkdown,
                 };
-                console.log('newLesson: ', newLesson);
 
                 const result = await createNewLesson(newLesson, currentUser.accessToken);
                 if (result.errCode === 0) {
@@ -97,7 +96,6 @@ function CreateLesson({ courseId, chapters }) {
                     MySwal.fire('Thành công', 'Lấy dữ liệu video thành công', 'success');
 
                     result.data.map((item) => {
-                        console.log('item: ', item);
                         setNameLesson(item.snippet.title);
                         setTimeVideo(item.contentDetails.duration);
                         setThumbNail(item.snippet.thumbnails.maxres.url);

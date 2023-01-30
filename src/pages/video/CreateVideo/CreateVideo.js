@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import classNames from 'classnames/bind';
-import NavMenu from '~/components/NavMenu';
 import Title from '~/components/Title';
-import styles from '~/GlobalStyles.module.scss';
 import { createNewVideo, handleGetInfoVideo } from '~/services/apiVideo';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-const cx = classNames.bind(styles);
 
 function CreateVideo() {
     const [dataVideo, setDataVideo] = useState([]);
@@ -104,24 +99,14 @@ function CreateVideo() {
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Thêm video" />
-
-                    <NavMenu
-                        nameHome="Trang chủ"
-                        pathHome="/video"
-                        colorHome="warning"
-                        namePlus="Thêm mới"
-                        pathPlus="/video/create"
-                        colorPlus="success"
-                        float="float-right"
-                    />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="card">

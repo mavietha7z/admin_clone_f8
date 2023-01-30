@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2';
-import classNames from 'classnames/bind';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Fragment, useRef, useState } from 'react';
@@ -8,14 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 import Title from '~/components/Title';
-import NavMenu from '~/components/NavMenu';
 import FileControl from '~/components/FileControl';
 import { createCourse } from '~/services/apiCourse';
 import InputControl from '~/components/InputControl';
-
-import styles from '~/GlobalStyles.module.scss';
-
-const cx = classNames.bind(styles);
 
 const MySwal = withReactContent(Swal);
 
@@ -96,24 +90,14 @@ function CreateCourse() {
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
+        <div className={'wrapper-global'}>
+            <div className={'header-global'}>
                 <div className="row">
                     <Title name="Thêm khóa học" />
-
-                    <NavMenu
-                        nameHome="Tất cả"
-                        pathHome="/course"
-                        colorHome="warning"
-                        namePlus="Thêm mới"
-                        pathPlus="/course/create"
-                        colorPlus="success"
-                        float="float-right"
-                    />
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className="content-global">
                 <div className="row">
                     <div className="col-12">
                         <div className="col-12">
@@ -217,10 +201,7 @@ function CreateCourse() {
                                                         />
                                                         {inputCount > 1 && (
                                                             <FontAwesomeIcon
-                                                                className={cx(
-                                                                    'btn btn-danger float-right',
-                                                                    'removeInput'
-                                                                )}
+                                                                className={'btn btn-danger float-right remove-input'}
                                                                 onClick={() => setInputCount(inputCount - 1)}
                                                                 icon={faCircleMinus}
                                                                 title="Xóa ô input này"
