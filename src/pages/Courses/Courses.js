@@ -10,6 +10,8 @@ import HeadingTable from '~/components/HeadingTable';
 import { getCourseByType } from '~/services/apiCourse';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import ModalCreateCourse from '~/components/ModalCreateCourse';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 const MySwal = withReactContent(Swal);
 
@@ -58,8 +60,9 @@ function Courses() {
                     <TitleGlobal name="Danh sách khóa học" />
 
                     <Col sm={7}>
-                        <Button className="float-end mt-5" variant="success" size="sm" onClick={() => setShow(true)}>
+                        <Button className="float-end mt-5" variant="success" size="xl" onClick={() => setShow(true)}>
                             Thêm mới
+                            <FontAwesomeIcon className="ms-2" icon={faCirclePlus} />
                         </Button>
 
                         <ModalCreateCourse show={show} setShow={setShow} />

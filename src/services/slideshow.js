@@ -16,3 +16,17 @@ export const getAllSlideshow = async (token, type) => {
         return error.response.data;
     }
 };
+
+export const uploadImage = async (file, token) => {
+    try {
+        const res = await request.post('/upload/image', file, {
+            headers: {
+                token,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};

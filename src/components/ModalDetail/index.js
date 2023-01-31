@@ -1,7 +1,80 @@
-import { Button, Modal, Table } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import withReactContent from 'sweetalert2-react-content';
+import { Button, Form, Modal, Table } from 'react-bootstrap';
+
 import HeadingTable from '../HeadingTable';
+import { uploadImage } from '~/services/slideshow';
+import { updateCourse } from '~/services/apiCourse';
+
+const MySwal = withReactContent(Swal);
 
 function ModalDetail({ data, show, setShow }) {
+    const [title, setTitle] = useState(data.title);
+    const [image, setImage] = useState(data.image);
+    const [icon, setIcon] = useState(data.icon);
+    const [comingSoon, setComingSoon] = useState(() => (data.comingSoon ? '1' : '0'));
+    const [preOrder, setPreOrder] = useState(() => (data.preOrder ? '1' : '0'));
+    const [pro, setPro] = useState(() => (data.pro ? '1' : '0'));
+    const [published, setPublished] = useState(() => (data.published ? '1' : '0'));
+    const [priority, setPriority] = useState(data.priority);
+    const [slug, setSlug] = useState(data.slug);
+    const [video, setVideo] = useState(data.video);
+    const [price, setPrice] = useState(data.price);
+    const [oldPrice, setOldPrice] = useState(data.oldPrice);
+    const [preOrderPrice, setPreOrderPrice] = useState(data.preOrderPrice);
+    const [description, setDescription] = useState(data.description);
+
+    const imageRef = useRef();
+    const iconRef = useRef();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    const handleUpdateCourse = async () => {
+        let formData = new FormData();
+        formData.append('title', title);
+        formData.append('image', image);
+        formData.append('icon', icon);
+        formData.append('comingSoon', comingSoon);
+        formData.append('preOrder', preOrder);
+        formData.append('pro', pro);
+        formData.append('published', published);
+        formData.append('priority', priority);
+        formData.append('slug', slug);
+        formData.append('video', video);
+        formData.append('price', price);
+        formData.append('oldPrice', oldPrice);
+        formData.append('preOrderPrice', preOrderPrice);
+        formData.append('description', description);
+
+        const result = await updateCourse(currentUser.accessToken, formData, data._id);
+
+        if (result.statusCode === 0) {
+            MySwal.fire('Thành công', result.message, 'success').then(
+                (res) => res.isConfirmed && window.location.reload()
+            );
+        } else {
+            MySwal.fire('Thất bại', result.message, 'error');
+        }
+    };
+
+    const handleGetUrlImage = async (e, type) => {
+        let formData = new FormData();
+        formData.append('image', e.target.files[0]);
+
+        const result = await uploadImage(formData, currentUser.accessToken);
+
+        if (result.statusCode === 0) {
+            if (type === 'image') {
+                setImage(result.data.urlImage);
+            } else {
+                setIcon(result.data.urlImage);
+            }
+        } else {
+            MySwal.fire('Thất bại', result.message || 'Lỗi lấy url ảnh', 'error');
+        }
+    };
+
     return (
         <Modal size="xl" show={show} onHide={() => setShow(false)} aria-labelledby="modal-styling">
             <Modal.Header closeButton>
@@ -10,36 +83,236 @@ function ModalDetail({ data, show, setShow }) {
             <Modal.Body>
                 <Table striped bordered>
                     <HeadingTable
-                        headings={[
-                            { title: 'Sắp có' },
-                            { title: 'Giá hiện tại' },
-                            { title: 'Giá cũ' },
-                            { title: 'Giá đặt trước' },
-                            { title: 'Sự ưu tiên' },
-                            { title: 'Phát hành' },
-                            { title: 'Slug' },
-                            { title: 'URL video' },
-                        ]}
+                        headings={[{ title: 'Tên mô tả' }, { title: 'Giá trị hiện tại' }, { title: 'Hành động' }]}
                     />
 
                     <tbody>
                         <tr>
-                            <td className="text-center">{data.comingSoon ? 'Sắp có' : 'Không'}</td>
-                            <td className="text-center">{data.price.toLocaleString()}đ</td>
-                            <td className="text-center">{data.oldPrice.toLocaleString()}đ</td>
-                            <td className="text-center">{data.preOrderPrice.toLocaleString()}đ</td>
-                            <td className="text-center">{data.priority}</td>
-                            <td className="text-center">{data.published ? 'Đã phát hành' : 'Chưa phát hành'}</td>
-                            <td className="text-center">{data.slug}</td>
+                            <td className="text-center">Tên</td>
                             <td className="text-center">
-                                <a href={`https://youtu.be/${data.video}`}>{data.video}</a>
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Tên khóa học"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Ảnh nền</td>
+                            <td className="text-center">
+                                <img
+                                    className="ms-4 mb-4"
+                                    src={image}
+                                    alt="Preview"
+                                    style={{
+                                        width: '140px',
+                                        height: 'auto',
+                                        borderRadius: 4,
+                                    }}
+                                />
+                            </td>
+                            <td className="text-center">
+                                <Button variant="success" size="sm" onClick={() => imageRef.current.click()}>
+                                    Chọn ảnh
+                                </Button>
+                                <Form.Control
+                                    ref={imageRef}
+                                    onChange={(e) => handleGetUrlImage(e, 'image')}
+                                    type="file"
+                                    hidden
+                                />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Icon</td>
+                            <td className="text-center">
+                                <img
+                                    className="ms-4 mb-4"
+                                    src={icon}
+                                    alt="Preview"
+                                    style={{
+                                        width: '40px',
+                                        height: 'auto',
+                                        borderRadius: 4,
+                                    }}
+                                />
+                            </td>
+                            <td className="text-center">
+                                <Button variant="success" size="sm" onClick={() => iconRef.current.click()}>
+                                    Chọn ảnh
+                                </Button>
+                                <Form.Control
+                                    ref={iconRef}
+                                    onChange={(e) => handleGetUrlImage(e, 'icon')}
+                                    type="file"
+                                    hidden
+                                />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Sắp có</td>
+                            <td className="text-center">
+                                <select
+                                    className="form-control"
+                                    value={comingSoon}
+                                    onChange={(e) => setComingSoon(e.target.value)}
+                                >
+                                    <option value="0">Đã có</option>
+                                    <option value="1">Sắp có</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Đặt trước</td>
+                            <td className="text-center">
+                                <select
+                                    className="form-control"
+                                    value={preOrder}
+                                    onChange={(e) => setPreOrder(e.target.value)}
+                                >
+                                    <option value="0">Không</option>
+                                    <option value="1">Có</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Loại</td>
+                            <td className="text-center">
+                                <select className="form-control" value={pro} onChange={(e) => setPro(e.target.value)}>
+                                    <option value="0">Miễn phí</option>
+                                    <option value="1">Pro</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Phát hành</td>
+                            <td className="text-center">
+                                <select
+                                    className="form-control"
+                                    value={published}
+                                    onChange={(e) => setPublished(e.target.value)}
+                                >
+                                    <option value="1">Đã phát hành</option>
+                                    <option value="0">Chưa phát hành</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Sự ưu tiên</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Sự ưu tiên khóa học khi hiển thị"
+                                        value={priority}
+                                        onChange={(e) => setPriority(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Slug</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Slug khóa học"
+                                        value={slug}
+                                        onChange={(e) => setSlug(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">URL video giới thiệu</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Slug khóa học"
+                                        value={video}
+                                        onChange={(e) => setVideo(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Giá hiện tại</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Slug khóa học"
+                                        value={price}
+                                        onChange={(e) => setPrice(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Giá cũ</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Slug khóa học"
+                                        value={oldPrice}
+                                        onChange={(e) => setOldPrice(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Giá đặt trước</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Slug khóa học"
+                                        value={preOrderPrice}
+                                        onChange={(e) => setPreOrderPrice(e.target.value)}
+                                    />
+                                </Form.Group>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td className="text-center">Mô tả</td>
+                            <td className="text-center">
+                                <Form.Group>
+                                    <Form.Control
+                                        as="textarea"
+                                        placeholder="Mô tả khóa học"
+                                        style={{ height: '80px' }}
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </Form.Group>
                             </td>
                         </tr>
                     </tbody>
                 </Table>
 
-                <Button className="float-end" size="sm">
-                    Sửa
+                <Button className="float-end ms-2" size="sm" onClick={handleUpdateCourse}>
+                    Lưu
+                </Button>
+                <Button variant="secondary" className="float-end" size="sm">
+                    Đóng
                 </Button>
             </Modal.Body>
         </Modal>

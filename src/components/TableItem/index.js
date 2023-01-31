@@ -1,15 +1,15 @@
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 
-import { toggleStatusCourse } from '~/services/apiCourse';
 import { deleteUserByType } from '~/services/apiAuth';
-import { Button, Modal, Table } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import RenderDate from '../RenderDate';
 import ModalDetail from '../ModalDetail';
+import StatusItem from '../StatusItem';
+import { deleteCourse } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
 
@@ -19,10 +19,8 @@ function TableItem({ type, data }) {
     const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
     const [numberChapter, setNumberChapter] = useState(0);
-    const [status, setStatus] = useState(false);
     const [numberTime, setNumberTime] = useState('');
 
-    const navigate = useNavigate();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     // Chuyển định dạng thời gian
@@ -39,6 +37,8 @@ function TableItem({ type, data }) {
             });
             return moment.utc(totalTime * 1000).format('HH : mm : ss');
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data.chapter]);
 
     // Tính số bài trong khóa học
@@ -51,6 +51,8 @@ function TableItem({ type, data }) {
             }
             return count;
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data.chapter]);
 
     useEffect(() => {
@@ -58,27 +60,10 @@ function TableItem({ type, data }) {
             setNumberLesson(countLesson);
             setNumberChapter(data.chapter.length);
             setNumberTime(formattedTime);
-            setStatus(data.status);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [type, countLesson, formattedTime, data.status]);
-
-    const handleStatus = useCallback(async () => {
-        if (currentUser) {
-            const result = await toggleStatusCourse(data._id, currentUser.accessToken);
-
-            if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            } else {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
-            }
-        } else {
-            navigate('/login');
-        }
-    }, [data._id, currentUser]);
 
     const handleAgreeDelete = useCallback(async () => {
         setShow(false);
@@ -87,27 +72,25 @@ function TableItem({ type, data }) {
             const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
+                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then(
+                    (res) => res.isConfirmed && window.location.reload()
+                );
             } else {
                 MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
             }
         } else if (type === 'courses') {
-            const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
+            const result = await deleteCourse(data._id, currentUser.accessToken, 'uid');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
+                MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success').then(
+                    (res) => res.isConfirmed && window.location.reload()
+                );
             } else {
                 MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
             }
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data._id]);
 
     return (
@@ -183,9 +166,7 @@ function TableItem({ type, data }) {
                     {type === 'account' && <strong>{data.admin ? 'ADMIN' : 'USER'}</strong>}
 
                     {(type === 'posts' || type === 'video' || type === 'slide') && (
-                        <Button variant={`${data.status ? 'success' : 'danger'}`} size="sm">
-                            {data.status ? 'Bật' : 'Tắt'}
-                        </Button>
+                        <StatusItem type={type} data={data} />
                     )}
                 </div>
             </td>
@@ -195,11 +176,7 @@ function TableItem({ type, data }) {
                     <div className="text-center">
                         {type === 'courses' && <strong>{numberTime}</strong>}
 
-                        {type === 'account' && (
-                            <Button variant={`${data.status ? 'success' : 'danger'}`} size="sm">
-                                {data.status ? 'Hoạt động' : 'Bị khóa'}
-                            </Button>
-                        )}
+                        {type === 'account' && <StatusItem type={type} data={data} />}
 
                         {(type === 'posts' || type === 'slide') && (
                             <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />
@@ -228,11 +205,7 @@ function TableItem({ type, data }) {
             {type !== 'posts' && type !== 'slide' && (
                 <td>
                     <div className="text-center">
-                        {type === 'courses' && (
-                            <Button variant={`${status ? 'success' : 'danger'}`} size="sm">
-                                {status ? 'Bật' : 'Tắt'}
-                            </Button>
-                        )}
+                        {type === 'courses' && <StatusItem type={type} data={data} />}
 
                         {(type === 'account' || type === 'video') && (
                             <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />

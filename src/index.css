@@ -256,11 +256,7 @@ small {
 
 .remove-input {
     display: inline-block;
-    margin-top: 4px;
-}
-
-.remove-input:nth-child(1) {
-    display: none;
+    margin-top: 6px;
 }
 
 .home-box {

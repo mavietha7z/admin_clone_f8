@@ -19,11 +19,9 @@ function CreateChapter({ courseId }) {
             const result = await createNewChapter(newChapter, currentUser.accessToken);
 
             if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
+                MySwal.fire('Thành công', `${result.message}`, 'success').then(
+                    (res) => res.isConfirmed && window.location.reload()
+                );
             } else {
                 MySwal.fire('Lỗi', `${result.message}`, 'error');
             }
