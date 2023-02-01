@@ -38,7 +38,7 @@ function Slideshow() {
                     if (result.statusCode === 0) {
                         setSlideshows(result.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu slideshow'}`, 'error');
+                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu slideshow', 'error');
                     }
                 };
                 fetchApi();

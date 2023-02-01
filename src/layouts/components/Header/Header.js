@@ -22,9 +22,9 @@ function Header() {
 
         if (result.statusCode === 0) {
             navigate('/login');
-            MySwal.fire('Thành công', 'Đăng xuất thành công', 'success');
+            window.location.reload();
         } else {
-            MySwal.fire('Lỗi', `${result.message || 'Đăng xuất thất bại'}`, 'error');
+            MySwal.fire('Lỗi', result.message, 'error');
         }
     };
 

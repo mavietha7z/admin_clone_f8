@@ -26,9 +26,10 @@ function Login() {
 
         if (result.statusCode === 0) {
             navigate('/');
-            MySwal.fire('Thành công', `${result.message}`, 'success');
+            (await MySwal.fire('Thành công', 'Đăng nhập thành công', 'success')).isConfirmed &&
+                window.location.reload();
         } else {
-            MySwal.fire('Lỗi', `${result.message || 'Lỗi kết nỗi database'}`, 'error');
+            MySwal.fire('Lỗi', result.message || 'Lỗi kết nỗi database', 'error');
         }
     };
 

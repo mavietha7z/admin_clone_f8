@@ -38,7 +38,7 @@ function Videos() {
                     if (result.data.statusCode === 0) {
                         setVideos(result.data.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.data.message}`, 'error');
+                        MySwal.fire('Lỗi', result.data.message, 'error');
                     }
                 };
                 fetchApi();

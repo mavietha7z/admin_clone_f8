@@ -62,7 +62,7 @@ function CreateVideo() {
 
                 setDataVideo(result.data);
             } else if (result.errCode === 1) {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
+                MySwal.fire('Lỗi', result.message, 'error');
             } else {
                 MySwal.fire('Lỗi', 'Lấy video thất bại', 'error');
             }
@@ -85,11 +85,7 @@ function CreateVideo() {
             const result = await createNewVideo(newVideo, currentUser.accessToken);
 
             if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
-                    if (res.isConfirmed) {
-                        navigate('/video');
-                    }
-                });
+                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && navigate('/video');
             } else {
                 MySwal.fire('Lỗi', 'Thêm video thất bại', 'error');
             }

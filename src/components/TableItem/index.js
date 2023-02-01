@@ -1,20 +1,23 @@
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Card } from 'react-bootstrap';
 import withReactContent from 'sweetalert2-react-content';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { deleteUserByType } from '~/services/apiAuth';
-import { Button, Modal } from 'react-bootstrap';
 import RenderDate from '../RenderDate';
-import ModalDetail from '../ModalDetail';
 import StatusItem from '../StatusItem';
+import ModalDetail from '../ModalDetail';
 import { deleteCourse } from '~/services/apiCourse';
+import { deleteUserByType } from '~/services/apiAuth';
+import ModalChapter from '../ModalChapter/ModalChapter';
+import ModalDelete from '../ModalDelete';
 
 const MySwal = withReactContent(Swal);
 
 function TableItem({ type, data }) {
     const [showDetail, setShowDetail] = useState(false);
+    const [showChapter, setShowChapter] = useState(false);
 
     const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
@@ -72,21 +75,19 @@ function TableItem({ type, data }) {
             const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
             } else {
-                MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
+                MySwal.fire('Thất bại', result.message, 'error');
             }
         } else if (type === 'courses') {
             const result = await deleteCourse(data._id, currentUser.accessToken, 'uid');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
             } else {
-                MySwal.fire('Thất bại', `${result.message || 'Lỗi xóa người dùng'}`, 'error');
+                MySwal.fire('Thất bại', result.message, 'error');
             }
         }
 
@@ -118,15 +119,9 @@ function TableItem({ type, data }) {
             {(type === 'courses' || type === 'slide') && (
                 <td>
                     <div className="text-center">
-                        <img
-                            src={data.image}
-                            alt={data.title}
-                            style={{
-                                width: '160px',
-                                height: 'auto',
-                                borderRadius: 4,
-                            }}
-                        />
+                        <Card style={{ width: '18rem', margin: '0 auto' }}>
+                            <Card.Img src={data.image} />
+                        </Card>
                     </div>
                 </td>
             )}
@@ -135,13 +130,19 @@ function TableItem({ type, data }) {
                 {type !== 'slide' ? (
                     <div className="text-center">
                         {type !== 'video' ? (
-                            <strong>
-                                {type === 'courses'
-                                    ? numberLesson
-                                    : type === 'account'
-                                    ? data.email
-                                    : data.author?.name}
-                            </strong>
+                            <Fragment>
+                                <strong>{type === 'account' ? data.email : data.author?.name}</strong>
+                                {type === 'courses' && (
+                                    <Fragment>
+                                        <strong>{numberChapter}</strong>
+                                        <div className="mt-2">
+                                            <Button variant="success" size="sm" onClick={() => setShowChapter(true)}>
+                                                Chi tiết
+                                            </Button>
+                                        </div>
+                                    </Fragment>
+                                )}
+                            </Fragment>
                         ) : (
                             <a
                                 className="text-dark"
@@ -162,7 +163,16 @@ function TableItem({ type, data }) {
 
             <td>
                 <div className="text-center">
-                    {type === 'courses' && <strong>{numberChapter}</strong>}
+                    {type === 'courses' && (
+                        <Fragment>
+                            <strong>{numberLesson}</strong>
+                            <div className="mt-2">
+                                <Button variant="success" size="sm" onClick={() => setShowDetail(true)}>
+                                    Chi tiết
+                                </Button>
+                            </div>
+                        </Fragment>
+                    )}
                     {type === 'account' && <strong>{data.admin ? 'ADMIN' : 'USER'}</strong>}
 
                     {(type === 'posts' || type === 'video' || type === 'slide') && (
@@ -231,24 +241,15 @@ function TableItem({ type, data }) {
                 </div>
             </td>
 
-            <Modal show={show} onHide={() => setShow(false)} backdrop="static" keyboard={false}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Xác nhận xóa</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Delete: <strong>{data.name || data.title || data.metaTitle}</strong>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" size="sm" onClick={() => setShow(false)}>
-                        Đóng
-                    </Button>
-                    <Button title="Hành động không thể hoàn tác" size="sm" variant="danger" onClick={handleAgreeDelete}>
-                        Đồng ý
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <ModalDelete
+                show={show}
+                setShow={setShow}
+                title={data.name || data.title || data.metaTitle}
+                onClick={handleAgreeDelete}
+            />
 
             {showDetail && <ModalDetail data={data} show={showDetail} setShow={setShowDetail} />}
+            {showChapter && <ModalChapter data={data} show={showChapter} setShow={setShowChapter} />}
         </tr>
     );
 }

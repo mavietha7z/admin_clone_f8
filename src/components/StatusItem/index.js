@@ -17,21 +17,19 @@ function StatusItem({ type, data }) {
                 const result = await toggleStatusCourse(data._id, currentUser.accessToken);
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
-                    MySwal.fire('Thất bại', `${result.message}`, 'error');
+                    MySwal.fire('Thất bại', result.message, 'error');
                 }
             } else if (type === 'posts') {
                 const result = await toggleStatusPosts(data._id, currentUser.accessToken);
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
-                    MySwal.fire('Thất bại', `${result.message}`, 'error');
+                    MySwal.fire('Thất bại', result.message, 'error');
                 }
             }
         }
