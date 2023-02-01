@@ -1,12 +1,11 @@
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-import { Fragment, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 import { createCourse } from '~/services/apiCourse';
+import LearnWhatInput from '../LearnWhatInput';
 
 const MySwal = withReactContent(Swal);
 
@@ -71,11 +70,9 @@ function FormCreateCourse({ type }) {
             const result = await createCourse(formData, currentUser.accessToken, 'free');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
             } else {
-                MySwal.fire('Thất bại', `${result.message}`, 'error');
+                MySwal.fire('Thất bại', result.message, 'error');
             }
         } else if (type === 'pro' && comingSoon === '0') {
             const whatLearn = isWhatLearn.map((desc) => {
@@ -98,11 +95,9 @@ function FormCreateCourse({ type }) {
             const result = await createCourse(formData, currentUser.accessToken, 'pro');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
             } else {
-                MySwal.fire('Thất bại', `${result.message}`, 'error');
+                MySwal.fire('Thất bại', result.message, 'error');
             }
         } else {
             formData.append('title', title);
@@ -110,19 +105,21 @@ function FormCreateCourse({ type }) {
             formData.append('priority', priority);
             formData.append('image', image);
             formData.append('comingSoon', comingSoon);
-            console.log('comingSoon: ', comingSoon);
 
             const result = await createCourse(formData, currentUser.accessToken, 'pro');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
             } else {
-                MySwal.fire('Thất bại', `${result.message}`, 'error');
+                MySwal.fire('Thất bại', result.message, 'error');
             }
         }
     };
+
+    const handleRemoveInput = () => {
+        setInputCount(inputCount - 1);
+    };
+
     return (
         <Form className="p-5">
             <Row>
@@ -136,7 +133,7 @@ function FormCreateCourse({ type }) {
                                 onChange={(e) => setComingSoon(e.target.value)}
                             >
                                 <option value="1">Sắp có</option>
-                                <option value="0">Bây giờ</option>
+                                <option value="0">Đã có</option>
                             </select>
                         </Form.Group>
                     )}
@@ -229,40 +226,13 @@ function FormCreateCourse({ type }) {
 
                 <Col sm={7}>
                     {(type !== 'pro' || comingSoon === '0') && (
-                        <Form.Group className="mb-3">
-                            <Form.Label style={{ width: '100%' }}>
-                                Học được gì sau khóa học:
-                                <FontAwesomeIcon
-                                    className="btn btn-success float-end"
-                                    onClick={() => setInputCount(inputCount + 1)}
-                                    icon={faCirclePlus}
-                                    title="Thêm 1 ô input mới"
-                                />
-                            </Form.Label>
-
-                            {Array.from({ length: inputCount }, (_, i) => (
-                                <Fragment key={i}>
-                                    <Col sm={11} style={{ display: 'inline-block' }}>
-                                        <Form.Control
-                                            placeholder="Mô tả những gì sẽ học được"
-                                            className="mt-2"
-                                            type="text"
-                                            defaultValue={isWhatLearn[i]}
-                                            onChange={(e) => handleChangeWhatLearn(e, i)}
-                                        />
-                                    </Col>
-
-                                    {i !== 0 && (
-                                        <FontAwesomeIcon
-                                            className="btn btn-danger float-end remove-input"
-                                            onClick={() => setInputCount(inputCount - 1)}
-                                            icon={faCircleMinus}
-                                            title="Xóa ô input này"
-                                        />
-                                    )}
-                                </Fragment>
-                            ))}
-                        </Form.Group>
+                        <LearnWhatInput
+                            count={inputCount}
+                            setCount={setInputCount}
+                            data={isWhatLearn}
+                            onChange={handleChangeWhatLearn}
+                            onClick={handleRemoveInput}
+                        />
                     )}
 
                     <Form.Group className="mb-3">

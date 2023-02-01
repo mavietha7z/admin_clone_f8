@@ -300,6 +300,10 @@ small {
     margin-top: 4px;
 }
 
+body .accordion-button {
+    font-size: 1.4rem;
+}
+
 /* Cyrillic-ext */
 @font-face {
     font-family: 'Source Sans Pro';

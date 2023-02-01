@@ -39,7 +39,7 @@ function Accounts() {
                         setUsers(result.data);
                         setTotalPages(result.totalPages);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu người dùng'}`, 'error');
+                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu người dùng', 'error');
                     }
                 };
                 fetchApi();

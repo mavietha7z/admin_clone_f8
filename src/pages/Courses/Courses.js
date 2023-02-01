@@ -41,7 +41,7 @@ function Courses() {
                     if (result.statusCode === 0) {
                         setCourses(result.data);
                     } else {
-                        MySwal.fire('Lỗi', `${result.message || 'Lỗi lấy dữ liệu khóa học'}`, 'error');
+                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu khóa học', 'error');
                     }
                 };
                 fetchApi();

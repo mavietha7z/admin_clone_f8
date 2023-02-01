@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import TitleGlobal from '~/components/TitleGlobal';
 import CreateLesson from './CreateLesson';
-import CreateChapter from './CreateChapter';
 import ChapterItem from '~/components/ChapterItem';
 import { getCourseByType } from '~/services/apiCourse';
 
@@ -86,9 +85,7 @@ function Chapter() {
                                             id="nav-chapter"
                                             role="tabpanel"
                                             aria-labelledby="nav-chapter-tab"
-                                        >
-                                            <CreateChapter courseId={id} />
-                                        </div>
+                                        ></div>
                                         <div
                                             className="tab-pane fade row"
                                             id="nav-lesson"

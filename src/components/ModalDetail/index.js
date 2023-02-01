@@ -2,15 +2,20 @@ import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
-import { Button, Form, Modal, Table } from 'react-bootstrap';
+import { Button, Form, Modal, Table, Accordion } from 'react-bootstrap';
 
+import { Image } from '~/assets/image';
 import HeadingTable from '../HeadingTable';
+import LearnWhatInput from '../LearnWhatInput';
 import { uploadImage } from '~/services/slideshow';
 import { updateCourse } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
 
 function ModalDetail({ data, show, setShow }) {
+    const [inputCount, setInputCount] = useState(data.learnWhat.length);
+
+    const [learnWhat, setLearnWhat] = useState(data.learnWhat.map((what) => what.description));
     const [title, setTitle] = useState(data.title);
     const [image, setImage] = useState(data.image);
     const [icon, setIcon] = useState(data.icon);
@@ -31,28 +36,32 @@ function ModalDetail({ data, show, setShow }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleUpdateCourse = async () => {
-        let formData = new FormData();
-        formData.append('title', title);
-        formData.append('image', image);
-        formData.append('icon', icon);
-        formData.append('comingSoon', comingSoon);
-        formData.append('preOrder', preOrder);
-        formData.append('pro', pro);
-        formData.append('published', published);
-        formData.append('priority', priority);
-        formData.append('slug', slug);
-        formData.append('video', video);
-        formData.append('price', price);
-        formData.append('oldPrice', oldPrice);
-        formData.append('preOrderPrice', preOrderPrice);
-        formData.append('description', description);
+        const whatLearn = learnWhat.map((desc) => {
+            return { description: desc };
+        });
 
-        const result = await updateCourse(currentUser.accessToken, formData, data._id);
+        const course = {
+            title,
+            image,
+            icon,
+            comingSoon,
+            preOrder,
+            pro,
+            published,
+            priority,
+            slug,
+            video,
+            price,
+            oldPrice,
+            preOrderPrice,
+            description,
+            learnWhat: whatLearn,
+        };
+
+        const result = await updateCourse(currentUser.accessToken, course, data._id);
 
         if (result.statusCode === 0) {
-            MySwal.fire('Thành công', result.message, 'success').then(
-                (res) => res.isConfirmed && window.location.reload()
-            );
+            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
         } else {
             MySwal.fire('Thất bại', result.message, 'error');
         }
@@ -71,8 +80,21 @@ function ModalDetail({ data, show, setShow }) {
                 setIcon(result.data.urlImage);
             }
         } else {
-            MySwal.fire('Thất bại', result.message || 'Lỗi lấy url ảnh', 'error');
+            MySwal.fire('Thất bại', result.message, 'error');
         }
+    };
+
+    const handleChangeWhatLearn = (e, i) => {
+        const updatedWhatLearn = [...learnWhat];
+        updatedWhatLearn[i] = e.target.value;
+        setLearnWhat(updatedWhatLearn);
+    };
+
+    const handleRemoveInput = () => {
+        setInputCount(inputCount - 1);
+        let cloneLearnWhat = [...learnWhat];
+        cloneLearnWhat.pop();
+        setLearnWhat(cloneLearnWhat);
     };
 
     return (
@@ -133,7 +155,7 @@ function ModalDetail({ data, show, setShow }) {
                             <td className="text-center">
                                 <img
                                     className="ms-4 mb-4"
-                                    src={icon}
+                                    src={icon || Image.notImage}
                                     alt="Preview"
                                     style={{
                                         width: '40px',
@@ -305,8 +327,24 @@ function ModalDetail({ data, show, setShow }) {
                                 </Form.Group>
                             </td>
                         </tr>
+                        <tr></tr>
                     </tbody>
                 </Table>
+
+                <Accordion className="mb-4">
+                    <Accordion.Item eventKey="0">
+                        <Accordion.Header>Những gì sẽ học được trong khóa này ({learnWhat.length})</Accordion.Header>
+                        <Accordion.Body>
+                            <LearnWhatInput
+                                count={inputCount}
+                                setCount={setInputCount}
+                                data={learnWhat}
+                                onChange={handleChangeWhatLearn}
+                                onClick={handleRemoveInput}
+                            />
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
 
                 <Button className="float-end ms-2" size="sm" onClick={handleUpdateCourse}>
                     Lưu

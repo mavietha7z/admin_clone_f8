@@ -47,9 +47,9 @@ function EditUser() {
         const result = await handleUpdateUser(id, newUser, navigate);
 
         if (result.errCode === 0) {
-            MySwal.fire('Thành công', `${result.message}`, 'success');
+            MySwal.fire('Thành công', result.message, 'success');
         } else {
-            MySwal.fire('Lỗi', `${result.message}`, 'error');
+            MySwal.fire('Lỗi', result.message, 'error');
         }
     };
 

@@ -58,14 +58,22 @@ export const toggleStatusCourse = async (courseId, token) => {
     }
 };
 
-export const createNewChapter = async (newChapter, token) => {
+// Ok
+export const createChapter = async (token, name, id) => {
     try {
-        const res = await request.post(`/course/chapter/create`, newChapter, {
-            headers: {
-                token,
-            },
-        });
-        return res.data;
+        const res = await request.post(
+            '/chapter/create',
+            { name },
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    id,
+                },
+            }
+        );
+        return res;
     } catch (error) {
         return error.response.data;
     }
@@ -100,7 +108,6 @@ export const deleteCourse = async (courseId, token, type) => {
 
         return res;
     } catch (error) {
-        console.log('error: ', error);
         return error.response.data;
     }
 };
@@ -114,6 +121,46 @@ export const updateCourse = async (token, data, courseId) => {
             },
             params: {
                 id: courseId,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Ok
+export const renameChapter = async (token, name, chapterId) => {
+    try {
+        const res = await request.put(
+            '/chapter/rename',
+            { name },
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    id: chapterId,
+                },
+            }
+        );
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Ok
+export const deleteChapter = async (token, chapterId) => {
+    try {
+        const res = await request.remove('/chapter/delete', {
+            headers: {
+                token,
+            },
+            params: {
+                id: chapterId,
             },
         });
 

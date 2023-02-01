@@ -73,11 +73,10 @@ function CreateLesson({ courseId, chapters }) {
 
                 const result = await createNewLesson(newLesson, currentUser.accessToken);
                 if (result.errCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
-                    MySwal.fire('Lỗi', `${result.message}`, 'error');
+                    MySwal.fire('Lỗi', result.message, 'error');
                 }
             } else {
                 MySwal.fire('Lỗi', 'Thông tin không được để trống', 'error');
@@ -101,7 +100,7 @@ function CreateLesson({ courseId, chapters }) {
                         return item;
                     });
                 } else if (result.errCode === 1) {
-                    MySwal.fire('Lỗi', `${result.message}`, 'error');
+                    MySwal.fire('Lỗi', result.message, 'error');
                 } else {
                     MySwal.fire('Lỗi', 'Lấy dữ liệu video thất bại', 'error');
                 }

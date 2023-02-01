@@ -19,9 +19,9 @@ function CreateUser() {
         const result = await handleSendEmail(email);
 
         if (result.errCode === 0) {
-            MySwal.fire('Thành công', `${result.message}`, 'success');
+            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
         } else {
-            MySwal.fire('Lỗi', `${result.message}`, 'error');
+            MySwal.fire('Lỗi', result.message, 'error');
         }
     };
 
@@ -48,7 +48,7 @@ function CreateUser() {
             const result = await registerNewUser(newUser);
 
             if (result.errCode === 0) {
-                MySwal.fire('Thành công', `${result.message}`, 'success').then((res) => {
+                MySwal.fire('Thành công', result.message, 'success').then((res) => {
                     if (res.isConfirmed) {
                         setEmail('');
                         setName('');
@@ -58,7 +58,7 @@ function CreateUser() {
                     }
                 });
             } else {
-                MySwal.fire('Lỗi', `${result.message}`, 'error');
+                MySwal.fire('Lỗi', result.message, 'error');
             }
         }
     };
