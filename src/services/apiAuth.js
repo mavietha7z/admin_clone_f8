@@ -38,7 +38,7 @@ export const logoutAdmin = async (dispatch, token) => {
 };
 
 // OK
-export const getUserByType = async (token, page) => {
+export const getUserByType = async (token, page = null, type = null, id = null) => {
     try {
         const res = await request.get('/user', {
             headers: {
@@ -46,6 +46,8 @@ export const getUserByType = async (token, page) => {
             },
             params: {
                 page,
+                type,
+                id,
             },
         });
 
@@ -55,13 +57,19 @@ export const getUserByType = async (token, page) => {
     }
 };
 
-export const registerNewUser = async (user) => {
+// OK
+export const registerUser = async (token, user, type = 'admin') => {
     try {
-        const res = await request.post('/user/register', user);
+        const res = await request.post('/auth/register', user, {
+            headers: {
+                token,
+            },
+            params: {
+                type,
+            },
+        });
 
-        const { data, ...other } = res;
-
-        return { ...other };
+        return res;
     } catch (error) {
         return error.response.data;
     }
@@ -122,7 +130,7 @@ export const handleSendEmail = async (email) => {
 };
 
 // Ok
-export const refreshUser = async (token, dispatch, navigate) => {
+export const refreshUser = async (token, dispatch) => {
     try {
         const res = await request.get('/auth/current-user', {
             headers: {
@@ -137,6 +145,29 @@ export const refreshUser = async (token, dispatch, navigate) => {
         dispatch(loginSuccess(data));
 
         return { ...other };
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Ok
+export const toggleStatusUser = async (token, type, id) => {
+    try {
+        const res = await request.post(
+            '/user/status',
+            {},
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    type,
+                    id,
+                },
+            }
+        );
+
+        return res;
     } catch (error) {
         return error.response.data;
     }

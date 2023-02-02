@@ -1,9 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faMagnifyingGlass, faUsers } from '@fortawesome/free-solid-svg-icons';
-
-function HeaderListUser() {
+import { Button, Card } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
+function HeaderListUser({ onClick }) {
     return (
-        <div className="card-header" style={{ borderBottom: 0 }}>
+        <Card.Header style={{ borderBottom: 0 }}>
             <span className="text-danger">
                 <FontAwesomeIcon icon={faBolt} />
                 <span>Logout tất cả</span>
@@ -12,24 +15,22 @@ function HeaderListUser() {
             <div className="card-tools ">
                 <div className="input-group input-group-sm dataTables_filter">
                     <div className="float-left" style={{ marginRight: 10 }}>
-                        <button className="btn btn-dark">
+                        <Button variant="dark" onClick={onClick}>
                             <FontAwesomeIcon icon={faUsers} />
                             <span>Bị khóa</span>
-                        </button>
+                        </Button>
                     </div>
 
-                    <div className="float-right">
+                    <div className="float-end">
                         <div className="input-group">
-                            <select name="status" className="form-control">
+                            <select className="form-control">
                                 <option>-- Trạng thái --</option>
                                 <option value="status1">Hoạt động</option>
                                 <option value="status0">Bị khóa</option>
-                                <option value="verifydoc">Chờ xác thực</option>
                             </select>
 
-                            <select name="type" className="form-control">
+                            <select className="form-control">
                                 <option> -- Theo --</option>
-                                <option value="id">Mã ID</option>
                                 <option value="email">E-mail</option>
                                 <option value="phone">Số điện thoại</option>
                                 <option value="username">Tên đăng nhập</option>
@@ -38,15 +39,20 @@ function HeaderListUser() {
 
                             <input type="text" name="keyword" className="form-control" placeholder="Nhập từ khóa" />
                             <div className="input-group-append">
-                                <button type="submit" className="btn btn-warning">
+                                <Button
+                                    variant="warning"
+                                    onClick={() => {
+                                        MySwal.fire('Lỗi', 'Chức năng này đang được phát triển', 'error');
+                                    }}
+                                >
                                     <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Card.Header>
     );
 }
 

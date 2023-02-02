@@ -8,6 +8,7 @@ import TitleGlobal from '~/components/TitleGlobal';
 import TableItem from '~/components/TableItem';
 import { getBlogByType } from '~/services/apiBlog';
 import HeadingTable from '~/components/HeadingTable';
+import { Button, Card, Pagination, Row, Table } from 'react-bootstrap';
 
 function Posts() {
     const [posts, setPosts] = useState([]);
@@ -46,67 +47,67 @@ function Posts() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
+    let items = [];
+    for (let i = 1; i <= totalPages; i++) {
+        items.push(
+            <Pagination.Item key={i} active={i === Number(page)}>
+                {i}
+            </Pagination.Item>
+        );
+    }
+
     return (
         <div className={'wrapper-global'}>
             <div className={'header-global'}>
-                <div className="row">
+                <Row>
                     <TitleGlobal name="Danh sách khóa học" />
-                </div>
+                </Row>
             </div>
             <div className="content-global">
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card">
-                            <div className={'card-header bg-white'}>
-                                <div className="col-md-6 float-right">
-                                    <div className="float-right">
-                                        <div className="input-group">
-                                            <select name="type" className="form-control">
-                                                <option value="order">Tiêu đề bài viết</option>
-                                                <option value="order">Tác giả bài viết</option>
-                                            </select>
-                                            <input
-                                                type="text"
-                                                name="keyword"
-                                                className="form-control"
-                                                placeholder="Search"
-                                            />
-                                            <div className="input-group-append">
-                                                <button type="submit" className="btn btn-warning">
-                                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="card-body" style={{ padding: 20, paddingTop: 0 }}>
-                                <div className="row table-responsive p-0">
-                                    <div className="col-sm-12 pr-0">
-                                        <table id="example1" className="table table-bordered table-striped dataTable">
-                                            <HeadingTable
-                                                headings={[
-                                                    { title: 'Tiêu đề bài viết' },
-                                                    { title: 'Tác giả' },
-                                                    { title: 'Trạng thái' },
-                                                    { title: 'Ngày tạo / Cập nhật' },
-                                                    { title: 'Hành động' },
-                                                ]}
-                                            />
-
-                                            <tbody>
-                                                {posts?.map((post) => (
-                                                    <TableItem key={post._id} type="posts" data={post} />
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                <Card>
+                    <Card.Header>
+                        <div className="float-end">
+                            <div className="input-group">
+                                <select className="form-control">
+                                    <option value="order">Tiêu đề bài viết</option>
+                                    <option value="order">Tác giả bài viết</option>
+                                </select>
+                                <input type="text" className="form-control" placeholder="Search" />
+                                <div className="input-group-append">
+                                    <Button variant="warning">
+                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                    </Button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </Card.Header>
+
+                    <Card.Body style={{ padding: 20, paddingTop: 0 }}>
+                        <Table striped bordered>
+                            <HeadingTable
+                                headings={[
+                                    { title: 'Tiêu đề bài viết' },
+                                    { title: 'Tác giả' },
+                                    { title: 'Trạng thái' },
+                                    { title: 'Ngày tạo / Cập nhật' },
+                                    { title: 'Hành động' },
+                                ]}
+                            />
+
+                            <tbody>
+                                {posts?.map((post) => (
+                                    <TableItem key={post._id} type="posts" data={post} />
+                                ))}
+                            </tbody>
+                        </Table>
+
+                        <Pagination className="float-end" size="lg">
+                            <Pagination.First />
+                            {items}
+                            <Pagination.Last />
+                        </Pagination>
+                    </Card.Body>
+                </Card>
             </div>
         </div>
     );

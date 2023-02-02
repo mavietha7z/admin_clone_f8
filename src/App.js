@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { privateRoutes } from './routes';
 import { refreshUser } from './services/apiAuth';
 import DefaultLayout from './layouts/DefaultLayout';
+import { logoutSuccess } from './redux/reducer/authReducer';
 
 function App() {
     const dispatch = useDispatch();
@@ -15,9 +16,17 @@ function App() {
             if (performance.navigation.type === 1) {
                 if (currentUser) {
                     const fetchApi = async () => {
-                        await refreshUser(currentUser.accessToken, dispatch);
+                        const result = await refreshUser(currentUser.accessToken, dispatch);
+
+                        if (result.statusCode !== 0) {
+                            dispatch(logoutSuccess());
+                            window.location.href = '/login';
+                            window.location.reload();
+                        }
                     };
                     fetchApi();
+                } else {
+                    window.location.href = '/login';
                 }
             }
         }

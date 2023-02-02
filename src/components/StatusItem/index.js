@@ -5,6 +5,8 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { toggleStatusCourse } from '~/services/apiCourse';
 import { toggleStatusPosts } from '~/services/apiBlog';
+import { toggleStatusUser } from '~/services/apiAuth';
+import { toggleStatusVideo } from '~/services/apiVideo';
 
 const MySwal = withReactContent(Swal);
 
@@ -24,6 +26,24 @@ function StatusItem({ type, data }) {
                 }
             } else if (type === 'posts') {
                 const result = await toggleStatusPosts(data._id, currentUser.accessToken);
+
+                if (result.statusCode === 0) {
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else if (type === 'account') {
+                const result = await toggleStatusUser(currentUser.accessToken, 'status', data._id);
+
+                if (result.statusCode === 0) {
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else if (type === 'video') {
+                const result = await toggleStatusVideo(currentUser.accessToken, 'status', data._id);
 
                 if (result.statusCode === 0) {
                     (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&

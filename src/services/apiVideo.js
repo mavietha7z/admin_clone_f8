@@ -3,42 +3,43 @@ import request from '~/utils/request';
 
 const URL_API_YOUTUBE = 'https://www.googleapis.com/youtube/v3/videos';
 
-export const handleGetInfoVideo = async (uidVideo) => {
+export const getInfoVideo = async (url) => {
     try {
         const res = await axios.get(`${URL_API_YOUTUBE}`, {
             params: {
                 part: 'snippet,statistics,contentDetails',
-                id: uidVideo,
+                id: url,
                 key: 'AIzaSyCMMrp71i75_LScVAw5OZuGmct0C3xLACc',
             },
         });
+
         if (res.data.items.length === 0) {
             return {
-                errCode: 1,
+                statusCode: 2,
                 message: 'Video không tồn tại',
             };
         } else {
             return {
-                errCode: res.status,
+                statusCode: 0,
                 data: res.data.items,
             };
         }
     } catch (error) {
         return {
-            errCode: 2,
+            statusCode: 2,
         };
     }
 };
 
-export const createNewVideo = async (data, token) => {
+export const createVideo = async (token, video) => {
     try {
-        const res = await request.post('/video/create', data, {
+        const res = await request.post('/video/create', video, {
             headers: {
                 token,
             },
         });
 
-        return res;
+        return res.data;
     } catch (error) {
         return error.response.data;
     }
@@ -57,6 +58,29 @@ export const getVideoByType = async (token, page) => {
         });
 
         return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// OK
+export const toggleStatusVideo = async (token, type, id) => {
+    try {
+        const res = await request.post(
+            '/video/status',
+            {},
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    type,
+                    id,
+                },
+            }
+        );
+
+        return res.data;
     } catch (error) {
         return error.response.data;
     }

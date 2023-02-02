@@ -1,15 +1,15 @@
 import * as request from '~/utils/request';
 
 // Ok
-export const getBlogByType = async (token, page, type = 'all') => {
+export const getBlogByType = async (token, page, type = null) => {
     try {
-        const res = await request.get('/post', {
+        const res = await request.get('/posts', {
             headers: {
                 token,
             },
             params: {
-                page,
                 type,
+                page,
             },
         });
 
@@ -34,6 +34,24 @@ export const toggleStatusPosts = async (postId, token) => {
                 },
             }
         );
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const deletePosts = async (token, type, id) => {
+    try {
+        const res = await request.remove('/posts/delete', {
+            headers: {
+                token,
+            },
+            params: {
+                type,
+                id,
+            },
+        });
 
         return res;
     } catch (error) {

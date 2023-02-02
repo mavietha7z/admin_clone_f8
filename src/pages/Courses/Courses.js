@@ -58,13 +58,11 @@ function Courses() {
             <div className={'header-global'}>
                 <Row>
                     <TitleGlobal name="Danh sách khóa học" />
-
                     <Col sm={7}>
                         <Button className="float-end mt-5" variant="success" size="xl" onClick={() => setShow(true)}>
                             Thêm mới
                             <FontAwesomeIcon className="ms-2" icon={faCirclePlus} />
                         </Button>
-
                         <ModalCreateCourse show={show} setShow={setShow} />
                     </Col>
                 </Row>

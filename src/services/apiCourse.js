@@ -79,15 +79,19 @@ export const createChapter = async (token, name, id) => {
     }
 };
 
-export const createNewLesson = async (newLesson, token) => {
+// OK
+export const createLesson = async (token, lesson, chapterId) => {
     try {
-        const res = await request.post(`/course/lesson/create`, newLesson, {
+        const res = await request.post('/lesson/create', lesson, {
             headers: {
                 token,
             },
+            params: {
+                chapterId,
+            },
         });
 
-        return res.data;
+        return res;
     } catch (error) {
         return error.response.data;
     }

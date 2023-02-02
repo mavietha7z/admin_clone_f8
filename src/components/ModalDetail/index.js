@@ -98,9 +98,9 @@ function ModalDetail({ data, show, setShow }) {
     };
 
     return (
-        <Modal size="xl" show={show} onHide={() => setShow(false)} aria-labelledby="modal-styling">
+        <Modal size="xl" show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
-                <Modal.Title id="modal-styling">{data.title}</Modal.Title>
+                <Modal.Title>{data.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Table striped bordered>

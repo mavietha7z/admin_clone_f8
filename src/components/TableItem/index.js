@@ -9,15 +9,19 @@ import RenderDate from '../RenderDate';
 import StatusItem from '../StatusItem';
 import ModalDetail from '../ModalDetail';
 import { deleteCourse } from '~/services/apiCourse';
-import { deleteUserByType } from '~/services/apiAuth';
-import ModalChapter from '../ModalChapter/ModalChapter';
+import { deleteUserByType, toggleStatusUser } from '~/services/apiAuth';
+import ModalChapter from '../ModalChapter';
 import ModalDelete from '../ModalDelete';
+import ModalLesson from '../ModalLesson';
+import { deletePosts } from '~/services/apiBlog';
+import { toggleStatusVideo } from '~/services/apiVideo';
 
 const MySwal = withReactContent(Swal);
 
 function TableItem({ type, data }) {
     const [showDetail, setShowDetail] = useState(false);
     const [showChapter, setShowChapter] = useState(false);
+    const [showLesson, setShowLesson] = useState(false);
 
     const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
@@ -89,10 +93,47 @@ function TableItem({ type, data }) {
             } else {
                 MySwal.fire('Thất bại', result.message, 'error');
             }
+        } else if (type === 'posts') {
+            const result = await deletePosts(currentUser.accessToken, 'uid', data._id);
+
+            if (result.statusCode === 0) {
+                (await MySwal.fire('Thành công', `Xóa ${data.metaTitle} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
+            } else {
+                MySwal.fire('Thất bại', result.message, 'error');
+            }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data._id]);
+
+    const handleShowModal = () => {
+        if (type === 'courses') {
+            setShowDetail(true);
+        } else {
+            MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error');
+        }
+    };
+
+    const handleToggleTick = async () => {
+        const result = await toggleStatusUser(currentUser.accessToken, 'tick', data._id);
+
+        if (result.statusCode === 0) {
+            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+        } else {
+            MySwal.fire('Thất bại', result.message, 'error');
+        }
+    };
+
+    const handleToggleHome = async () => {
+        const result = await toggleStatusVideo(currentUser.accessToken, 'home', data._id);
+
+        if (result.statusCode === 0) {
+            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+        } else {
+            MySwal.fire('Thất bại', result.message, 'error');
+        }
+    };
 
     return (
         <tr>
@@ -167,7 +208,7 @@ function TableItem({ type, data }) {
                         <Fragment>
                             <strong>{numberLesson}</strong>
                             <div className="mt-2">
-                                <Button variant="success" size="sm" onClick={() => setShowDetail(true)}>
+                                <Button variant="success" size="sm" onClick={() => setShowLesson(true)}>
                                     Chi tiết
                                 </Button>
                             </div>
@@ -204,10 +245,28 @@ function TableItem({ type, data }) {
                             </span>
                         )}
                         {type === 'account' && (
-                            <Button variant={`${data.tick ? 'success' : 'danger'}`} size="sm">
+                            <Button
+                                variant={`${data.tick ? 'success' : 'danger'}`}
+                                size="sm"
+                                onClick={handleToggleTick}
+                            >
                                 {data.tick ? 'Bật' : 'Tắt'}
                             </Button>
                         )}
+                    </div>
+                </td>
+            )}
+
+            {type === 'video' && (
+                <td>
+                    <div className="text-center">
+                        <Button
+                            variant={`${data.homePage ? 'success' : 'danger'}`}
+                            size="sm"
+                            onClick={handleToggleHome}
+                        >
+                            {data.homePage ? 'Bật' : 'Tắt'}
+                        </Button>
                     </div>
                 </td>
             )}
@@ -232,7 +291,7 @@ function TableItem({ type, data }) {
 
             <td>
                 <div className="text-center">
-                    <Button variant="success" className="me-2" size="sm" onClick={() => setShowDetail(true)}>
+                    <Button variant="success" className="me-2" size="sm" onClick={handleShowModal}>
                         Chi tiết
                     </Button>
                     <Button onClick={() => setShow(true)} variant="danger" size="sm">
@@ -250,6 +309,7 @@ function TableItem({ type, data }) {
 
             {showDetail && <ModalDetail data={data} show={showDetail} setShow={setShowDetail} />}
             {showChapter && <ModalChapter data={data} show={showChapter} setShow={setShowChapter} />}
+            {showLesson && <ModalLesson data={data} show={showLesson} setShow={setShowLesson} />}
         </tr>
     );
 }

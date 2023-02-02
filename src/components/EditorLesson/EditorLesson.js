@@ -1,16 +1,10 @@
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
-import { useState } from 'react';
 
 const mdParser = new MarkdownIt();
 
-function EditorLesson({ handleGetDataChild }) {
-    const [text, setText] = useState('');
-    const [html, setHtml] = useState('');
-
-    handleGetDataChild({ text, html });
-
+function EditorLesson({ setText, setHtml }) {
     const handleEditorChange = ({ html, text }) => {
         setText(text);
         setHtml(html);
@@ -18,9 +12,12 @@ function EditorLesson({ handleGetDataChild }) {
 
     return (
         <MdEditor
-            style={{ height: '600px' }}
+            style={{ height: '350px' }}
             renderHTML={(text) => mdParser.render(text)}
+            autoFocus={true}
+            view={{ html: false }}
             onChange={handleEditorChange}
+            placeholder="Nhập mô tả bài học tại đây"
         />
     );
 }
