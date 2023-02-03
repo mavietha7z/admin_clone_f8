@@ -1,7 +1,7 @@
 import * as request from '~/utils/request';
 
 // Ok
-export const getBlogByType = async (token, page, type = null) => {
+export const getBlogByType = async (token, page = null, type = null) => {
     try {
         const res = await request.get('/posts', {
             headers: {
@@ -23,7 +23,7 @@ export const getBlogByType = async (token, page, type = null) => {
 export const toggleStatusPosts = async (postId, token) => {
     try {
         const res = await request.post(
-            `/post/status`,
+            `/posts/status`,
             {},
             {
                 headers: {

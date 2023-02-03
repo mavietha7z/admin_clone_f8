@@ -1,11 +1,10 @@
-import axios from 'axios';
-import request from '~/utils/request';
+import * as request from '~/utils/request';
 
 const URL_API_YOUTUBE = 'https://www.googleapis.com/youtube/v3/videos';
 
 export const getInfoVideo = async (url) => {
     try {
-        const res = await axios.get(`${URL_API_YOUTUBE}`, {
+        const res = await request.get(`${URL_API_YOUTUBE}`, {
             params: {
                 part: 'snippet,statistics,contentDetails',
                 id: url,
@@ -13,7 +12,7 @@ export const getInfoVideo = async (url) => {
             },
         });
 
-        if (res.data.items.length === 0) {
+        if (res.items.length === 0) {
             return {
                 statusCode: 2,
                 message: 'Video không tồn tại',
@@ -21,7 +20,7 @@ export const getInfoVideo = async (url) => {
         } else {
             return {
                 statusCode: 0,
-                data: res.data.items,
+                data: res.items,
             };
         }
     } catch (error) {
@@ -31,6 +30,7 @@ export const getInfoVideo = async (url) => {
     }
 };
 
+// Ok
 export const createVideo = async (token, video) => {
     try {
         const res = await request.post('/video/create', video, {
@@ -39,7 +39,7 @@ export const createVideo = async (token, video) => {
             },
         });
 
-        return res.data;
+        return res;
     } catch (error) {
         return error.response.data;
     }
@@ -81,6 +81,43 @@ export const toggleStatusVideo = async (token, type, id) => {
         );
 
         return res.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Ok
+export const deleteVideo = async (token, type = null, id = null) => {
+    try {
+        const res = await request.remove('video/delete', {
+            headers: {
+                token,
+            },
+            params: {
+                type,
+                id,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+//
+export const updateVideo = async (token, video, id) => {
+    try {
+        const res = await request.put('/video/update', video, {
+            headers: {
+                token,
+            },
+            params: {
+                id,
+            },
+        });
+
+        return res;
     } catch (error) {
         return error.response.data;
     }

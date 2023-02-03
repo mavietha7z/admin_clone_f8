@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
 import { faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import TitleGlobal from '~/components/TitleGlobal';
 import TableItem from '~/components/TableItem';
-import HeadingTable from '~/components/HeadingTable';
-import { getVideoByType } from '~/services/apiVideo';
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
 import CreateVideo from '~/components/CreateVideo';
+import TitleGlobal from '~/components/TitleGlobal';
+import { getVideoByType } from '~/services/apiVideo';
+import HeadingTable from '~/components/HeadingTable';
 
 const MySwal = withReactContent(Swal);
 
@@ -38,10 +38,10 @@ function Videos() {
                 const fetchApi = async () => {
                     const result = await getVideoByType(currentUser.accessToken, page);
 
-                    if (result.data.statusCode === 0) {
-                        setVideos(result.data.data);
+                    if (result.statusCode === 0) {
+                        setVideos(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.data.message, 'error');
+                        MySwal.fire('Lỗi', result.message, 'error');
                     }
                 };
                 fetchApi();
@@ -75,7 +75,7 @@ function Videos() {
                         <div className="float-end">
                             <div className="input-group">
                                 <select className="form-control">
-                                    <option value="order">Tiêu đề video</option>
+                                    <option value="title">Tiêu đề video</option>
                                 </select>
                                 <Form.Control type="text" placeholder="Search" />
                                 <div className="input-group-append">

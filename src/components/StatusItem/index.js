@@ -7,6 +7,7 @@ import { toggleStatusCourse } from '~/services/apiCourse';
 import { toggleStatusPosts } from '~/services/apiBlog';
 import { toggleStatusUser } from '~/services/apiAuth';
 import { toggleStatusVideo } from '~/services/apiVideo';
+import { toggleStatusSlide } from '~/services/slideshow';
 
 const MySwal = withReactContent(Swal);
 
@@ -44,6 +45,15 @@ function StatusItem({ type, data }) {
                 }
             } else if (type === 'video') {
                 const result = await toggleStatusVideo(currentUser.accessToken, 'status', data._id);
+
+                if (result.statusCode === 0) {
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else if (type === 'slide') {
+                const result = await toggleStatusSlide(currentUser.accessToken, data._id);
 
                 if (result.statusCode === 0) {
                     (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&

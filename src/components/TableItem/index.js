@@ -14,7 +14,8 @@ import ModalChapter from '../ModalChapter';
 import ModalDelete from '../ModalDelete';
 import ModalLesson from '../ModalLesson';
 import { deletePosts } from '~/services/apiBlog';
-import { toggleStatusVideo } from '~/services/apiVideo';
+import { deleteVideo, toggleStatusVideo } from '~/services/apiVideo';
+import DetailVideo from '../DetailVideo';
 
 const MySwal = withReactContent(Swal);
 
@@ -22,6 +23,7 @@ function TableItem({ type, data }) {
     const [showDetail, setShowDetail] = useState(false);
     const [showChapter, setShowChapter] = useState(false);
     const [showLesson, setShowLesson] = useState(false);
+    const [detailVideo, setDetailVideo] = useState(false);
 
     const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
@@ -102,6 +104,15 @@ function TableItem({ type, data }) {
             } else {
                 MySwal.fire('Thất bại', result.message, 'error');
             }
+        } else if (type === 'video') {
+            const result = await deleteVideo(currentUser.accessToken, null, data._id);
+
+            if (result.statusCode === 0) {
+                (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
+            } else {
+                MySwal.fire('Thất bại', result.message, 'error');
+            }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,6 +121,8 @@ function TableItem({ type, data }) {
     const handleShowModal = () => {
         if (type === 'courses') {
             setShowDetail(true);
+        } else if (type === 'video') {
+            setDetailVideo(true);
         } else {
             MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error');
         }
@@ -308,6 +321,7 @@ function TableItem({ type, data }) {
             />
 
             {showDetail && <ModalDetail data={data} show={showDetail} setShow={setShowDetail} />}
+            {detailVideo && <DetailVideo data={data} show={detailVideo} setShow={setDetailVideo} />}
             {showChapter && <ModalChapter data={data} show={showChapter} setShow={setShowChapter} />}
             {showLesson && <ModalLesson data={data} show={showLesson} setShow={setShowLesson} />}
         </tr>

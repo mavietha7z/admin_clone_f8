@@ -17,7 +17,7 @@ function CreateVideo({ show, setShow }) {
     const [view, setView] = useState('');
     const [like, setLike] = useState('');
     const [comment, setComment] = useState('');
-    const [priority, setPriority] = useState(0);
+    const [priority, setPriority] = useState(1);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 

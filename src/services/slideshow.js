@@ -30,3 +30,40 @@ export const uploadImage = async (file, token) => {
         return error.response.data;
     }
 };
+
+// Ok
+export const toggleStatusSlide = async (token, id) => {
+    try {
+        const res = await request.post(
+            '/home/status',
+            {},
+            {
+                headers: {
+                    token,
+                },
+                params: {
+                    id,
+                },
+            }
+        );
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+//
+export const createSlideshow = async (token, slide) => {
+    try {
+        const res = await request.post('/home/create', slide, {
+            headers: {
+                token,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};

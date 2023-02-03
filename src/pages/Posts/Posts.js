@@ -31,7 +31,7 @@ function Posts() {
         if (currentUser) {
             if (page) {
                 const fetchApi = async () => {
-                    const result = await getBlogByType(currentUser.accessToken, page);
+                    const result = await getBlogByType(currentUser.accessToken, page, 'all');
 
                     if (result.statusCode === 0) {
                         setPosts(result.data);
