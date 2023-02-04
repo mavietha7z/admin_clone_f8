@@ -288,6 +288,10 @@ body .accordion-button {
     font-size: 1.4rem;
 }
 
+body .accordion-button {
+    font-size: 1.4rem;
+}
+
 @media (max-width: 1400px) {
     body .App {
         display: none;
