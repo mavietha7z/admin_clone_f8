@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { Accordion, Button, Col, Form, Modal, Row, Table, useAccordionButton, Card } from 'react-bootstrap';
 
+import ModalDelete from '~/components/ModalDelete';
 import { createChapter, deleteChapter, renameChapter } from '~/services/apiCourse';
-import ModalDelete from '../ModalDelete';
 
 const MySwal = withReactContent(Swal);
 
@@ -20,12 +20,12 @@ function ContextAwareToggle({ children, eventKey, callback }) {
     );
 }
 
-function ModalChapter({ data, show, setShow }) {
+function Chapter({ data, show, setShow }) {
     const [modal, setModal] = useState(false);
+    const [active, setActive] = useState(null);
+    const [nameEdit, setNameEdit] = useState('');
     const [nameChapter, setNameChapter] = useState('');
     const [chapter, setChapter] = useState(data.chapter);
-    const [nameEdit, setNameEdit] = useState('');
-    const [active, setActive] = useState(null);
     const [chapterDelete, setChapterDelete] = useState('');
 
     const inputRef = useRef();
@@ -48,7 +48,7 @@ function ModalChapter({ data, show, setShow }) {
         }
     };
 
-    const handleSaveEdit = async (chapterId, nameChapter) => {
+    const handleSaveRename = async (chapterId, nameChapter) => {
         if (active === chapterId && nameChapter !== nameEdit) {
             const result = await renameChapter(currentUser.accessToken, nameEdit, chapterId);
 
@@ -63,7 +63,7 @@ function ModalChapter({ data, show, setShow }) {
         }
     };
 
-    const handleDeleteChapter = async (id) => {
+    const handleDelete = async (id) => {
         setModal(false);
         const result = await deleteChapter(currentUser.accessToken, id);
 
@@ -82,6 +82,7 @@ function ModalChapter({ data, show, setShow }) {
                     Thông tin chương khóa : <strong>{data.title}</strong>
                 </Modal.Title>
             </Modal.Header>
+
             <Modal.Body>
                 <Accordion className="mb-4">
                     <Accordion.Item eventKey="0">
@@ -174,7 +175,7 @@ function ModalChapter({ data, show, setShow }) {
                                         size="sm"
                                         onClick={() => {
                                             setActive(isActive ? null : chapter._id);
-                                            handleSaveEdit(chapter._id, chapter.nameChapter);
+                                            handleSaveRename(chapter._id, chapter.nameChapter);
                                         }}
                                     >
                                         {isActive ? 'Lưu' : <FontAwesomeIcon icon={faPencil} />}
@@ -197,12 +198,13 @@ function ModalChapter({ data, show, setShow }) {
                                 show={modal}
                                 setShow={setModal}
                                 title={`"${chapterDelete}" đồng nghĩa việc xóa tất cả bài học của chương này`}
-                                onClick={() => handleDeleteChapter(chapter._id)}
+                                onClick={() => handleDelete(chapter._id)}
                             />
                         </Row>
                     );
                 })}
             </Modal.Body>
+
             <Modal.Footer>
                 <Button variant="secondary" size="sm" onClick={() => setShow(false)}>
                     Đóng
@@ -215,4 +217,4 @@ function ModalChapter({ data, show, setShow }) {
     );
 }
 
-export default ModalChapter;
+export default Chapter;

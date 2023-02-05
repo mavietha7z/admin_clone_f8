@@ -3,7 +3,6 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import authReducer from './reducer/authReducer';
-import modalReducer from './reducer/modalReducer';
 
 const persistConfig = {
     key: 'root',
@@ -13,7 +12,6 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
     auth: authReducer,
-    modal: modalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

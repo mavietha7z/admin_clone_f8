@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { Accordion, Button, Modal, Form, Col, Row, Card } from 'react-bootstrap';
 
-import EditorLesson from '../EditorLesson';
+import Editor from './Editor';
 import { iso8601ToTimeString } from '~/configs';
 import { getInfoVideo } from '~/services/apiVideo';
 import { createLesson, getCourseByType } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
 
-function ModalLesson({ data, show, setShow }) {
+function Lesson({ data, show, setShow }) {
     const [selected, setSelected] = useState(null);
     const [options, setOptions] = useState([]);
     const [active, setActive] = useState(false);
@@ -165,7 +165,7 @@ function ModalLesson({ data, show, setShow }) {
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Thêm mô tả</Accordion.Header>
                             <Accordion.Body>
-                                <EditorLesson setText={setText} setHtml={setHtml} />
+                                <Editor setText={setText} setHtml={setHtml} />
                             </Accordion.Body>
                         </Accordion.Item>
                     </Accordion>
@@ -183,4 +183,4 @@ function ModalLesson({ data, show, setShow }) {
     );
 }
 
-export default ModalLesson;
+export default Lesson;

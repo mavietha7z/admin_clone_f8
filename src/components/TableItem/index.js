@@ -7,13 +7,23 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 import RenderDate from '../RenderDate';
 import StatusItem from '../StatusItem';
-import ModalDetail from '../ModalDetail';
+import CourseDetail from '~/pages/Courses/CourseDetail';
 import { deleteCourse } from '~/services/apiCourse';
+import { deleteUserByType, toggleStatusUser } from '~/services/apiAuth';
+import Chapter from '~/pages/Courses/Chapter';
+import ModalDelete from '../ModalDelete';
+import Lesson from '~/pages/Courses/Lesson';
+import { deletePosts } from '~/services/apiBlog';
+import { deleteVideo, toggleStatusVideo } from '~/services/apiVideo';
+import DetailVideo from '../DetailVideo';
 
 const MySwal = withReactContent(Swal);
 
 function TableItem({ type, data }) {
     const [showDetail, setShowDetail] = useState(false);
+    const [showChapter, setShowChapter] = useState(false);
+    const [showLesson, setShowLesson] = useState(false);
+    const [detailVideo, setDetailVideo] = useState(false);
 
     const [show, setShow] = useState(false);
     const [numberLesson, setNumberLesson] = useState(0);
@@ -80,9 +90,26 @@ function TableItem({ type, data }) {
             const result = await deleteCourse(data._id, currentUser.accessToken, 'uid');
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success').then(
-                    (res) => res.isConfirmed && window.location.reload()
-                );
+                (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
+            } else {
+                MySwal.fire('Thất bại', result.message, 'error');
+            }
+        } else if (type === 'posts') {
+            const result = await deletePosts(currentUser.accessToken, 'uid', data._id);
+
+            if (result.statusCode === 0) {
+                (await MySwal.fire('Thành công', `Xóa ${data.metaTitle} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
+            } else {
+                MySwal.fire('Thất bại', result.message, 'error');
+            }
+        } else if (type === 'video') {
+            const result = await deleteVideo(currentUser.accessToken, null, data._id);
+
+            if (result.statusCode === 0) {
+                (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
+                    window.location.reload();
             } else {
                 MySwal.fire('Thất bại', result.message, 'error');
             }
@@ -190,7 +217,16 @@ function TableItem({ type, data }) {
 
             <td>
                 <div className="text-center">
-                    {type === 'courses' && <strong>{numberChapter}</strong>}
+                    {type === 'courses' && (
+                        <Fragment>
+                            <strong>{numberLesson}</strong>
+                            <div className="mt-2">
+                                <Button variant="success" size="sm" onClick={() => setShowLesson(true)}>
+                                    Chi tiết
+                                </Button>
+                            </div>
+                        </Fragment>
+                    )}
                     {type === 'account' && <strong>{data.admin ? 'ADMIN' : 'USER'}</strong>}
 
                     {(type === 'posts' || type === 'video' || type === 'slide') && (
@@ -284,7 +320,10 @@ function TableItem({ type, data }) {
                 onClick={handleAgreeDelete}
             />
 
-            {showDetail && <ModalDetail data={data} show={showDetail} setShow={setShowDetail} />}
+            {showDetail && <CourseDetail data={data} show={showDetail} setShow={setShowDetail} />}
+            {detailVideo && <DetailVideo data={data} show={detailVideo} setShow={setDetailVideo} />}
+            {showChapter && <Chapter data={data} show={showChapter} setShow={setShowChapter} />}
+            {showLesson && <Lesson data={data} show={showLesson} setShow={setShowLesson} />}
         </tr>
     );
 }

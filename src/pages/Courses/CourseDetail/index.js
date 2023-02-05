@@ -5,31 +5,31 @@ import withReactContent from 'sweetalert2-react-content';
 import { Button, Form, Modal, Table, Accordion } from 'react-bootstrap';
 
 import { Image } from '~/assets/image';
-import HeadingTable from '../HeadingTable';
-import LearnWhatInput from '../LearnWhatInput';
+import HeadingTable from '~/components/HeadingTable';
+import LearnWhatInput from '~/components/LearnWhatInput';
 import { uploadImage } from '~/services/slideshow';
 import { updateCourse } from '~/services/apiCourse';
 
 const MySwal = withReactContent(Swal);
 
-function ModalDetail({ data, show, setShow }) {
+function CourseDetail({ data, show, setShow }) {
     const [inputCount, setInputCount] = useState(data.learnWhat.length);
 
-    const [learnWhat, setLearnWhat] = useState(data.learnWhat.map((what) => what.description));
+    const [icon, setIcon] = useState(data.icon);
+    const [slug, setSlug] = useState(data.slug);
     const [title, setTitle] = useState(data.title);
     const [image, setImage] = useState(data.image);
-    const [icon, setIcon] = useState(data.icon);
-    const [comingSoon, setComingSoon] = useState(() => (data.comingSoon ? '1' : '0'));
-    const [preOrder, setPreOrder] = useState(() => (data.preOrder ? '1' : '0'));
-    const [pro, setPro] = useState(() => (data.pro ? '1' : '0'));
-    const [published, setPublished] = useState(() => (data.published ? '1' : '0'));
-    const [priority, setPriority] = useState(data.priority);
-    const [slug, setSlug] = useState(data.slug);
     const [video, setVideo] = useState(data.video);
     const [price, setPrice] = useState(data.price);
+    const [priority, setPriority] = useState(data.priority);
     const [oldPrice, setOldPrice] = useState(data.oldPrice);
-    const [preOrderPrice, setPreOrderPrice] = useState(data.preOrderPrice);
+    const [pro, setPro] = useState(() => (data.pro ? '1' : '0'));
     const [description, setDescription] = useState(data.description);
+    const [preOrderPrice, setPreOrderPrice] = useState(data.preOrderPrice);
+    const [preOrder, setPreOrder] = useState(() => (data.preOrder ? '1' : '0'));
+    const [published, setPublished] = useState(() => (data.published ? '1' : '0'));
+    const [comingSoon, setComingSoon] = useState(() => (data.comingSoon ? '1' : '0'));
+    const [learnWhat, setLearnWhat] = useState(data.learnWhat.map((what) => what.description));
 
     const imageRef = useRef();
     const iconRef = useRef();
@@ -357,4 +357,4 @@ function ModalDetail({ data, show, setShow }) {
     );
 }
 
-export default ModalDetail;
+export default CourseDetail;

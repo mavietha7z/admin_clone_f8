@@ -16,7 +16,7 @@ function StatusItem({ type, data }) {
 
     const handleStatus = async () => {
         if (currentUser) {
-            if (type === 'courses') {
+            if (type === 'course') {
                 const result = await toggleStatusCourse(data._id, currentUser.accessToken);
 
                 if (result.statusCode === 0) {
@@ -40,14 +40,18 @@ function StatusItem({ type, data }) {
     };
 
     return (
-        <Button
-            variant={`${data.status ? 'success' : 'danger'}`}
-            size="sm"
-            onClick={handleStatus}
-            title={`${data.status ? 'Tắt' : 'Bật'} trạng thái`}
-        >
-            {data.status ? 'Bật' : 'Tắt'}
-        </Button>
+        <td>
+            <div className="text-center">
+                <Button
+                    variant={`${data.status ? 'success' : 'danger'}`}
+                    size="sm"
+                    onClick={handleStatus}
+                    title={`${data.status ? 'Tắt' : 'Bật'} trạng thái`}
+                >
+                    {data.status ? 'Bật' : 'Tắt'}
+                </Button>
+            </div>
+        </td>
     );
 }
 

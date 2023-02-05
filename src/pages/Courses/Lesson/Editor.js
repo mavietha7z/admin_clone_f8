@@ -4,7 +4,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 
 const mdParser = new MarkdownIt();
 
-function EditorLesson({ setText, setHtml }) {
+function Editor({ setText, setHtml }) {
     const handleEditorChange = ({ html, text }) => {
         setText(text);
         setHtml(html);
@@ -22,4 +22,4 @@ function EditorLesson({ setText, setHtml }) {
     );
 }
 
-export default EditorLesson;
+export default Editor;
