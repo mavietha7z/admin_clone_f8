@@ -3,11 +3,12 @@ import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
 
-import { toggleStatusCourse } from '~/services/apiCourse';
-import { toggleStatusPosts } from '~/services/apiBlog';
 import { toggleStatusUser } from '~/services/apiAuth';
+import { toggleStatusPosts } from '~/services/apiBlog';
 import { toggleStatusVideo } from '~/services/apiVideo';
 import { toggleStatusSlide } from '~/services/slideshow';
+import { toggleStatusCourse } from '~/services/apiCourse';
+import { toggleStatusLearningPath } from '~/services/apiLearning';
 
 const MySwal = withReactContent(Swal);
 
@@ -64,6 +65,18 @@ function StatusItem({ type, data }) {
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
+            } else if (type === 'learning') {
+                const result = await toggleStatusLearningPath(currentUser.accessToken, data._id);
+
+                if (result.statusCode === 0) {
+                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
+                        (res) => res.isConfirmed && window.location.reload()
+                    );
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else {
+                MySwal.fire('Lỗi', 'Vui lòng thử lại', 'error');
             }
         }
     };

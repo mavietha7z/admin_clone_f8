@@ -145,12 +145,7 @@ function CourseItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete
-                show={show}
-                setShow={setShow}
-                title={data.name || data.title || data.metaTitle}
-                onClick={handleAgreeDelete}
-            />
+            <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />
 
             {showDetail && <CourseDetail data={data} show={showDetail} setShow={setShowDetail} />}
             {showChapter && <Chapter data={data} show={showChapter} setShow={setShowChapter} />}

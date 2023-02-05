@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
 import { getCourseByType } from '~/services/apiCourse';
-import { Button, Col, Row, Table } from 'react-bootstrap';
+import { Button, Card, Col, Row, Table } from 'react-bootstrap';
 import CreateCourse from './CreateCourse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -54,10 +54,11 @@ function Courses() {
     }, [type]);
 
     return (
-        <div className={'wrapper-global'}>
-            <div className={'header-global'}>
+        <div className="wrapper-global">
+            <div className="header-global">
                 <Row>
                     <TitleGlobal name="Danh sách khóa học" />
+
                     <Col sm={7}>
                         <Button className="float-end mt-5" variant="success" size="xl" onClick={() => setShow(true)}>
                             Thêm mới
@@ -71,8 +72,8 @@ function Courses() {
             <div className="content-global">
                 <Row>
                     <Col>
-                        <div className="card">
-                            <div className="card-header bg-white">
+                        <Card>
+                            <Card.Header>
                                 <div className="float-end">
                                     <select name="type" className="form-control">
                                         <option value="order">-- Tên khóa học --</option>
@@ -80,9 +81,9 @@ function Courses() {
                                         <option value="order">-- Tên miễn phí --</option>
                                     </select>
                                 </div>
-                            </div>
+                            </Card.Header>
 
-                            <div className="card-body">
+                            <Card.Body>
                                 <Table striped bordered>
                                     <HeadingTable
                                         headings={[
@@ -104,8 +105,8 @@ function Courses() {
                                         ))}
                                     </tbody>
                                 </Table>
-                            </div>
-                        </div>
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
             </div>

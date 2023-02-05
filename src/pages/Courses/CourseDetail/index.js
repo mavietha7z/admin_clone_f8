@@ -327,7 +327,6 @@ function CourseDetail({ data, show, setShow }) {
                                 </Form.Group>
                             </td>
                         </tr>
-                        <tr></tr>
                     </tbody>
                 </Table>
 

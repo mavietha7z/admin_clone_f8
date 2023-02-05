@@ -1,10 +1,11 @@
 import Home from '~/layouts/Home';
-import Login from '~/layouts/components/Login';
-import Slideshows from '~/pages/Slideshows';
-import Courses from '~/pages/Courses';
 import Posts from '~/pages/Posts';
 import Videos from '~/pages/Videos';
+import Courses from '~/pages/Courses';
 import Accounts from '~/pages/Accounts';
+import LearningPaths from '~/pages/LearningPaths';
+import Slideshows from '~/pages/Slideshows';
+import Login from '~/layouts/components/Login';
 
 const privateRoutes = [
     { path: '/', component: Home },
@@ -14,6 +15,7 @@ const privateRoutes = [
     { path: '/video', component: Videos },
     { path: '/slideshow', component: Slideshows },
     { path: '/users', component: Accounts },
+    { path: '/learnings', component: LearningPaths },
 ];
 
 export { privateRoutes };

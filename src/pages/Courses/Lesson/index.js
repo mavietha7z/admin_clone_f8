@@ -98,6 +98,7 @@ function Lesson({ data, show, setShow }) {
                     Chi tiết bài học khóa :<strong>{data.title}</strong>
                 </Modal.Title>
             </Modal.Header>
+
             <Modal.Body>
                 <Row className="mb-4">
                     <Col sm={6}>
