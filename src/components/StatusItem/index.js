@@ -25,8 +25,37 @@ function StatusItem({ type, data }) {
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
+            } else if (type === 'account') {
+                const result = await toggleStatusUser(currentUser.accessToken, 'status', data._id);
+
+                if (result.statusCode === 0) {
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
             } else if (type === 'posts') {
                 const result = await toggleStatusPosts(data._id, currentUser.accessToken);
+
+                if (result.statusCode === 0) {
+                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
+                        (res) => res.isConfirmed && window.location.reload()
+                    );
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else if (type === 'video') {
+                const result = await toggleStatusVideo(currentUser.accessToken, 'status', data._id);
+
+                if (result.statusCode === 0) {
+                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
+                        (res) => res.isConfirmed && window.location.reload()
+                    );
+                } else {
+                    MySwal.fire('Thất bại', result.message, 'error');
+                }
+            } else if (type === 'slide') {
+                const result = await toggleStatusSlide(currentUser.accessToken, data._id);
 
                 if (result.statusCode === 0) {
                     MySwal.fire('Thành công', `${result.message}`, 'success').then(

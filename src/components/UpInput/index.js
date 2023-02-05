@@ -1,9 +1,9 @@
-import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment } from 'react';
 import { Col, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleMinus, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
-function LearnWhatInput({ count, setCount, data, onChange, onClick }) {
+function UpInput({ count, setCount, data, onChange, onClick }) {
     return (
         <Form.Group className="mb-3">
             <Form.Label style={{ width: '100%' }}>
@@ -42,4 +42,4 @@ function LearnWhatInput({ count, setCount, data, onChange, onClick }) {
     );
 }
 
-export default LearnWhatInput;
+export default UpInput;

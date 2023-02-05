@@ -1,11 +1,11 @@
 import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
 import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
+import UpInput from '../UpInput';
 import { createCourse } from '~/services/apiCourse';
-import LearnWhatInput from '../LearnWhatInput';
 
 const MySwal = withReactContent(Swal);
 
@@ -226,7 +226,7 @@ function FormCreateCourse({ type }) {
 
                 <Col sm={7}>
                     {(type !== 'pro' || comingSoon === '0') && (
-                        <LearnWhatInput
+                        <UpInput
                             count={inputCount}
                             setCount={setInputCount}
                             data={isWhatLearn}

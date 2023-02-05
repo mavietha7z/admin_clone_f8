@@ -7,41 +7,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
 import { faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import TableItem from '~/components/TableItem';
-import CreateVideo from '~/components/CreateVideo';
+import SlideshowItem from './SlideshowItem';
 import TitleGlobal from '~/components/TitleGlobal';
-import { getVideoByType } from '~/services/apiVideo';
+import CreateSlide from './CreateSlide';
 import HeadingTable from '~/components/HeadingTable';
+import { getAllSlideshow } from '~/services/slideshow';
 
 const MySwal = withReactContent(Swal);
 
-function Videos() {
-    const [videos, setVideos] = useState([]);
+function Slideshows() {
+    const [slideshows, setSlideshows] = useState([]);
     const [show, setShow] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const page = new URLSearchParams(location.search).get('page');
+    const type = new URLSearchParams(location.search).get('type');
 
     useEffect(() => {
-        if (!page) {
-            navigate(`${location.pathname}?page=1`);
+        if (!type) {
+            navigate(`${location.pathname}?type=all`);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [type]);
 
     useEffect(() => {
         if (currentUser) {
-            if (page) {
+            if (type) {
                 const fetchApi = async () => {
-                    const result = await getVideoByType(currentUser.accessToken, page);
+                    const result = await getAllSlideshow(currentUser.accessToken, type);
 
                     if (result.statusCode === 0) {
-                        setVideos(result.data);
+                        setSlideshows(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.data.message, 'error');
+                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu slideshow', 'error');
                     }
                 };
                 fetchApi();
@@ -51,7 +51,7 @@ function Videos() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+    }, [type]);
 
     return (
         <div className="wrapper-global">
@@ -60,29 +60,30 @@ function Videos() {
                     <TitleGlobal name="Danh sách khóa học" />
 
                     <Col sm={7}>
-                        <Button variant="success" className="mt-5 float-end" onClick={() => setShow(true)}>
-                            Thêm mới <FontAwesomeIcon icon={faPlusCircle} />
+                        <Button variant="success" className="float-end mt-5" onClick={() => setShow(true)}>
+                            Thêm mới
+                            <FontAwesomeIcon className="ms-2" icon={faPlusCircle} />
                         </Button>
                     </Col>
 
-                    <CreateVideo show={show} setShow={setShow} />
+                    <CreateSlide show={show} setShow={setShow} />
                 </Row>
             </div>
-
             <div className="content-global">
                 <Card>
                     <Card.Header>
                         <div className="float-end">
                             <div className="input-group">
-                                <select className="form-control">
-                                    <option value="title">Tiêu đề video</option>
+                                <select name="type" className="form-control">
+                                    <option value="order">Tên slideshow</option>
                                 </select>
+
                                 <Form.Control type="text" placeholder="Search" />
                                 <div className="input-group-append">
                                     <Button
                                         variant="warning"
                                         onClick={() => {
-                                            MySwal.fire('Lỗi', 'Chức năng này đang được phát triển', 'error');
+                                            MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error');
                                         }}
                                     >
                                         <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -92,22 +93,22 @@ function Videos() {
                         </div>
                     </Card.Header>
 
-                    <Card.Body style={{ padding: 20, paddingTop: 0 }}>
+                    <Card.Body>
                         <Table striped bordered>
                             <HeadingTable
                                 headings={[
-                                    { title: 'Tiêu đề video' },
-                                    { title: 'Link youtube' },
+                                    { title: 'Tiêu đề' },
+                                    { title: 'Ảnh' },
+                                    { title: 'Mô tả' },
                                     { title: 'Trạng thái' },
-                                    { title: 'Trang chủ' },
                                     { title: 'Ngày tạo / Cập nhật' },
                                     { title: 'Hành động' },
                                 ]}
                             />
 
                             <tbody>
-                                {videos?.map((video) => (
-                                    <TableItem key={video._id} type="video" data={video} />
+                                {slideshows.map((slideshow) => (
+                                    <SlideshowItem key={slideshow._id} type="slide" data={slideshow} />
                                 ))}
                             </tbody>
                         </Table>
@@ -118,4 +119,4 @@ function Videos() {
     );
 }
 
-export default Videos;
+export default Slideshows;

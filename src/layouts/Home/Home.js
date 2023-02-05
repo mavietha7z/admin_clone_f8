@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -17,17 +18,17 @@ function Home() {
     }, [currentUser]);
 
     return (
-        <div className={'wrapper-global'}>
-            <div className={'header-global'}>
-                <div className="row">
+        <div className="wrapper-global">
+            <div className="header-global">
+                <Row>
                     <TitleGlobal name="Bảng quản trị" />
-                </div>
+                </Row>
             </div>
 
             <div className="content-global">
-                <div className="row">
+                <Row>
                     {config.home.map((child, index) => (
-                        <div className="col-3" key={index}>
+                        <Col ms={3} key={index}>
                             <div className="home-box">
                                 <span className={`home-box-icon bg-${child.bg}`}>
                                     <FontAwesomeIcon icon={child.icon} />
@@ -37,9 +38,9 @@ function Home() {
                                     <span className="home-box-number">1</span>
                                 </div>
                             </div>
-                        </div>
+                        </Col>
                     ))}
-                </div>
+                </Row>
             </div>
         </div>
     );

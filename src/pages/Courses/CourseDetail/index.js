@@ -6,7 +6,7 @@ import { Button, Form, Modal, Table, Accordion } from 'react-bootstrap';
 
 import { Image } from '~/assets/image';
 import HeadingTable from '~/components/HeadingTable';
-import LearnWhatInput from '~/components/LearnWhatInput';
+import UpInput from '~/components/UpInput';
 import { uploadImage } from '~/services/slideshow';
 import { updateCourse } from '~/services/apiCourse';
 
@@ -335,7 +335,7 @@ function CourseDetail({ data, show, setShow }) {
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Những gì sẽ học được trong khóa này ({learnWhat.length})</Accordion.Header>
                         <Accordion.Body>
-                            <LearnWhatInput
+                            <UpInput
                                 count={inputCount}
                                 setCount={setInputCount}
                                 data={learnWhat}

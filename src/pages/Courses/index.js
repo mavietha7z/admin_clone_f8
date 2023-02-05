@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import TableItem from '~/components/TableItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
 import { getCourseByType } from '~/services/apiCourse';
 import { Button, Col, Row, Table } from 'react-bootstrap';
-import ModalCreateCourse from '~/components/ModalCreateCourse';
+import CreateCourse from './CreateCourse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import CourseItem from './CourseItem';
@@ -64,7 +63,8 @@ function Courses() {
                             Thêm mới
                             <FontAwesomeIcon className="ms-2" icon={faCirclePlus} />
                         </Button>
-                        <ModalCreateCourse show={show} setShow={setShow} />
+
+                        <CreateCourse show={show} setShow={setShow} />
                     </Col>
                 </Row>
             </div>

@@ -1,4 +1,12 @@
-import { faBlog, faBook, faGauge, faNewspaper, faUser, faVideo } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBlog,
+    faBook,
+    faGauge,
+    faNewspaper,
+    faUser,
+    faVideo,
+    faLinesLeaning,
+} from '@fortawesome/free-solid-svg-icons';
 
 const sidebar = [
     {
@@ -14,10 +22,6 @@ const sidebar = [
                 linkTo: '/course',
                 title: 'Danh sách khóa học',
             },
-            {
-                linkTo: '/course/create',
-                title: 'Thêm mới khóa học',
-            },
         ],
     },
     {
@@ -27,10 +31,6 @@ const sidebar = [
             {
                 linkTo: '/users',
                 title: 'Danh sách người dùng',
-            },
-            {
-                linkTo: '/users/create',
-                title: 'Thêm mới người dùng',
             },
         ],
     },
@@ -52,10 +52,6 @@ const sidebar = [
                 linkTo: '/video',
                 title: 'Danh sách video',
             },
-            {
-                linkTo: '/video/create',
-                title: 'Thêm mới video',
-            },
         ],
     },
     {
@@ -66,9 +62,15 @@ const sidebar = [
                 linkTo: '/slideshow',
                 title: 'Danh sách slideshow',
             },
+        ],
+    },
+    {
+        title: 'Lộ trình học',
+        icon: faLinesLeaning,
+        sub: [
             {
-                linkTo: '/slideshow/create',
-                title: 'Thêm mới slideshow',
+                linkTo: '/learnings',
+                title: 'Danh sách lộ trình',
             },
         ],
     },

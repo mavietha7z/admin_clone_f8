@@ -1,7 +1,7 @@
 import { Modal, Tab, Tabs } from 'react-bootstrap';
-import FormCreateCourse from '../FormCreateCourse';
+import FormCreateCourse from '~/components/FormCreateCourse';
 
-function ModalCreateCourse({ show, setShow }) {
+function CreateCourse({ show, setShow }) {
     return (
         <Modal size="xl" show={show} onHide={() => setShow(false)} aria-labelledby="modal-styling">
             <Modal.Header closeButton style={{ borderBottom: 'none' }}>
@@ -22,4 +22,4 @@ function ModalCreateCourse({ show, setShow }) {
     );
 }
 
-export default ModalCreateCourse;
+export default CreateCourse;

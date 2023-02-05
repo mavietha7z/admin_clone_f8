@@ -67,3 +67,21 @@ export const createSlideshow = async (token, slide) => {
         return error.response.data;
     }
 };
+
+// OK
+export const deleteSlideshow = async (token, id) => {
+    try {
+        const res = await request.remove('/home/delete', {
+            headers: {
+                token,
+            },
+            params: {
+                id,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};

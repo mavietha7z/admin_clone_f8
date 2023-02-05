@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 const MySwal = withReactContent(Swal);
 
-function DetailVideo({ data, show, setShow }) {
+function VideoDetail({ data, show, setShow }) {
     const [title, setTitle] = useState(data.title);
     const [image, setImage] = useState(data.image);
     const [view, setView] = useState(data.view);
@@ -173,4 +173,4 @@ function DetailVideo({ data, show, setShow }) {
     );
 }
 
-export default DetailVideo;
+export default VideoDetail;

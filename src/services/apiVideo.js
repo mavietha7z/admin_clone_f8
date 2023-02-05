@@ -80,7 +80,7 @@ export const toggleStatusVideo = async (token, type, id) => {
             }
         );
 
-        return res.data;
+        return res;
     } catch (error) {
         return error.response.data;
     }

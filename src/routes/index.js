@@ -1,6 +1,6 @@
 import Home from '~/layouts/Home';
 import Login from '~/layouts/components/Login';
-import Slideshow from '~/pages/Slideshow';
+import Slideshows from '~/pages/Slideshows';
 import Courses from '~/pages/Courses';
 import Posts from '~/pages/Posts';
 import Videos from '~/pages/Videos';
@@ -12,7 +12,7 @@ const privateRoutes = [
     { path: '/course', component: Courses },
     { path: '/blog', component: Posts },
     { path: '/video', component: Videos },
-    { path: '/slideshow', component: Slideshow },
+    { path: '/slideshow', component: Slideshows },
     { path: '/users', component: Accounts },
 ];
 
