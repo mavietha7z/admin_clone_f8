@@ -6,8 +6,8 @@ import withReactContent from 'sweetalert2-react-content';
 
 import RenderDate from '~/components/RenderDate';
 import StatusItem from '~/components/StatusItem';
-import { deletePosts } from '~/services/apiBlog';
 import ModalDelete from '~/components/ModalDelete';
+import { deletePosts, toggleStatusPosts } from '~/services/apiBlog';
 
 const MySwal = withReactContent(Swal);
 
@@ -22,6 +22,16 @@ function PostsItem({ type, data }) {
         if (result.statusCode === 0) {
             (await MySwal.fire('Thành công', `Xóa ${data.metaTitle} thành công`, 'success')).isConfirmed &&
                 window.location.reload();
+        } else {
+            MySwal.fire('Thất bại', result.message, 'error');
+        }
+    };
+
+    const handleToggleHome = async () => {
+        const result = await toggleStatusPosts(currentUser.accessToken, data._id, 'home');
+
+        if (result.statusCode === 0) {
+            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
         } else {
             MySwal.fire('Thất bại', result.message, 'error');
         }
@@ -42,6 +52,19 @@ function PostsItem({ type, data }) {
             </td>
 
             <StatusItem type={type} data={data} />
+
+            <td>
+                <div className="text-center">
+                    <Button
+                        variant={`${data.homePage ? 'success' : 'danger'}`}
+                        size="sm"
+                        onClick={handleToggleHome}
+                        title={`${data.homePage ? 'Tắt' : 'Bật'} trạng thái`}
+                    >
+                        {data.homePage ? 'Bật' : 'Tắt'}
+                    </Button>
+                </div>
+            </td>
 
             <RenderDate createdAt={data.createdAt} updatedAt={data.updatedAt} />
 

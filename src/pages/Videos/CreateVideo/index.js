@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
-import { createVideo, getInfoVideo } from '~/services/apiVideo';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { iso8601ToTimeString } from '~/configs';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import withReactContent from 'sweetalert2-react-content';
+import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
+
+import { iso8601ToTimeString } from '~/configs';
+import { createVideo, getInfoVideo } from '~/services/apiVideo';
+
 const MySwal = withReactContent(Swal);
 
 function CreateVideo({ show, setShow }) {
@@ -14,9 +16,9 @@ function CreateVideo({ show, setShow }) {
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
     const [time, setTime] = useState('');
-    const [view, setView] = useState('');
-    const [like, setLike] = useState('');
-    const [comment, setComment] = useState('');
+    const [view, setView] = useState(0);
+    const [like, setLike] = useState(0);
+    const [comment, setComment] = useState(0);
     const [priority, setPriority] = useState(1);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);

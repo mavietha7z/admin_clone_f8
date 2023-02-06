@@ -28,7 +28,7 @@ function SlideshowItem({ type, data }) {
 
     return (
         <tr>
-            <td>
+            <td style={{ maxWidth: 360 }}>
                 <div className="text-center">
                     <strong>{data.title}</strong>
                 </div>

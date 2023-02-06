@@ -20,7 +20,7 @@ export const getBlogByType = async (token, page = null, type = null) => {
 };
 
 // Ok
-export const toggleStatusPosts = async (postId, token) => {
+export const toggleStatusPosts = async (token, id, type) => {
     try {
         const res = await request.post(
             `/posts/status`,
@@ -30,7 +30,8 @@ export const toggleStatusPosts = async (postId, token) => {
                     token,
                 },
                 params: {
-                    id: postId,
+                    type,
+                    id,
                 },
             }
         );

@@ -3,16 +3,12 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Card, Pagination, Row, Table } from 'react-bootstrap';
 
 import PostsItem from './PostsItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import { getBlogByType } from '~/services/apiBlog';
 import HeadingTable from '~/components/HeadingTable';
-import { Button, Card, Pagination, Row, Table } from 'react-bootstrap';
-
-const MySwal = withReactContent(Swal);
 
 function Posts() {
     const [posts, setPosts] = useState([]);
@@ -61,54 +57,35 @@ function Posts() {
     }
 
     return (
-        <div className={'wrapper-global'}>
-            <div className={'header-global'}>
+        <div className="wrapper-global">
+            <div className="header-global">
                 <Row>
                     <TitleGlobal name="Danh sách khóa học" />
                 </Row>
             </div>
             <div className="content-global">
                 <Card>
-                    <Card.Header>
-                        <div className="float-end">
-                            <div className="input-group">
-                                <select className="form-control">
-                                    <option value="order">Tiêu đề bài viết</option>
-                                    <option value="order">Tác giả bài viết</option>
-                                </select>
-                                <input type="text" className="form-control" placeholder="Search" />
-                                <div className="input-group-append">
-                                    <Button
-                                        variant="warning"
-                                        onClick={() => MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error')}
-                                    >
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Card.Header>
-
-                    <Card.Body style={{ padding: 20, paddingTop: 0 }}>
+                    <Card.Body>
                         <Table striped bordered>
                             <HeadingTable
                                 headings={[
                                     { title: 'Tiêu đề bài viết' },
                                     { title: 'Tác giả' },
                                     { title: 'Trạng thái' },
+                                    { title: 'Trang chủ' },
                                     { title: 'Ngày tạo / Cập nhật' },
                                     { title: 'Hành động' },
                                 ]}
                             />
 
                             <tbody>
-                                {posts?.map((post) => (
+                                {posts.map((post) => (
                                     <PostsItem key={post._id} type="posts" data={post} />
                                 ))}
                             </tbody>
                         </Table>
 
-                        <Pagination className="float-end" size="lg">
+                        <Pagination className="float-end me-5" size="lg">
                             <Pagination.First />
                             {items}
                             <Pagination.Last />

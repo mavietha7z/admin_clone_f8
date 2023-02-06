@@ -128,7 +128,7 @@ function Chapter({ data, show, setShow }) {
                                             </ContextAwareToggle>
                                         </Card.Header>
                                         <Accordion.Collapse eventKey="0">
-                                            <Table striped bordered className="mb-0">
+                                            <Table striped bordered>
                                                 <thead>
                                                     <tr>
                                                         <th>Tên bài</th>

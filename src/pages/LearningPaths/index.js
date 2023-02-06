@@ -1,16 +1,15 @@
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
+import { Card, Col, Row, Table } from 'react-bootstrap';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
-import { faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import LearningPathItem from './LearningPathItem';
 import CreateLearning from './CreateLearning';
+import LearningPathItem from './LearningPathItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
 import { getLearningRoute } from '~/services/apiLearning';
+import CreateButton from '~/components/CreateButton';
 
 const MySwal = withReactContent(Swal);
 
@@ -38,7 +37,7 @@ function LearningPaths() {
                 if (result.statusCode === 0) {
                     setLearnings(result.data);
                 } else {
-                    MySwal.fire('Lỗi', result.data.message, 'error');
+                    MySwal.fire('Lỗi', result.message, 'error');
                 }
             };
             fetchApi();
@@ -54,39 +53,15 @@ function LearningPaths() {
                     <TitleGlobal name="Danh sách lộ trình" />
 
                     <Col sm={7}>
-                        <Button variant="success" className="mt-5 float-end" onClick={() => setShow(true)}>
-                            Thêm mới <FontAwesomeIcon icon={faPlusCircle} />
-                        </Button>
+                        <CreateButton onClick={() => setShow(true)} />
+                        {show && <CreateLearning show={show} setShow={setShow} />}
                     </Col>
-
-                    {show && <CreateLearning show={show} setShow={setShow} />}
                 </Row>
             </div>
 
             <div className="content-global">
                 <Card>
-                    <Card.Header>
-                        <div className="float-end">
-                            <div className="input-group">
-                                <select className="form-control">
-                                    <option value="title">Tiêu đề</option>
-                                </select>
-                                <Form.Control type="text" placeholder="Search" />
-                                <div className="input-group-append">
-                                    <Button
-                                        variant="warning"
-                                        onClick={() => {
-                                            MySwal.fire('Lỗi', 'Chức năng này đang được phát triển', 'error');
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Card.Header>
-
-                    <Card.Body style={{ padding: 20, paddingTop: 0 }}>
+                    <Card.Body>
                         <Table striped bordered>
                             <HeadingTable
                                 headings={[

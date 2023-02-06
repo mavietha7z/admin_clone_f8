@@ -35,7 +35,7 @@ function Home() {
                                 </span>
                                 <div className="home-box-content">
                                     <span className="home-box-text">{child.title}</span>
-                                    <span className="home-box-number">1</span>
+                                    <span className="home-box-number">0</span>
                                 </div>
                             </div>
                         </Col>

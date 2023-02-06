@@ -36,12 +36,11 @@ function StatusItem({ type, data }) {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
             } else if (type === 'posts') {
-                const result = await toggleStatusPosts(data._id, currentUser.accessToken);
+                const result = await toggleStatusPosts(currentUser.accessToken, data._id, 'status');
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
@@ -49,9 +48,8 @@ function StatusItem({ type, data }) {
                 const result = await toggleStatusVideo(currentUser.accessToken, 'status', data._id);
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
@@ -59,9 +57,8 @@ function StatusItem({ type, data }) {
                 const result = await toggleStatusSlide(currentUser.accessToken, data._id);
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }
@@ -69,9 +66,8 @@ function StatusItem({ type, data }) {
                 const result = await toggleStatusLearningPath(currentUser.accessToken, data._id);
 
                 if (result.statusCode === 0) {
-                    MySwal.fire('Thành công', `${result.message}`, 'success').then(
-                        (res) => res.isConfirmed && window.location.reload()
-                    );
+                    (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed &&
+                        window.location.reload();
                 } else {
                     MySwal.fire('Thất bại', result.message, 'error');
                 }

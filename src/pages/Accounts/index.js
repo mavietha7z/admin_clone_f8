@@ -3,24 +3,22 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Card, Col, Pagination, Row, Table } from 'react-bootstrap';
 
+import CreateUser from './CreateUser';
+import AccountItem from './AccountItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import { getUserByType } from '~/services/apiAuth';
 import HeadingTable from '~/components/HeadingTable';
+import CreateButton from '~/components/CreateButton';
 import HeaderListUser from '~/components/HeaderListUser';
-import CreateUser from './CreateUser';
-import { Button, Card, Col, Pagination, Row, Table } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import AccountItem from './AccountItem';
 
 const MySwal = withReactContent(Swal);
 
 function Accounts() {
     const [users, setUsers] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
-
     const [show, setShow] = useState(false);
+    const [totalPages, setTotalPages] = useState(0);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -83,12 +81,9 @@ function Accounts() {
                     <TitleGlobal name="Danh sách người dùng" />
 
                     <Col sm={7}>
-                        <Button variant="success" className="float-end mt-5" onClick={() => setShow(true)}>
-                            Thêm mới <FontAwesomeIcon icon={faPlusCircle} />
-                        </Button>
+                        <CreateButton onClick={() => setShow(true)} />
+                        {show && <CreateUser show={show} setShow={setShow} />}
                     </Col>
-
-                    <CreateUser show={show} setShow={setShow} />
                 </Row>
             </div>
 
@@ -126,9 +121,7 @@ function Accounts() {
                             </Table>
 
                             <Pagination className="float-end" size="lg">
-                                <Pagination.First />
-                                {items}
-                                <Pagination.Last />
+                                <Pagination.First /> {items} <Pagination.Last />
                             </Pagination>
                         </Card.Body>
                     </Card>

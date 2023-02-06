@@ -263,7 +263,7 @@ function CourseDetail({ data, show, setShow }) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Slug khóa học"
+                                        placeholder="Url video giới thiệu"
                                         value={video}
                                         onChange={(e) => setVideo(e.target.value)}
                                     />
@@ -348,7 +348,7 @@ function CourseDetail({ data, show, setShow }) {
                 <Button className="float-end ms-2" size="sm" onClick={handleUpdateCourse}>
                     Lưu
                 </Button>
-                <Button variant="secondary" className="float-end" size="sm">
+                <Button variant="secondary" className="float-end" size="sm" onClick={() => setShow(false)}>
                     Đóng
                 </Button>
             </Modal.Body>

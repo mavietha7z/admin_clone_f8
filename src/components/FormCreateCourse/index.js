@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import withReactContent from 'sweetalert2-react-content';
 import { Button, Col, Form, Row } from 'react-bootstrap';
@@ -17,7 +17,7 @@ function FormCreateCourse({ type }) {
     const [slug, setSlug] = useState('');
     const [video, setVideo] = useState('');
 
-    const [priority, setPriority] = useState(0);
+    const [priority, setPriority] = useState(1);
     const [price, setPrice] = useState(0);
     const [oldPrice, setOldPrice] = useState(0);
     const [preOrderPrice, setPreOrderPrice] = useState(0);
@@ -29,6 +29,14 @@ function FormCreateCourse({ type }) {
     const fileRef = useRef();
     const iconRef = useRef();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    useEffect(() => {
+        return () => image && URL.revokeObjectURL(image.preview);
+    }, [image]);
+
+    useEffect(() => {
+        return () => icon && URL.revokeObjectURL(icon.preview);
+    }, [icon]);
 
     const handleChangeWhatLearn = (e, i) => {
         const updatedWhatLearn = [...isWhatLearn];

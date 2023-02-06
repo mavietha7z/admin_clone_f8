@@ -40,12 +40,8 @@ function CreateUser({ show, setShow }) {
             const result = await registerUser(currentUser.accessToken, newUser);
 
             if (result.statusCode === 0) {
-                MySwal.fire('Thành công', 'Tạo người dùng thành công', 'success');
-                setName('');
-                setEmail('');
-                setPassword('');
-                setRole('0');
-                inputRef.current.focus();
+                (await MySwal.fire('Thành công', 'Tạo người dùng thành công', 'success')).isConfirmed &&
+                    window.location.reload();
             } else {
                 MySwal.fire('Thất bại', result.message, 'error');
             }

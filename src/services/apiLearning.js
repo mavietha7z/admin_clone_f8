@@ -121,7 +121,7 @@ export const deleteLearningPath = async (token, id) => {
     }
 };
 
-//
+// OK
 export const updateLearningPath = async (token, data, id) => {
     try {
         const res = await request.put('/learning/update', data, {

@@ -71,28 +71,7 @@ function Videos() {
 
             <div className="content-global">
                 <Card>
-                    <Card.Header>
-                        <div className="float-end">
-                            <div className="input-group">
-                                <select className="form-control">
-                                    <option value="title">Tiêu đề video</option>
-                                </select>
-                                <Form.Control type="text" placeholder="Search" />
-                                <div className="input-group-append">
-                                    <Button
-                                        variant="warning"
-                                        onClick={() => {
-                                            MySwal.fire('Lỗi', 'Chức năng này đang được phát triển', 'error');
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Card.Header>
-
-                    <Card.Body style={{ padding: 20, paddingTop: 0 }}>
+                    <Card.Body>
                         <Table striped bordered>
                             <HeadingTable
                                 headings={[

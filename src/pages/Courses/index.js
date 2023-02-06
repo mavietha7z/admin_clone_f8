@@ -1,23 +1,22 @@
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { Card, Col, Row, Table } from 'react-bootstrap';
 import withReactContent from 'sweetalert2-react-content';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import CourseItem from './CourseItem';
+import CreateCourse from './CreateCourse';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
+import CreateButton from '~/components/CreateButton';
 import { getCourseByType } from '~/services/apiCourse';
-import { Button, Card, Col, Row, Table } from 'react-bootstrap';
-import CreateCourse from './CreateCourse';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import CourseItem from './CourseItem';
 
 const MySwal = withReactContent(Swal);
 
 function Courses() {
-    const [courses, setCourses] = useState([]);
     const [show, setShow] = useState(false);
+    const [courses, setCourses] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,7 +40,7 @@ function Courses() {
                     if (result.statusCode === 0) {
                         setCourses(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu khóa học', 'error');
+                        MySwal.fire('Lỗi', result.message, 'error');
                     }
                 };
                 fetchApi();
@@ -60,11 +59,7 @@ function Courses() {
                     <TitleGlobal name="Danh sách khóa học" />
 
                     <Col sm={7}>
-                        <Button className="float-end mt-5" variant="success" size="xl" onClick={() => setShow(true)}>
-                            Thêm mới
-                            <FontAwesomeIcon className="ms-2" icon={faCirclePlus} />
-                        </Button>
-
+                        <CreateButton onClick={() => setShow(true)} />
                         <CreateCourse show={show} setShow={setShow} />
                     </Col>
                 </Row>
@@ -73,16 +68,6 @@ function Courses() {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Header>
-                                <div className="float-end">
-                                    <select name="type" className="form-control">
-                                        <option value="order">-- Tên khóa học --</option>
-                                        <option value="order">-- Khóa học Pro --</option>
-                                        <option value="order">-- Tên miễn phí --</option>
-                                    </select>
-                                </div>
-                            </Card.Header>
-
                             <Card.Body>
                                 <Table striped bordered>
                                     <HeadingTable
