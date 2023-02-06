@@ -120,3 +120,21 @@ export const deleteLearningPath = async (token, id) => {
         return error.response.data;
     }
 };
+
+//
+export const updateLearningPath = async (token, data, id) => {
+    try {
+        const res = await request.put('/learning/update', data, {
+            headers: {
+                token,
+            },
+            params: {
+                id,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};

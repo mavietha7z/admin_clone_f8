@@ -1,16 +1,63 @@
-import { useState } from 'react';
+import Swal from 'sweetalert2';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import withReactContent from 'sweetalert2-react-content';
 import { Button, Modal, Table, Form, Accordion, Card } from 'react-bootstrap';
 
+import AccordionItem from '../Accordion';
+import { uploadImage } from '~/services/slideshow';
 import HeadingTable from '~/components/HeadingTable';
+import { updateLearningPath } from '~/services/apiLearning';
+
+const MySwal = withReactContent(Swal);
 
 function LearningPathDetail({ show, setShow, data }) {
-    const [title, setTitle] = useState(data.title);
-    const [priority, setPriority] = useState(data.priority);
-    const [image, setImage] = useState(data.image);
     const [slug, setSlug] = useState(data.slug);
+    const [image, setImage] = useState(data.image);
+    const [title, setTitle] = useState(data.title);
     const [content, setContent] = useState(data.content);
+    const [priority, setPriority] = useState(data.priority);
     const [description, setDescription] = useState(data.description);
-    const [groups, setGroups] = useState(data.groups);
+
+    const imageRef = useRef();
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    const handleSelectImage = async (e) => {
+        let formData = new FormData();
+        formData.append('image', e.target.files[0]);
+
+        const result = await uploadImage(formData, currentUser.accessToken);
+
+        if (result.statusCode === 0) {
+            setImage(result.data.urlImage);
+        } else {
+            MySwal.fire('Thất bại', result.message, 'error');
+        }
+    };
+
+    const handleUpdate = async () => {
+        if (!title || !description || !priority || !image || !slug || !content) {
+            MySwal.fire('Lỗi', 'Vui lòng nhập thông tin', 'error');
+            return;
+        } else {
+            const LearningPath = {
+                title,
+                content,
+                description,
+                image,
+                priority,
+                slug,
+            };
+
+            const result = await updateLearningPath(currentUser.accessToken, LearningPath, data._id);
+
+            if (result.statusCode === 0) {
+                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            } else {
+                MySwal.fire('Thất bại', result.message, 'error');
+            }
+        }
+    };
 
     return (
         <Modal show={show} onHide={() => setShow(false)} size="xl">
@@ -74,10 +121,10 @@ function LearningPathDetail({ show, setShow, data }) {
                                 </Card>
                             </td>
                             <td className="text-center">
-                                <Button variant="success" size="sm">
+                                <Button variant="success" size="sm" onClick={() => imageRef.current.click()}>
                                     Chọn ảnh
                                 </Button>
-                                <Form.Control type="file" hidden />
+                                <Form.Control ref={imageRef} onChange={handleSelectImage} type="file" hidden />
                             </td>
                         </tr>
 
@@ -115,73 +162,13 @@ function LearningPathDetail({ show, setShow, data }) {
 
                 <Form.Label className="mb-2 mt-3">Nhóm khóa học:</Form.Label>
                 <Accordion className="mb-4">
-                    {groups.map((group, index) => (
-                        <Accordion.Item key={group._id} eventKey={index}>
-                            <Accordion.Header>{group.title}</Accordion.Header>
-                            <Accordion.Body>
-                                <Table striped bordered>
-                                    <HeadingTable
-                                        headings={[
-                                            { title: 'Tên mô tả' },
-                                            { title: 'Giá trị hiện tại' },
-                                            { title: 'Hành động' },
-                                        ]}
-                                    />
-
-                                    <tbody>
-                                        <tr>
-                                            <td className="text-center">Tên nhóm</td>
-                                            <td className="text-center">
-                                                <Form.Group>
-                                                    <Form.Control
-                                                        type="text"
-                                                        placeholder="Tên nhóm"
-                                                        defaultValue={group.title}
-                                                    />
-                                                </Form.Group>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td className="text-center">Sự ưu tiên</td>
-                                            <td className="text-center">
-                                                <Form.Group>
-                                                    <Form.Control
-                                                        type="text"
-                                                        placeholder="Slug"
-                                                        defaultValue={group.priority}
-                                                    />
-                                                </Form.Group>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td className="text-center">Mô tả</td>
-                                            <td className="text-center">
-                                                <Form.Group>
-                                                    <Form.Control
-                                                        as="textarea"
-                                                        placeholder="Mô tả nhóm"
-                                                        style={{ height: 140 }}
-                                                        defaultValue={group.description}
-                                                    />
-                                                </Form.Group>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td className="text-center">Số khóa học</td>
-                                            <td className="text-center">{group.courses.length}</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </Accordion.Body>
-                        </Accordion.Item>
+                    {data.groups.map((group, index) => (
+                        <AccordionItem key={group._id} data={group} index={index} />
                     ))}
                 </Accordion>
 
-                <Button className="float-end ms-2" size="sm">
-                    Lưu
+                <Button className="float-end ms-2" size="sm" onClick={handleUpdate}>
+                    Cập nhật
                 </Button>
                 <Button variant="secondary" className="float-end" size="sm" onClick={() => setShow(false)}>
                     Đóng

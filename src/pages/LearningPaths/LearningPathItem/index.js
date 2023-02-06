@@ -12,7 +12,7 @@ import LearningPathDetail from '../LearningPathDetail';
 
 const MySwal = withReactContent(Swal);
 
-function LearningItem({ type, data }) {
+function LearningPathItem({ type, data }) {
     const [show, setShow] = useState(false);
     const [detail, setDetail] = useState(false);
 
@@ -61,4 +61,4 @@ function LearningItem({ type, data }) {
     );
 }
 
-export default LearningItem;
+export default LearningPathItem;

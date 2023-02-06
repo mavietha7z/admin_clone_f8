@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
 import { faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import LearningItem from './LearningItem';
+import LearningPathItem from './LearningPathItem';
 import CreateLearning from './CreateLearning';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
@@ -101,7 +101,7 @@ function LearningPaths() {
 
                             <tbody>
                                 {learnings.map((learning) => (
-                                    <LearningItem key={learning._id} type="learning" data={learning} />
+                                    <LearningPathItem key={learning._id} type="learning" data={learning} />
                                 ))}
                             </tbody>
                         </Table>
