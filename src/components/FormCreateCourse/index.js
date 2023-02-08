@@ -1,22 +1,17 @@
-import Swal from 'sweetalert2';
-import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import UpInput from '../UpInput';
 import { createCourse } from '~/services/apiCourse';
-
-const MySwal = withReactContent(Swal);
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function FormCreateCourse({ type }) {
     const [inputCount, setInputCount] = useState(1);
     const [comingSoon, setComingSoon] = useState('0');
-
     const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
     const [video, setVideo] = useState('');
-
     const [priority, setPriority] = useState(1);
     const [price, setPrice] = useState(0);
     const [oldPrice, setOldPrice] = useState(0);
@@ -31,12 +26,11 @@ function FormCreateCourse({ type }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
-        return () => image && URL.revokeObjectURL(image.preview);
-    }, [image]);
-
-    useEffect(() => {
-        return () => icon && URL.revokeObjectURL(icon.preview);
-    }, [icon]);
+        return () => {
+            image && URL.revokeObjectURL(image.preview);
+            icon && URL.revokeObjectURL(icon.preview);
+        };
+    }, [image, icon]);
 
     const handleChangeWhatLearn = (e, i) => {
         const updatedWhatLearn = [...isWhatLearn];
@@ -44,16 +38,15 @@ function FormCreateCourse({ type }) {
         setIsWhatLearn(updatedWhatLearn);
     };
 
-    const handlePrevImage = (e) => {
+    const handlePrevImage = (e, type) => {
         const file = e.target.files[0];
         file.preview = URL.createObjectURL(file);
-        setImage(file);
-    };
 
-    const handlePrevIcon = (e) => {
-        const file = e.target.files[0];
-        file.preview = URL.createObjectURL(file);
-        setIcon(file);
+        if (type === 'image') {
+            setImage(file);
+        } else {
+            setIcon(file);
+        }
     };
 
     const handleCreateCourse = async (e) => {
@@ -78,9 +71,9 @@ function FormCreateCourse({ type }) {
             const result = await createCourse(formData, currentUser.accessToken, 'free');
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else if (type === 'pro' && comingSoon === '0') {
             const whatLearn = isWhatLearn.map((desc) => {
@@ -103,9 +96,9 @@ function FormCreateCourse({ type }) {
             const result = await createCourse(formData, currentUser.accessToken, 'pro');
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else {
             formData.append('title', title);
@@ -117,9 +110,9 @@ function FormCreateCourse({ type }) {
             const result = await createCourse(formData, currentUser.accessToken, 'pro');
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };
@@ -261,7 +254,12 @@ function FormCreateCourse({ type }) {
                             <Button variant="success" size="sm" onClick={() => fileRef.current.click()}>
                                 Chọn ảnh
                             </Button>
-                            <Form.Control ref={fileRef} onChange={handlePrevImage} type="file" hidden />
+                            <Form.Control
+                                ref={fileRef}
+                                onChange={(e) => handlePrevImage(e, 'image')}
+                                type="file"
+                                hidden
+                            />
                         </div>
                     </Form.Group>
 
@@ -284,7 +282,12 @@ function FormCreateCourse({ type }) {
                                 <Button variant="success" size="sm" onClick={() => iconRef.current.click()}>
                                     Chọn ảnh
                                 </Button>
-                                <Form.Control ref={iconRef} onChange={handlePrevIcon} type="file" hidden />
+                                <Form.Control
+                                    ref={iconRef}
+                                    onChange={(e) => handlePrevImage(e, 'icon')}
+                                    type="file"
+                                    hidden
+                                />
                             </div>
                         </Form.Group>
                     )}

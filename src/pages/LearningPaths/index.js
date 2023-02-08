@@ -1,48 +1,40 @@
-import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, Col, Row, Table } from 'react-bootstrap';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import CreateLearning from './CreateLearning';
+import { mySwalError } from '~/configs/alert';
 import LearningPathItem from './LearningPathItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
-import { getLearningRoute } from '~/services/apiLearning';
 import CreateButton from '~/components/CreateButton';
-
-const MySwal = withReactContent(Swal);
+import { getLearningPath } from '~/services/apiLearning';
 
 function LearningPaths() {
     const [show, setShow] = useState(false);
     const [learnings, setLearnings] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const type = new URLSearchParams(location.search).get('type');
+    const type = searchParams.get('type');
 
     useEffect(() => {
-        if (!type) {
-            navigate(`${location.pathname}?type=all`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+        setSearchParams({ type: 'all' });
+        document.title = 'Quản lí lộ trình học';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (type) {
             const fetchApi = async () => {
-                const result = await getLearningRoute(type);
+                const result = await getLearningPath(type);
 
                 if (result.statusCode === 0) {
                     setLearnings(result.data);
                 } else {
-                    MySwal.fire('Lỗi', result.message, 'error');
+                    mySwalError('error', result.message);
                 }
             };
             fetchApi();
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [type]);
 

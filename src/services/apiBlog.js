@@ -20,7 +20,7 @@ export const getBlogByType = async (token, page = null, type = null) => {
 };
 
 // Ok
-export const toggleStatusPosts = async (token, id, type) => {
+export const toggleStatusPosts = async (token, type, id) => {
     try {
         const res = await request.post(
             `/posts/status`,
@@ -42,6 +42,7 @@ export const toggleStatusPosts = async (token, id, type) => {
     }
 };
 
+// OK
 export const deletePosts = async (token, type, id) => {
     try {
         const res = await request.remove('/posts/delete', {

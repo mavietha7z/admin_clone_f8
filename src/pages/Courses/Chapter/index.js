@@ -1,15 +1,12 @@
-import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { Accordion, Button, Col, Form, Modal, Row, Table, useAccordionButton, Card } from 'react-bootstrap';
 
 import ModalDelete from '~/components/ModalDelete';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createChapter, deleteChapter, renameChapter } from '~/services/apiCourse';
-
-const MySwal = withReactContent(Swal);
 
 function ContextAwareToggle({ children, eventKey, callback }) {
     const decoratedOnClick = useAccordionButton(eventKey, () => callback && callback(eventKey));
@@ -33,7 +30,7 @@ function Chapter({ data, show, setShow }) {
 
     const handleCreateChapter = async () => {
         if (!nameChapter) {
-            MySwal.fire('Lỗi', 'Tên chương là bắt buộc', 'error');
+            mySwalError('error', 'Tên chương là bắt buộc');
         } else {
             const result = await createChapter(currentUser.accessToken, nameChapter, data._id);
 
@@ -41,9 +38,9 @@ function Chapter({ data, show, setShow }) {
                 setChapter([...chapter, result.data]);
                 inputRef.current.focus();
                 setNameChapter('');
-                MySwal.fire('Thành công', 'Thêm chương thành công', 'success');
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };
@@ -54,9 +51,9 @@ function Chapter({ data, show, setShow }) {
 
             if (result.statusCode === 0) {
                 setChapter(result.data);
-                MySwal.fire('Thành công', 'Đổi tên thành công', 'success');
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else {
             setNameEdit(nameChapter);
@@ -69,9 +66,9 @@ function Chapter({ data, show, setShow }) {
 
         if (result.statusCode === 0) {
             setChapter(result.data);
-            MySwal.fire('Thành công', 'Xóa chương thành công', 'success');
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 

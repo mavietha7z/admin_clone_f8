@@ -1,40 +1,34 @@
-import { deleteUserByType, toggleStatusUser } from '~/services/apiAuth';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { useSelector } from 'react-redux';
-import StatusItem from '~/components/StatusItem';
-import { Button } from 'react-bootstrap';
 import { useState } from 'react';
-import RenderDate from '~/components/RenderDate';
-import ModalDelete from '~/components/ModalDelete';
+import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
-const MySwal = withReactContent(Swal);
+import RenderDate from '~/components/RenderDate';
+import StatusItem from '~/components/StatusItem';
+import ModalDelete from '~/components/ModalDelete';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { deleteUserByType, toggleStatusUser } from '~/services/apiAuth';
 
 function AccountItem({ type, data }) {
     const [show, setShow] = useState(false);
-
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleToggleTick = async () => {
         const result = await toggleStatusUser(currentUser.accessToken, 'tick', data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
     const handleAgreeDelete = async () => {
-        setShow(false);
-
         const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', `Xóa ${data.name} thành công`, 'success')).isConfirmed &&
-                window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -82,7 +76,7 @@ function AccountItem({ type, data }) {
                         variant="success"
                         className="me-2"
                         size="sm"
-                        onClick={() => MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error')}
+                        onClick={() => mySwalError('error', 'Chức năng đang được phát triển')}
                     >
                         Chi tiết
                     </Button>

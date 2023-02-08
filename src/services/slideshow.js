@@ -1,5 +1,21 @@
 import * as request from '~/utils/request';
 
+// Ok
+export const uploadImage = async (token, file) => {
+    try {
+        const res = await request.post('/upload/image', file, {
+            headers: {
+                token,
+            },
+        });
+
+        return res;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Ok
 export const getAllSlideshow = async (token, type) => {
     try {
         const res = await request.get('/home/slideshow', {
@@ -17,22 +33,8 @@ export const getAllSlideshow = async (token, type) => {
     }
 };
 
-export const uploadImage = async (file, token) => {
-    try {
-        const res = await request.post('/upload/image', file, {
-            headers: {
-                token,
-            },
-        });
-
-        return res;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
 // Ok
-export const toggleStatusSlide = async (token, id) => {
+export const toggleStatusSlide = async (token, type, id) => {
     try {
         const res = await request.post(
             '/home/status',
@@ -53,7 +55,7 @@ export const toggleStatusSlide = async (token, id) => {
     }
 };
 
-//
+// OK
 export const createSlideshow = async (token, slide) => {
     try {
         const res = await request.post('/home/create', slide, {

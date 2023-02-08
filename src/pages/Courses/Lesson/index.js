@@ -1,28 +1,24 @@
-import Swal from 'sweetalert2';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
 import { Accordion, Button, Modal, Form, Col, Row, Card } from 'react-bootstrap';
 
 import Editor from './Editor';
 import { iso8601ToTimeString } from '~/configs';
 import { getInfoVideo } from '~/services/apiVideo';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createLesson, getCourseByType } from '~/services/apiCourse';
 
-const MySwal = withReactContent(Swal);
-
 function Lesson({ data, show, setShow }) {
-    const [selected, setSelected] = useState(null);
     const [options, setOptions] = useState([]);
     const [active, setActive] = useState(false);
-
-    const [nameLesson, setNameLesson] = useState('');
+    const [selected, setSelected] = useState(null);
+    const [html, setHtml] = useState('');
+    const [text, setText] = useState('');
     const [urlVideo, setUrlVideo] = useState('');
     const [timeVideo, setTimeVideo] = useState('');
     const [thumbNail, setThumbNail] = useState('');
-    const [html, setHtml] = useState('');
-    const [text, setText] = useState('');
+    const [nameLesson, setNameLesson] = useState('');
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
@@ -48,10 +44,10 @@ function Lesson({ data, show, setShow }) {
 
     const handleAgrees = async () => {
         if (!selected) {
-            MySwal.fire('Lỗi', 'Vui lòng chọn chương', 'error');
+            mySwalError('error', 'Vui lòng chọn chương');
             return;
         }
-        if (!urlVideo) MySwal.fire('Lỗi', 'Url video không được để trống', 'error');
+        if (!urlVideo) mySwalError('error', 'Url video không được để trống');
 
         if (selected && urlVideo && !active) {
             const result = await getInfoVideo(urlVideo);
@@ -60,7 +56,7 @@ function Lesson({ data, show, setShow }) {
                 setActive(true);
 
                 result.data.map((item) => {
-                    MySwal.fire('Thành công', 'Lấy dữ liệu bài học thành công', 'success');
+                    mySwalSuccess('Lấy dữ liệu bài học thành công', 'load');
                     setNameLesson(item.snippet.title);
                     setTimeVideo(item.contentDetails.duration);
                     setThumbNail(item.snippet.thumbnails.maxres.url);
@@ -68,7 +64,7 @@ function Lesson({ data, show, setShow }) {
                     return item;
                 });
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else if (active) {
             const newLesson = {
@@ -83,10 +79,9 @@ function Lesson({ data, show, setShow }) {
             const result = await createLesson(currentUser.accessToken, newLesson, selected.id);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', 'Thêm bài học mới thành công', 'success')).isConfirmed &&
-                    window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

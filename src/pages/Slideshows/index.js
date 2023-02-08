@@ -1,37 +1,29 @@
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
+import { Card, Col, Row, Table } from 'react-bootstrap';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import CreateSlide from './CreateSlide';
 import SlideshowItem from './SlideshowItem';
+import { mySwalError } from '~/configs/alert';
 import TitleGlobal from '~/components/TitleGlobal';
 import CreateButton from '~/components/CreateButton';
 import HeadingTable from '~/components/HeadingTable';
 import { getAllSlideshow } from '~/services/slideshow';
 
-const MySwal = withReactContent(Swal);
-
 function Slideshows() {
-    const [slideshows, setSlideshows] = useState([]);
     const [show, setShow] = useState(false);
+    const [slideshows, setSlideshows] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const type = new URLSearchParams(location.search).get('type');
+    const type = searchParams.get('type');
 
     useEffect(() => {
-        if (!type) {
-            navigate(`${location.pathname}?type=all`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+        setSearchParams({ type: 'all' });
+        document.title = 'Quản lí slideshow';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (currentUser) {
@@ -42,7 +34,7 @@ function Slideshows() {
                     if (result.statusCode === 0) {
                         setSlideshows(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu slideshow', 'error');
+                        mySwalError('error', result.message);
                     }
                 };
                 fetchApi();

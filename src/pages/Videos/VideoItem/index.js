@@ -1,16 +1,13 @@
-import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 
 import VideoDetail from '../VideoDetail';
 import RenderDate from '~/components/RenderDate';
 import StatusItem from '~/components/StatusItem';
 import ModalDelete from '~/components/ModalDelete';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { deleteVideo, toggleStatusVideo } from '~/services/apiVideo';
-
-const MySwal = withReactContent(Swal);
 
 function VideoItem({ type, data }) {
     const [show, setShow] = useState(false);
@@ -22,10 +19,9 @@ function VideoItem({ type, data }) {
         const result = await deleteVideo(currentUser.accessToken, null, data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
-                window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -33,9 +29,9 @@ function VideoItem({ type, data }) {
         const result = await toggleStatusVideo(currentUser.accessToken, 'home', data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -83,8 +79,7 @@ function VideoItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />
-
+            {show && <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />}
             {detailVideo && <VideoDetail data={data} show={detailVideo} setShow={setDetailVideo} />}
         </tr>
     );

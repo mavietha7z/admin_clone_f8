@@ -1,5 +1,5 @@
-import { Form, Accordion, Table } from 'react-bootstrap';
 import HeadingTable from '~/components/HeadingTable';
+import { Form, Accordion, Table } from 'react-bootstrap';
 
 function AccordionItem({ data, index }) {
     return (

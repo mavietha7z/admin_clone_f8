@@ -6,6 +6,7 @@ import { privateRoutes } from './routes';
 import { refreshUser } from './services/apiAuth';
 import DefaultLayout from './layouts/DefaultLayout';
 import { logoutSuccess } from './redux/reducer/authReducer';
+import { mySwalError } from './configs/alert';
 
 function App() {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function App() {
                             dispatch(logoutSuccess());
                             window.location.href = '/login';
                             window.location.reload();
+                            mySwalError('error', 'Vui lòng đăng nhập');
                         }
                     };
                     fetchApi();

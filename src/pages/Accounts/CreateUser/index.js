@@ -1,12 +1,9 @@
-import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Form, Modal } from 'react-bootstrap';
-import withReactContent from 'sweetalert2-react-content';
 
 import { registerUser } from '~/services/apiAuth';
-
-const MySwal = withReactContent(Swal);
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function CreateUser({ show, setShow }) {
     const [name, setName] = useState('');
@@ -18,16 +15,16 @@ function CreateUser({ show, setShow }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleCreateUser = async () => {
-        const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
         if (name.length < 2) {
-            MySwal.fire('Lỗi', 'Tên không đúng định dạng', 'error');
+            mySwalError('error', 'Tên không đúng định dạng');
             return;
         } else if (!regexEmail.test(email)) {
-            MySwal.fire('Lỗi', 'Email không đúng định dạng', 'error');
+            mySwalError('error', 'Email không đúng định dạng');
             return;
         } else if (password.length < 8) {
-            MySwal.fire('Lỗi', 'Mật khẩu tối thiểu 8 kí tự', 'error');
+            mySwalError('error', 'Mật khẩu tối thiểu 8 kí tự');
             return;
         } else {
             const newUser = {
@@ -40,10 +37,9 @@ function CreateUser({ show, setShow }) {
             const result = await registerUser(currentUser.accessToken, newUser);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', 'Tạo người dùng thành công', 'success')).isConfirmed &&
-                    window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

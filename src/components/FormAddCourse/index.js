@@ -10,12 +10,12 @@ import { addCourseToGroup, getLearningPathById } from '~/services/apiLearning';
 const MySwal = withReactContent(Swal);
 
 function FormAddCourse({ learningPath }) {
-    const [optionLearningPath, setOptionLearningPath] = useState([]);
-    const [selectedLearningPath, setSelectedLearningPath] = useState(null);
+    const [courses, setCourses] = useState([]);
     const [optionGroup, setOptionGroup] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState(null);
-    const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [optionLearningPath, setOptionLearningPath] = useState([]);
+    const [selectedLearningPath, setSelectedLearningPath] = useState(null);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 

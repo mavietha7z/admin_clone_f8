@@ -1,7 +1,7 @@
 import * as request from '~/utils/request';
-
 const URL_API_YOUTUBE = 'https://www.googleapis.com/youtube/v3/videos';
 
+// Ok
 export const getInfoVideo = async (url) => {
     try {
         const res = await request.get(`${URL_API_YOUTUBE}`, {
@@ -21,11 +21,13 @@ export const getInfoVideo = async (url) => {
             return {
                 statusCode: 0,
                 data: res.items,
+                message: 'Lấy dữ liệu thành công',
             };
         }
     } catch (error) {
         return {
             statusCode: 2,
+            message: 'Lỗi lấy dữ liệu video',
         };
     }
 };
@@ -46,7 +48,7 @@ export const createVideo = async (token, video) => {
 };
 
 // Ok
-export const getVideoByType = async (token, page) => {
+export const getVideoByPage = async (token, page) => {
     try {
         const res = await request.get('/video', {
             headers: {
@@ -105,7 +107,7 @@ export const deleteVideo = async (token, type = null, id = null) => {
     }
 };
 
-//
+// OK
 export const updateVideo = async (token, video, id) => {
     try {
         const res = await request.put('/video/update', video, {

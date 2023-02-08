@@ -1,6 +1,6 @@
 @import 'normalize.css';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 ::-webkit-scrollbar {
     width: 4px;
@@ -207,16 +207,14 @@ pre::-webkit-scrollbar {
     margin-top: 4px;
 }
 
-body .accordion-button {
-    font-size: 1.4rem;
+.defaultLayout {
+    margin-left: 84px;
 }
 
 body .accordion-button {
     font-size: 1.4rem;
 }
 
-@media (max-width: 1400px) {
-    body .App {
-        display: none;
-    }
+body .accordion-button {
+    font-size: 1.4rem;
 }

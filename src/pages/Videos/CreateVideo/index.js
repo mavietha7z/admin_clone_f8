@@ -1,21 +1,18 @@
-import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 
 import { iso8601ToTimeString } from '~/configs';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createVideo, getInfoVideo } from '~/services/apiVideo';
-
-const MySwal = withReactContent(Swal);
 
 function CreateVideo({ show, setShow }) {
     const [active, setActive] = useState(false);
 
     const [url, setUrl] = useState('');
+    const [time, setTime] = useState('');
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
-    const [time, setTime] = useState('');
     const [view, setView] = useState(0);
     const [like, setLike] = useState(0);
     const [comment, setComment] = useState(0);
@@ -38,14 +35,13 @@ function CreateVideo({ show, setShow }) {
             const result = await createVideo(currentUser.accessToken, newVideo);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', 'Thêm video thành công', 'success')).isConfirmed &&
-                    window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Lỗi', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else {
             if (!url) {
-                MySwal.fire('Lỗi', 'Url video là bắt buộc', 'error');
+                mySwalError('error', 'Url video là bắt buộc');
                 return;
             }
             const result = await getInfoVideo(url);
@@ -64,7 +60,7 @@ function CreateVideo({ show, setShow }) {
                     return item;
                 });
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

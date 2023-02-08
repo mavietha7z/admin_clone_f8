@@ -1,9 +1,7 @@
 import moment from 'moment';
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
-import { useEffect, useMemo, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
 
 import Lesson from '../Lesson';
 import Chapter from '../Chapter';
@@ -12,24 +10,22 @@ import StatusItem from '~/components/StatusItem';
 import RenderDate from '~/components/RenderDate';
 import ModalDelete from '~/components/ModalDelete';
 import { deleteCourse } from '~/services/apiCourse';
-
-const MySwal = withReactContent(Swal);
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function CourseItem({ type, data }) {
     const [show, setShow] = useState(false);
-    const [showDetail, setShowDetail] = useState(false);
-    const [showLesson, setShowLesson] = useState(false);
-    const [showChapter, setShowChapter] = useState(false);
-
     const [numberTime, setNumberTime] = useState('');
     const [numberLesson, setNumberLesson] = useState(0);
+    const [showDetail, setShowDetail] = useState(false);
+    const [showLesson, setShowLesson] = useState(false);
     const [numberChapter, setNumberChapter] = useState(0);
+    const [showChapter, setShowChapter] = useState(false);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
-    // Chuyển định dạng thời gian
-    const formattedTime = useMemo(() => {
+    useEffect(() => {
         let totalTime = 0;
+        let count = 0;
 
         data.chapter.forEach((chapter) => {
             chapter.lesson.forEach((lesson) => {
@@ -38,44 +34,27 @@ function CourseItem({ type, data }) {
                 totalTime += timeInSeconds;
             });
         });
-        return moment.utc(totalTime * 1000).format('HH : mm : ss');
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.chapter]);
-
-    // Tính số bài trong khóa học
-    const countLesson = useMemo(() => {
-        let count = 0;
+        const formattedTime = moment.utc(totalTime * 1000).format('HH : mm : ss');
 
         for (let i = 0; i < data.chapter.length; i++) {
             count += data.chapter[i].lesson.length;
         }
-        return count;
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.chapter]);
-
-    useEffect(() => {
-        setNumberLesson(countLesson);
+        setNumberLesson(count);
         setNumberChapter(data.chapter.length);
         setNumberTime(formattedTime);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type, countLesson, formattedTime, data.status]);
+    }, [data.chapter]);
 
     const handleAgreeDelete = async () => {
-        setShow(false);
-
         const result = await deleteCourse(data._id, currentUser.accessToken, 'uid');
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
-                window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     };
 
     return (

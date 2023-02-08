@@ -1,30 +1,28 @@
 import { useState } from 'react';
-import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { getInfoVideo, updateVideo } from '~/services/apiVideo';
-import { iso8601ToTimeString } from '~/configs';
 import { useSelector } from 'react-redux';
+import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 
-const MySwal = withReactContent(Swal);
+import { iso8601ToTimeString } from '~/configs';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { getInfoVideo, updateVideo } from '~/services/apiVideo';
 
 function VideoDetail({ data, show, setShow }) {
-    const [title, setTitle] = useState(data.title);
-    const [image, setImage] = useState(data.image);
+    const [active, setActive] = useState(false);
+
     const [view, setView] = useState(data.view);
     const [like, setLike] = useState(data.like);
+    const [title, setTitle] = useState(data.title);
+    const [image, setImage] = useState(data.image);
     const [comment, setComment] = useState(data.comment);
     const [priority, setPriority] = useState(data.priority);
     const [timeVideo, setTimeVideo] = useState(data.timeVideo);
-
-    const [active, setActive] = useState(false);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleUpdateVideo = async () => {
         if (active) {
             if (!title || !priority) {
-                MySwal.fire('Lỗi', 'Vui lòng điền đủ thông tin', 'error');
+                mySwalError('error', 'Vui lòng điền đủ thông tin');
                 return;
             }
 
@@ -42,17 +40,16 @@ function VideoDetail({ data, show, setShow }) {
             const result = await updateVideo(currentUser.accessToken, video, data._id);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', 'Cập nhật thành công', 'success')).isConfirmed &&
-                    window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         } else {
             const result = await getInfoVideo(data.urlVideo);
 
             if (result.statusCode === 0) {
                 setActive(true);
-                MySwal.fire('Thành công', 'Cập nhật dữ liệu thành công', 'success');
+                mySwalSuccess('Cập nhật dữ liệu thành công');
 
                 result.data.map((item) => {
                     setImage(item.snippet.thumbnails.maxres.url);
@@ -65,7 +62,7 @@ function VideoDetail({ data, show, setShow }) {
                     return item;
                 });
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

@@ -1,16 +1,13 @@
-import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Card } from 'react-bootstrap';
-import withReactContent from 'sweetalert2-react-content';
 
 import StatusItem from '~/components/StatusItem';
 import RenderDate from '~/components/RenderDate';
 import ModalDelete from '~/components/ModalDelete';
-import { deleteLearningPath } from '~/services/apiLearning';
 import LearningPathDetail from '../LearningPathDetail';
-
-const MySwal = withReactContent(Swal);
+import { deleteLearningPath } from '~/services/apiLearning';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function LearningPathItem({ type, data }) {
     const [show, setShow] = useState(false);
@@ -22,9 +19,9 @@ function LearningPathItem({ type, data }) {
         const result = await deleteLearningPath(currentUser.accessToken, data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 

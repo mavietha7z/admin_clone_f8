@@ -38,7 +38,7 @@ export const getCourseByType = async (token, type, id = null) => {
 };
 
 // OK
-export const toggleStatusCourse = async (courseId, token) => {
+export const toggleStatusCourse = async (token, type = null, id) => {
     try {
         const res = await request.post(
             `/course/status`,
@@ -48,7 +48,7 @@ export const toggleStatusCourse = async (courseId, token) => {
                     token,
                 },
                 params: {
-                    id: courseId,
+                    id,
                 },
             }
         );
@@ -117,14 +117,14 @@ export const deleteCourse = async (courseId, token, type) => {
 };
 
 // OK
-export const updateCourse = async (token, data, courseId) => {
+export const updateCourse = async (token, data, id) => {
     try {
         const res = await request.put(`/course/update`, data, {
             headers: {
                 token,
             },
             params: {
-                id: courseId,
+                id,
             },
         });
 
@@ -135,7 +135,7 @@ export const updateCourse = async (token, data, courseId) => {
 };
 
 // Ok
-export const renameChapter = async (token, name, chapterId) => {
+export const renameChapter = async (token, name, id) => {
     try {
         const res = await request.put(
             '/chapter/rename',
@@ -145,7 +145,7 @@ export const renameChapter = async (token, name, chapterId) => {
                     token,
                 },
                 params: {
-                    id: chapterId,
+                    id,
                 },
             }
         );
@@ -157,14 +157,14 @@ export const renameChapter = async (token, name, chapterId) => {
 };
 
 // Ok
-export const deleteChapter = async (token, chapterId) => {
+export const deleteChapter = async (token, id) => {
     try {
         const res = await request.remove('/chapter/delete', {
             headers: {
                 token,
             },
             params: {
-                id: chapterId,
+                id,
             },
         });
 

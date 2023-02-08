@@ -1,16 +1,13 @@
-import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 import { Button, Form, Modal, Table, Accordion } from 'react-bootstrap';
 
 import { Image } from '~/assets/image';
-import HeadingTable from '~/components/HeadingTable';
 import UpInput from '~/components/UpInput';
 import { uploadImage } from '~/services/slideshow';
 import { updateCourse } from '~/services/apiCourse';
-
-const MySwal = withReactContent(Swal);
+import HeadingTable from '~/components/HeadingTable';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function CourseDetail({ data, show, setShow }) {
     const [inputCount, setInputCount] = useState(data.learnWhat.length);
@@ -61,9 +58,9 @@ function CourseDetail({ data, show, setShow }) {
         const result = await updateCourse(currentUser.accessToken, course, data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -71,7 +68,7 @@ function CourseDetail({ data, show, setShow }) {
         let formData = new FormData();
         formData.append('image', e.target.files[0]);
 
-        const result = await uploadImage(formData, currentUser.accessToken);
+        const result = await uploadImage(currentUser.accessToken, formData);
 
         if (result.statusCode === 0) {
             if (type === 'image') {
@@ -80,7 +77,7 @@ function CourseDetail({ data, show, setShow }) {
                 setIcon(result.data.urlImage);
             }
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 

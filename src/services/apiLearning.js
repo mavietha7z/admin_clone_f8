@@ -1,7 +1,7 @@
 import * as request from '~/utils/request';
 
 // Ok
-export const getLearningRoute = async (type) => {
+export const getLearningPath = async (type) => {
     try {
         const res = await request.get('/learning', {
             params: {
@@ -16,7 +16,7 @@ export const getLearningRoute = async (type) => {
 };
 
 // OK
-export const toggleStatusLearningPath = async (token, id) => {
+export const toggleStatusLearningPath = async (token, type, id) => {
     try {
         const res = await request.post(
             '/learning/status',

@@ -76,7 +76,7 @@ export const registerUser = async (token, user, type = 'admin') => {
 };
 
 // Ok
-export const deleteUserByType = async (userId, type, token) => {
+export const deleteUserByType = async (token, type, id) => {
     try {
         const res = await request.remove(`/user/delete`, {
             headers: {
@@ -84,44 +84,9 @@ export const deleteUserByType = async (userId, type, token) => {
             },
             params: {
                 type,
-                id: userId,
+                id,
             },
         });
-
-        return res;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
-export const getUserById = async (userId, token) => {
-    try {
-        const res = await request.get(`/user/${userId}`, {
-            headers: {
-                token: token,
-            },
-        });
-
-        return res;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
-export const handleUpdateUser = async (userId, user, navigate) => {
-    try {
-        const res = await request.put(`/user/update/${userId}`, user);
-
-        navigate('/users');
-        return res;
-    } catch (error) {
-        return error.response.data;
-    }
-};
-
-export const handleSendEmail = async (email) => {
-    try {
-        const res = await request.post(`/user/verify-email`, { email });
 
         return res;
     } catch (error) {

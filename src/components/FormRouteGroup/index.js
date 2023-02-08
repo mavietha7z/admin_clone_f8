@@ -1,13 +1,10 @@
-import Swal from 'sweetalert2';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import withReactContent from 'sweetalert2-react-content';
 
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createGroupLearningPath } from '~/services/apiLearning';
-
-const MySwal = withReactContent(Swal);
 
 function FormRouteGroup({ learningPath }) {
     const [options, setOptions] = useState([]);
@@ -30,7 +27,7 @@ function FormRouteGroup({ learningPath }) {
 
     const handleCreateGroup = async () => {
         if (!selected || !title || !priority || !description) {
-            MySwal.fire('Lỗi', 'Vui lòng nhập đầy đủ thông tin', 'error');
+            mySwalError('error', 'Vui lòng nhập đầy đủ thông tin');
             return;
         } else {
             const group = {
@@ -42,9 +39,9 @@ function FormRouteGroup({ learningPath }) {
             const result = await createGroupLearningPath(currentUser.accessToken, group, selected.id);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Lỗi', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

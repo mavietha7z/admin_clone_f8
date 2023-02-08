@@ -1,18 +1,16 @@
 import { useRef, useState } from 'react';
-import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import { createSlideshow } from '~/services/slideshow';
-import withReactContent from 'sweetalert2-react-content';
+import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 
-const MySwal = withReactContent(Swal);
+import { createSlideshow } from '~/services/slideshow';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function CreateSlide({ show, setShow }) {
+    const [link, setLink] = useState('');
+    const [color, setColor] = useState('');
     const [title, setTitle] = useState('');
     const [image, setImage] = useState(null);
     const [textBtn, setTextBtn] = useState('');
-    const [link, setLink] = useState('');
-    const [color, setColor] = useState('');
     const [background, setBackground] = useState('');
     const [description, setDescription] = useState('');
 
@@ -28,7 +26,7 @@ function CreateSlide({ show, setShow }) {
 
     const handleCreateSlide = async () => {
         if (!title || !image || !textBtn || !link || !color || !background || !description) {
-            MySwal.fire('Lỗi', 'Vui lòng điền đầy đủ thông tin', 'error');
+            mySwalError('error', 'Vui lòng điền đầy đủ thông tin');
             return;
         }
 
@@ -44,9 +42,9 @@ function CreateSlide({ show, setShow }) {
         const result = await createSlideshow(currentUser.accessToken, formData);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', 'Thêm thành công', 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Lỗi', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 

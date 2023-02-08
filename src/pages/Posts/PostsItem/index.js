@@ -1,39 +1,34 @@
-import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 
 import RenderDate from '~/components/RenderDate';
 import StatusItem from '~/components/StatusItem';
 import ModalDelete from '~/components/ModalDelete';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { deletePosts, toggleStatusPosts } from '~/services/apiBlog';
-
-const MySwal = withReactContent(Swal);
 
 function PostsItem({ type, data }) {
     const [show, setShow] = useState(false);
-
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleAgreeDelete = async () => {
         const result = await deletePosts(currentUser.accessToken, 'uid', data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', `Xóa ${data.metaTitle} thành công`, 'success')).isConfirmed &&
-                window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
     const handleToggleHome = async () => {
-        const result = await toggleStatusPosts(currentUser.accessToken, data._id, 'home');
+        const result = await toggleStatusPosts(currentUser.accessToken, 'home', data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -74,7 +69,7 @@ function PostsItem({ type, data }) {
                         variant="success"
                         className="me-2"
                         size="sm"
-                        onClick={() => MySwal.fire('Lỗi', 'Chức năng đang được phát triển', 'error')}
+                        onClick={() => mySwalError('error', 'Chức năng đang được phát triển')}
                     >
                         Chi tiết
                     </Button>

@@ -1,31 +1,27 @@
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, Pagination, Row, Table } from 'react-bootstrap';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import PostsItem from './PostsItem';
 import TitleGlobal from '~/components/TitleGlobal';
 import { getBlogByType } from '~/services/apiBlog';
 import HeadingTable from '~/components/HeadingTable';
+import { mySwalError } from '~/configs/alert';
 
 function Posts() {
     const [posts, setPosts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const page = new URLSearchParams(location.search).get('page');
+    const page = searchParams.get('page');
 
     useEffect(() => {
-        if (!page) {
-            navigate(`${location.pathname}?page=1`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+        setSearchParams({ page: 1 });
+        document.title = 'Quản lí bài viết';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (currentUser) {
@@ -36,6 +32,8 @@ function Posts() {
                     if (result.statusCode === 0) {
                         setPosts(result.data);
                         setTotalPages(result.totalPages);
+                    } else {
+                        mySwalError('fail', result.message);
                     }
                 };
                 fetchApi();

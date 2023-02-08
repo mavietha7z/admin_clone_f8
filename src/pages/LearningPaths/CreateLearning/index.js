@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Modal, Tab, Tabs } from 'react-bootstrap';
+
 import FormAddCourse from '~/components/FormAddCourse';
-import FormLearningPath from '~/components/FormLearningPath';
 import FormRouteGroup from '~/components/FormRouteGroup';
-import { getLearningRoute } from '~/services/apiLearning';
+import { getLearningPath } from '~/services/apiLearning';
+import FormLearningPath from '~/components/FormLearningPath';
 
 function CreateLearning({ show, setShow }) {
     const [learningPath, setLearningPath] = useState([]);
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await getLearningRoute('all');
+            const result = await getLearningPath('all');
 
             if (result.statusCode === 0) {
                 setLearningPath(result.data);

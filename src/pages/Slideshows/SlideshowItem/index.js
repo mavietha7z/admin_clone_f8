@@ -1,28 +1,24 @@
 import { useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { Button, Card } from 'react-bootstrap';
+
 import RenderDate from '~/components/RenderDate';
 import StatusItem from '~/components/StatusItem';
-import { deleteSlideshow } from '~/services/slideshow';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import ModalDelete from '~/components/ModalDelete';
-
-const MySwal = withReactContent(Swal);
+import { deleteSlideshow } from '~/services/slideshow';
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function SlideshowItem({ type, data }) {
     const [show, setShow] = useState(false);
-
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleAgreeDelete = async () => {
         const result = await deleteSlideshow(currentUser.accessToken, data._id);
 
         if (result.statusCode === 0) {
-            (await MySwal.fire('Thành công', `Xóa ${data.title} thành công`, 'success')).isConfirmed &&
-                window.location.reload();
+            mySwalSuccess(result.message);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -66,7 +62,7 @@ function SlideshowItem({ type, data }) {
                         variant="success"
                         className="me-2"
                         size="sm"
-                        onClick={() => MySwal.fire('Lỗi', 'Chức năng này đang được phát triển', 'error')}
+                        onClick={() => mySwalError('error', 'Chức năng này đang được phát triển')}
                     >
                         Chi tiết
                     </Button>

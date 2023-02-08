@@ -1,12 +1,9 @@
-import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 import { Col, Row, Form, Button, Card } from 'react-bootstrap';
 
 import { createLearningPath } from '~/services/apiLearning';
-
-const MySwal = withReactContent(Swal);
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function FormLearningPath() {
     const [title, setTitle] = useState('');
@@ -28,7 +25,7 @@ function FormLearningPath() {
 
     const handleCreateLearningPath = async () => {
         if (!title || !slug || !priority || !content || !description || !image) {
-            MySwal.fire('Lỗi', 'Vui lòng nhập đầy đủ thông tin', 'error');
+            mySwalError('error', 'Vui lòng nhập đầy đủ thông tin');
             return;
         } else {
             let formData = new FormData();
@@ -42,9 +39,9 @@ function FormLearningPath() {
             const result = await createLearningPath(currentUser.accessToken, formData);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };

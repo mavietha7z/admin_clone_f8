@@ -1,15 +1,12 @@
-import Swal from 'sweetalert2';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import withReactContent from 'sweetalert2-react-content';
 import { Button, Modal, Table, Form, Accordion, Card } from 'react-bootstrap';
 
 import AccordionItem from '../Accordion';
 import { uploadImage } from '~/services/slideshow';
 import HeadingTable from '~/components/HeadingTable';
 import { updateLearningPath } from '~/services/apiLearning';
-
-const MySwal = withReactContent(Swal);
+import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function LearningPathDetail({ show, setShow, data }) {
     const [slug, setSlug] = useState(data.slug);
@@ -26,18 +23,18 @@ function LearningPathDetail({ show, setShow, data }) {
         let formData = new FormData();
         formData.append('image', e.target.files[0]);
 
-        const result = await uploadImage(formData, currentUser.accessToken);
+        const result = await uploadImage(currentUser.accessToken, formData);
 
         if (result.statusCode === 0) {
             setImage(result.data.urlImage);
         } else {
-            MySwal.fire('Thất bại', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
     const handleUpdate = async () => {
         if (!title || !description || !priority || !image || !slug || !content) {
-            MySwal.fire('Lỗi', 'Vui lòng nhập thông tin', 'error');
+            mySwalError('error', 'Vui lòng nhập thông tin');
             return;
         } else {
             const LearningPath = {
@@ -52,9 +49,9 @@ function LearningPathDetail({ show, setShow, data }) {
             const result = await updateLearningPath(currentUser.accessToken, LearningPath, data._id);
 
             if (result.statusCode === 0) {
-                (await MySwal.fire('Thành công', result.message, 'success')).isConfirmed && window.location.reload();
+                mySwalSuccess(result.message);
             } else {
-                MySwal.fire('Thất bại', result.message, 'error');
+                mySwalError('fail', result.message);
             }
         }
     };
@@ -62,7 +59,7 @@ function LearningPathDetail({ show, setShow, data }) {
     return (
         <Modal show={show} onHide={() => setShow(false)} size="xl">
             <Modal.Header closeButton>
-                <Modal.Title>Xác nhận xóa</Modal.Title>
+                <Modal.Title>{data.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Table striped bordered>

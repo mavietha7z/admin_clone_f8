@@ -1,35 +1,29 @@
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import CourseItem from './CourseItem';
 import CreateCourse from './CreateCourse';
+import { mySwalError } from '~/configs/alert';
 import TitleGlobal from '~/components/TitleGlobal';
 import HeadingTable from '~/components/HeadingTable';
 import CreateButton from '~/components/CreateButton';
 import { getCourseByType } from '~/services/apiCourse';
 
-const MySwal = withReactContent(Swal);
-
 function Courses() {
     const [show, setShow] = useState(false);
     const [courses, setCourses] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const location = useLocation();
+    const type = searchParams.get('type');
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const type = new URLSearchParams(location.search).get('type');
 
     useEffect(() => {
-        if (!type) {
-            navigate(`${location.pathname}?type=all`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [type]);
+        setSearchParams({ type: 'all' });
+        document.title = 'Quản lí khóa học';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (currentUser) {
@@ -40,7 +34,7 @@ function Courses() {
                     if (result.statusCode === 0) {
                         setCourses(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.message, 'error');
+                        mySwalError('error', result.message);
                     }
                 };
                 fetchApi();

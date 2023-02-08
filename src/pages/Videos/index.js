@@ -1,47 +1,40 @@
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
-import { faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Card, Col, Row, Table } from 'react-bootstrap';
 
 import VideoItem from './VideoItem';
 import CreateVideo from './CreateVideo';
+import { mySwalError } from '~/configs/alert';
 import TitleGlobal from '~/components/TitleGlobal';
-import { getVideoByType } from '~/services/apiVideo';
+import { getVideoByPage } from '~/services/apiVideo';
 import HeadingTable from '~/components/HeadingTable';
-
-const MySwal = withReactContent(Swal);
+import CreateButton from '~/components/CreateButton';
 
 function Videos() {
-    const [videos, setVideos] = useState([]);
     const [show, setShow] = useState(false);
+    const [videos, setVideos] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const page = new URLSearchParams(location.search).get('page');
+    const page = searchParams.get('page');
 
     useEffect(() => {
-        if (!page) {
-            navigate(`${location.pathname}?page=1`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+        setSearchParams({ page: 1 });
+        document.title = 'Quản lí video';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (currentUser) {
             if (page) {
                 const fetchApi = async () => {
-                    const result = await getVideoByType(currentUser.accessToken, page);
+                    const result = await getVideoByPage(currentUser.accessToken, page);
 
                     if (result.statusCode === 0) {
                         setVideos(result.data);
                     } else {
-                        MySwal.fire('Lỗi', result.data.message, 'error');
+                        mySwalError('fail', result.message);
                     }
                 };
                 fetchApi();
@@ -60,12 +53,9 @@ function Videos() {
                     <TitleGlobal name="Danh sách khóa học" />
 
                     <Col sm={7}>
-                        <Button variant="success" className="mt-5 float-end" onClick={() => setShow(true)}>
-                            Thêm mới <FontAwesomeIcon icon={faPlusCircle} />
-                        </Button>
+                        <CreateButton onClick={() => setShow(true)} />
+                        <CreateVideo show={show} setShow={setShow} />
                     </Col>
-
-                    <CreateVideo show={show} setShow={setShow} />
                 </Row>
             </div>
 

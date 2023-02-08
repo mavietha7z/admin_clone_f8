@@ -1,37 +1,31 @@
-import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import withReactContent from 'sweetalert2-react-content';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Col, Pagination, Row, Table } from 'react-bootstrap';
 
 import CreateUser from './CreateUser';
 import AccountItem from './AccountItem';
+import { mySwalError } from '~/configs/alert';
 import TitleGlobal from '~/components/TitleGlobal';
 import { getUserByType } from '~/services/apiAuth';
 import HeadingTable from '~/components/HeadingTable';
 import CreateButton from '~/components/CreateButton';
 import HeaderListUser from '~/components/HeaderListUser';
 
-const MySwal = withReactContent(Swal);
-
 function Accounts() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [users, setUsers] = useState([]);
     const [show, setShow] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
 
     const navigate = useNavigate();
-    const location = useLocation();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    const page = new URLSearchParams(location.search).get('page');
+    const page = searchParams.get('page');
 
     useEffect(() => {
-        if (!page) {
-            navigate(`${location.pathname}?page=1`);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page]);
+        setSearchParams({ page: 1 });
+        document.title = 'Quản lí người dùng';
+    }, [setSearchParams]);
 
     useEffect(() => {
         if (currentUser) {
@@ -43,7 +37,7 @@ function Accounts() {
                         setUsers(result.data);
                         setTotalPages(result.totalPages);
                     } else {
-                        MySwal.fire('Lỗi', result.message || 'Lỗi lấy dữ liệu người dùng', 'error');
+                        mySwalError('fail', result.message);
                     }
                 };
                 fetchApi();
@@ -70,7 +64,7 @@ function Accounts() {
         if (result.statusCode === 0) {
             setUsers(result.data);
         } else {
-            MySwal.fire('Lỗi', result.message, 'error');
+            mySwalError('fail', result.message);
         }
     };
 
@@ -120,7 +114,7 @@ function Accounts() {
                                 </tbody>
                             </Table>
 
-                            <Pagination className="float-end" size="lg">
+                            <Pagination className="float-end mt-3" size="sm">
                                 <Pagination.First /> {items} <Pagination.Last />
                             </Pagination>
                         </Card.Body>
