@@ -13,7 +13,7 @@ function PostsItem({ type, data }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleAgreeDelete = async () => {
-        const result = await deletePosts(currentUser.accessToken, 'uid', data._id);
+        const result = await deletePosts(currentUser.accessToken, data._id);
 
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);

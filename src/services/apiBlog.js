@@ -43,15 +43,14 @@ export const toggleStatusPosts = async (token, type, id) => {
 };
 
 // OK
-export const deletePosts = async (token, type, id) => {
+export const deletePosts = async (token, postsId) => {
     try {
         const res = await request.remove('/posts/delete', {
             headers: {
                 token,
             },
             params: {
-                type,
-                id,
+                postsId,
             },
         });
 
