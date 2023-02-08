@@ -35,7 +35,6 @@ function CreateUser({ show, setShow }) {
             };
 
             const result = await registerUser(currentUser.accessToken, newUser);
-
             if (result.statusCode === 0) {
                 mySwalSuccess(result.message);
             } else {

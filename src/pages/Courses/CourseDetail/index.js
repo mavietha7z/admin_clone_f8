@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Modal, Table, Accordion } from 'react-bootstrap';
 
 import { Image } from '~/assets/image';
@@ -8,6 +8,7 @@ import { uploadImage } from '~/services/slideshow';
 import { updateCourse } from '~/services/apiCourse';
 import HeadingTable from '~/components/HeadingTable';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function CourseDetail({ data, show, setShow }) {
     const [inputCount, setInputCount] = useState(data.learnWhat.length);
@@ -28,8 +29,9 @@ function CourseDetail({ data, show, setShow }) {
     const [comingSoon, setComingSoon] = useState(() => (data.comingSoon ? '1' : '0'));
     const [learnWhat, setLearnWhat] = useState(data.learnWhat.map((what) => what.description));
 
-    const imageRef = useRef();
     const iconRef = useRef();
+    const imageRef = useRef();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleUpdateCourse = async () => {
@@ -56,7 +58,6 @@ function CourseDetail({ data, show, setShow }) {
         };
 
         const result = await updateCourse(currentUser.accessToken, course, data._id);
-
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);
         } else {
@@ -65,11 +66,12 @@ function CourseDetail({ data, show, setShow }) {
     };
 
     const handleGetUrlImage = async (e, type) => {
+        dispatch(loadingStart());
         let formData = new FormData();
         formData.append('image', e.target.files[0]);
 
         const result = await uploadImage(currentUser.accessToken, formData);
-
+        dispatch(loadingSuccess());
         if (result.statusCode === 0) {
             if (type === 'image') {
                 setImage(result.data.urlImage);
@@ -274,7 +276,7 @@ function CourseDetail({ data, show, setShow }) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Slug khóa học"
+                                        placeholder="Giá hiện tại"
                                         value={price}
                                         onChange={(e) => setPrice(e.target.value)}
                                     />
@@ -288,7 +290,7 @@ function CourseDetail({ data, show, setShow }) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Slug khóa học"
+                                        placeholder="Giá cũ"
                                         value={oldPrice}
                                         onChange={(e) => setOldPrice(e.target.value)}
                                     />
@@ -302,7 +304,7 @@ function CourseDetail({ data, show, setShow }) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Slug khóa học"
+                                        placeholder="Giá đặt trước"
                                         value={preOrderPrice}
                                         onChange={(e) => setPreOrderPrice(e.target.value)}
                                     />

@@ -7,10 +7,12 @@ import { refreshUser } from './services/apiAuth';
 import DefaultLayout from './layouts/DefaultLayout';
 import { logoutSuccess } from './redux/reducer/authReducer';
 import { mySwalError } from './configs/alert';
+import Loading from './components/Loading';
 
 function App() {
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const loading = useSelector((state) => state.auth.loading);
 
     useEffect(() => {
         if (window.performance) {
@@ -38,6 +40,7 @@ function App() {
 
     return (
         <div className="App">
+            {loading && <Loading />}
             <Router>
                 <Routes>
                     {privateRoutes.map((route, index) => {

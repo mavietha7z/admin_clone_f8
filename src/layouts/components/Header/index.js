@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-import { logoutAdmin } from '~/services/apiAuth';
 import './Header.css';
 import { mySwalError } from '~/configs/alert';
+import { logoutAdmin } from '~/services/apiAuth';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function Header() {
     const dispatch = useDispatch();
@@ -15,8 +16,9 @@ function Header() {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleLogout = async () => {
+        dispatch(loadingStart());
         const result = await logoutAdmin(dispatch, currentUser.accessToken);
-
+        dispatch(loadingSuccess());
         if (result.statusCode === 0) {
             navigate('/login');
             window.location.reload();

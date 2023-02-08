@@ -211,6 +211,31 @@ pre::-webkit-scrollbar {
     margin-left: 84px;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #9999;
+    height: 100%;
+    font-size: 1.8rem;
+    z-index: 9999;
+}
+
+.go-pc img {
+    width: 50%;
+    height: 50%;
+}
+
+body .spinner-border {
+    --bs-spinner-width: 3rem;
+    --bs-spinner-height: 3rem;
+}
+
 body .accordion-button {
     font-size: 1.4rem;
 }

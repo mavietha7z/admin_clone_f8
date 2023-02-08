@@ -6,12 +6,13 @@ import { toggleStatusPosts } from '~/services/apiBlog';
 import { toggleStatusVideo } from '~/services/apiVideo';
 import { toggleStatusSlide } from '~/services/slideshow';
 import { toggleStatusCourse } from '~/services/apiCourse';
-import { toggleStatusLearningPath } from '~/services/apiLearning';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { toggleStatusLearningPath } from '~/services/apiLearning';
 
 function StatusItem({ type, data }) {
     let isType = true;
     let functionDelete;
+
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     switch (type) {
@@ -38,18 +39,15 @@ function StatusItem({ type, data }) {
     }
 
     const handleStatus = async () => {
-        if (currentUser) {
-            if (isType) {
-                const result = await functionDelete(currentUser.accessToken, 'status', data._id);
-
-                if (result.statusCode === 0) {
-                    mySwalSuccess(result.message);
-                } else {
-                    mySwalError('fail', result.message);
-                }
+        if (isType) {
+            const result = await functionDelete(currentUser.accessToken, 'status', data._id);
+            if (result.statusCode === 0) {
+                mySwalSuccess(result.message);
             } else {
-                mySwalError('error', 'Vui lòng thử lại');
+                mySwalError('fail', result.message);
             }
+        } else {
+            mySwalError('error', 'Vui lòng thử lại');
         }
     };
 

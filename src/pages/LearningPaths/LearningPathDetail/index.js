@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, Table, Form, Accordion, Card } from 'react-bootstrap';
 
 import AccordionItem from '../Accordion';
@@ -7,6 +7,7 @@ import { uploadImage } from '~/services/slideshow';
 import HeadingTable from '~/components/HeadingTable';
 import { updateLearningPath } from '~/services/apiLearning';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function LearningPathDetail({ show, setShow, data }) {
     const [slug, setSlug] = useState(data.slug);
@@ -17,14 +18,16 @@ function LearningPathDetail({ show, setShow, data }) {
     const [description, setDescription] = useState(data.description);
 
     const imageRef = useRef();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleSelectImage = async (e) => {
+        dispatch(loadingStart());
         let formData = new FormData();
         formData.append('image', e.target.files[0]);
 
         const result = await uploadImage(currentUser.accessToken, formData);
-
+        dispatch(loadingSuccess());
         if (result.statusCode === 0) {
             setImage(result.data.urlImage);
         } else {

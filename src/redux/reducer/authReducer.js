@@ -6,6 +6,7 @@ const authReducer = createSlice({
         login: {
             currentUser: null,
         },
+        loading: false,
     },
     reducers: {
         loginSuccess: (state, action) => {
@@ -15,9 +16,16 @@ const authReducer = createSlice({
         logoutSuccess: (state) => {
             state.login.currentUser = null;
         },
+
+        loadingStart: (state) => {
+            state.loading = true;
+        },
+        loadingSuccess: (state) => {
+            state.loading = false;
+        },
     },
 });
 
-export const { loginSuccess, logoutSuccess } = authReducer.actions;
+export const { loginSuccess, logoutSuccess, loadingStart, loadingSuccess } = authReducer.actions;
 
 export default authReducer.reducer;

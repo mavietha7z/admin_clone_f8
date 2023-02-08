@@ -4,10 +4,10 @@ import { Card, Pagination, Row, Table } from 'react-bootstrap';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import PostsItem from './PostsItem';
+import { mySwalError } from '~/configs/alert';
 import TitleGlobal from '~/components/TitleGlobal';
 import { getBlogByType } from '~/services/apiBlog';
 import HeadingTable from '~/components/HeadingTable';
-import { mySwalError } from '~/configs/alert';
 
 function Posts() {
     const [posts, setPosts] = useState([]);
@@ -77,17 +77,25 @@ function Posts() {
                             />
 
                             <tbody>
-                                {posts.map((post) => (
-                                    <PostsItem key={post._id} type="posts" data={post} />
-                                ))}
+                                {posts.length > 0 ? (
+                                    posts.map((post) => <PostsItem key={post._id} type="posts" data={post} />)
+                                ) : (
+                                    <tr>
+                                        <td colSpan={6} className="text-center">
+                                            Chưa có bài viết nào
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </Table>
 
-                        <Pagination className="float-end me-5" size="lg">
-                            <Pagination.First />
-                            {items}
-                            <Pagination.Last />
-                        </Pagination>
+                        {posts.length > 0 && (
+                            <Pagination className="float-end me-5" size="lg">
+                                <Pagination.First />
+                                {items}
+                                <Pagination.Last />
+                            </Pagination>
+                        )}
                     </Card.Body>
                 </Card>
             </div>

@@ -1,7 +1,7 @@
 import * as request from '~/utils/request';
 
 // OK
-export const createCourse = async (course, token, type) => {
+export const createCourse = async (token, type, course) => {
     try {
         const res = await request.post('/course/create', course, {
             headers: {

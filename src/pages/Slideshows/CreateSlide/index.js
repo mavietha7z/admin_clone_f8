@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 
 import { createSlideshow } from '~/services/slideshow';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function CreateSlide({ show, setShow }) {
     const [link, setLink] = useState('');
@@ -15,6 +16,7 @@ function CreateSlide({ show, setShow }) {
     const [description, setDescription] = useState('');
 
     const inputRef = useRef();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleChangeImage = (e) => {
@@ -29,7 +31,7 @@ function CreateSlide({ show, setShow }) {
             mySwalError('error', 'Vui lòng điền đầy đủ thông tin');
             return;
         }
-
+        dispatch(loadingStart());
         let formData = new FormData();
         formData.append('title', title);
         formData.append('image', image);
@@ -40,7 +42,7 @@ function CreateSlide({ show, setShow }) {
         formData.append('description', description);
 
         const result = await createSlideshow(currentUser.accessToken, formData);
-
+        dispatch(loadingSuccess());
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);
         } else {

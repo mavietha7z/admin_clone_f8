@@ -23,7 +23,7 @@ function AccountItem({ type, data }) {
     };
 
     const handleAgreeDelete = async () => {
-        const result = await deleteUserByType(data._id, 'uid', currentUser.accessToken);
+        const result = await deleteUserByType(currentUser.accessToken, 'uid', data._id);
 
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);

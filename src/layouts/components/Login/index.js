@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { loginAdmin } from '~/services/apiAuth';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -15,12 +16,13 @@ function Login() {
     const dispatch = useDispatch();
 
     const handleLogin = async () => {
+        dispatch(loadingStart());
         const user = {
             email,
             password,
         };
         const result = await loginAdmin(user, dispatch);
-
+        dispatch(loadingSuccess());
         if (result.statusCode === 0) {
             navigate('/');
             mySwalSuccess(result.message);

@@ -1,10 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import UpInput from '../UpInput';
 import { createCourse } from '~/services/apiCourse';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function FormCreateCourse({ type }) {
     const [inputCount, setInputCount] = useState(1);
@@ -23,6 +24,7 @@ function FormCreateCourse({ type }) {
 
     const fileRef = useRef();
     const iconRef = useRef();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
@@ -52,6 +54,7 @@ function FormCreateCourse({ type }) {
     const handleCreateCourse = async (e) => {
         e.preventDefault();
         let formData = new FormData();
+        dispatch(loadingStart());
 
         if (type === 'free') {
             const whatLearn = isWhatLearn.map((desc) => {
@@ -68,8 +71,8 @@ function FormCreateCourse({ type }) {
             formData.append('icon', icon);
             formData.append('description', desc);
 
-            const result = await createCourse(formData, currentUser.accessToken, 'free');
-
+            const result = await createCourse(currentUser.accessToken, 'free', formData);
+            dispatch(loadingSuccess());
             if (result.statusCode === 0) {
                 mySwalSuccess(result.message);
             } else {
@@ -93,8 +96,8 @@ function FormCreateCourse({ type }) {
             formData.append('preOrderPrice', preOrderPrice);
             formData.append('comingSoon', comingSoon);
 
-            const result = await createCourse(formData, currentUser.accessToken, 'pro');
-
+            const result = await createCourse(currentUser.accessToken, 'pro', formData);
+            dispatch(loadingSuccess());
             if (result.statusCode === 0) {
                 mySwalSuccess(result.message);
             } else {
@@ -107,8 +110,8 @@ function FormCreateCourse({ type }) {
             formData.append('image', image);
             formData.append('comingSoon', comingSoon);
 
-            const result = await createCourse(formData, currentUser.accessToken, 'pro');
-
+            const result = await createCourse(currentUser.accessToken, 'pro', formData);
+            dispatch(loadingSuccess());
             if (result.statusCode === 0) {
                 mySwalSuccess(result.message);
             } else {

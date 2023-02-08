@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Form, Button, Card } from 'react-bootstrap';
 
 import { createLearningPath } from '~/services/apiLearning';
 import { mySwalError, mySwalSuccess } from '~/configs/alert';
+import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function FormLearningPath() {
     const [title, setTitle] = useState('');
@@ -14,6 +15,7 @@ function FormLearningPath() {
     const [image, setImage] = useState(null);
 
     const imageRef = useRef();
+    const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleOnChangeImage = (e) => {
@@ -28,6 +30,7 @@ function FormLearningPath() {
             mySwalError('error', 'Vui lòng nhập đầy đủ thông tin');
             return;
         } else {
+            dispatch(loadingStart());
             let formData = new FormData();
             formData.append('title', title);
             formData.append('slug', slug);
@@ -37,7 +40,7 @@ function FormLearningPath() {
             formData.append('image', image);
 
             const result = await createLearningPath(currentUser.accessToken, formData);
-
+            dispatch(loadingSuccess());
             if (result.statusCode === 0) {
                 mySwalSuccess(result.message);
             } else {
