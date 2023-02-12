@@ -8,7 +8,6 @@ import { getInfoVideo, updateVideo } from '~/services/apiVideo';
 
 function VideoDetail({ data, show, setShow }) {
     const [active, setActive] = useState(false);
-
     const [view, setView] = useState(data.view);
     const [like, setLike] = useState(data.like);
     const [title, setTitle] = useState(data.title);

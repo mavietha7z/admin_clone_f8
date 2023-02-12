@@ -35,10 +35,10 @@ function Chapter({ data, show, setShow }) {
             const result = await createChapter(currentUser.accessToken, nameChapter, data._id);
 
             if (result.statusCode === 0) {
-                setChapter([...chapter, result.data]);
-                inputRef.current.focus();
                 setNameChapter('');
-                mySwalSuccess(result.message);
+                inputRef.current.focus();
+                mySwalSuccess(result.message, 'load');
+                setChapter([...chapter, result.data]);
             } else {
                 mySwalError('fail', result.message);
             }
@@ -51,7 +51,7 @@ function Chapter({ data, show, setShow }) {
 
             if (result.statusCode === 0) {
                 setChapter(result.data);
-                mySwalSuccess(result.message);
+                mySwalSuccess(result.message, 'load');
             } else {
                 mySwalError('fail', result.message);
             }
@@ -191,12 +191,14 @@ function Chapter({ data, show, setShow }) {
                                 </div>
                             </Col>
 
-                            <ModalDelete
-                                show={modal}
-                                setShow={setModal}
-                                title={`"${chapterDelete}" đồng nghĩa việc xóa tất cả bài học của chương này`}
-                                onClick={() => handleDelete(chapter._id)}
-                            />
+                            {modal && (
+                                <ModalDelete
+                                    show={modal}
+                                    setShow={setModal}
+                                    title={`"${chapterDelete}" đồng nghĩa việc xóa tất cả bài học của chương này`}
+                                    onClick={() => handleDelete(chapter._id)}
+                                />
+                            )}
                         </Row>
                     );
                 })}

@@ -7,9 +7,9 @@ import { mySwalError, mySwalSuccess } from '~/configs/alert';
 
 function CreateUser({ show, setShow }) {
     const [name, setName] = useState('');
+    const [role, setRole] = useState('0');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('0');
 
     const inputRef = useRef();
     const currentUser = useSelector((state) => state.auth.login.currentUser);

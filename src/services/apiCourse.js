@@ -1,6 +1,5 @@
 import * as request from '~/utils/request';
 
-// OK
 export const createCourse = async (token, type, course) => {
     try {
         const res = await request.post('/course/create', course, {
@@ -18,7 +17,6 @@ export const createCourse = async (token, type, course) => {
     }
 };
 
-// OK
 export const getCourseByType = async (token, type, id = null) => {
     try {
         const res = await request.get('/course', {
@@ -37,7 +35,6 @@ export const getCourseByType = async (token, type, id = null) => {
     }
 };
 
-// OK
 export const toggleStatusCourse = async (token, type = null, id) => {
     try {
         const res = await request.post(
@@ -58,7 +55,6 @@ export const toggleStatusCourse = async (token, type = null, id) => {
     }
 };
 
-// Ok
 export const createChapter = async (token, name, id) => {
     try {
         const res = await request.post(
@@ -79,7 +75,6 @@ export const createChapter = async (token, name, id) => {
     }
 };
 
-// OK
 export const createLesson = async (token, lesson, chapterId) => {
     try {
         const res = await request.post('/lesson/create', lesson, {
@@ -97,7 +92,6 @@ export const createLesson = async (token, lesson, chapterId) => {
     }
 };
 
-// OK
 export const deleteCourse = async (courseId, token, type) => {
     try {
         const res = await request.remove('/course/delete', {
@@ -116,7 +110,6 @@ export const deleteCourse = async (courseId, token, type) => {
     }
 };
 
-// OK
 export const updateCourse = async (token, data, id) => {
     try {
         const res = await request.put(`/course/update`, data, {
@@ -134,7 +127,6 @@ export const updateCourse = async (token, data, id) => {
     }
 };
 
-// Ok
 export const renameChapter = async (token, name, id) => {
     try {
         const res = await request.put(
@@ -156,7 +148,6 @@ export const renameChapter = async (token, name, id) => {
     }
 };
 
-// Ok
 export const deleteChapter = async (token, id) => {
     try {
         const res = await request.remove('/chapter/delete', {

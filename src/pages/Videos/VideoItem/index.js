@@ -16,7 +16,7 @@ function VideoItem({ type, data }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     const handleAgreeDelete = async () => {
-        const result = await deleteVideo(currentUser.accessToken, null, data._id);
+        const result = await deleteVideo(currentUser.accessToken, data._id);
 
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);

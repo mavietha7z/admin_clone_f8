@@ -1,7 +1,6 @@
 import * as request from '~/utils/request';
 import { loginSuccess, logoutSuccess } from '~/redux/reducer/authReducer';
 
-// Ok
 export const loginAdmin = async (user, dispatch) => {
     try {
         const res = await request.post('/auth/login', user, {
@@ -17,7 +16,6 @@ export const loginAdmin = async (user, dispatch) => {
     }
 };
 
-// Ok
 export const logoutAdmin = async (dispatch, token) => {
     try {
         const res = await request.post(
@@ -37,7 +35,6 @@ export const logoutAdmin = async (dispatch, token) => {
     }
 };
 
-// OK
 export const getUserByType = async (token, page = null, type = null, id = null) => {
     try {
         const res = await request.get('/user', {
@@ -57,7 +54,6 @@ export const getUserByType = async (token, page = null, type = null, id = null) 
     }
 };
 
-// OK
 export const registerUser = async (token, user, type = 'admin') => {
     try {
         const res = await request.post('/auth/register', user, {
@@ -75,15 +71,13 @@ export const registerUser = async (token, user, type = 'admin') => {
     }
 };
 
-// Ok
-export const deleteUserByType = async (token, type, id) => {
+export const deleteUserByType = async (token, id) => {
     try {
         const res = await request.remove(`/user/delete`, {
             headers: {
                 token: token,
             },
             params: {
-                type,
                 id,
             },
         });
@@ -94,7 +88,6 @@ export const deleteUserByType = async (token, type, id) => {
     }
 };
 
-// Ok
 export const refreshUser = async (token, dispatch) => {
     try {
         const res = await request.get('/auth/current-user', {
@@ -115,7 +108,6 @@ export const refreshUser = async (token, dispatch) => {
     }
 };
 
-// Ok
 export const toggleStatusUser = async (token, type, id) => {
     try {
         const res = await request.post(

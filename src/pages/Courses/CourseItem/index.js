@@ -124,11 +124,10 @@ function CourseItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />
-
-            {showDetail && <CourseDetail data={data} show={showDetail} setShow={setShowDetail} />}
-            {showChapter && <Chapter data={data} show={showChapter} setShow={setShowChapter} />}
             {showLesson && <Lesson data={data} show={showLesson} setShow={setShowLesson} />}
+            {showChapter && <Chapter data={data} show={showChapter} setShow={setShowChapter} />}
+            {showDetail && <CourseDetail data={data} show={showDetail} setShow={setShowDetail} />}
+            {show && <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />}
         </tr>
     );
 }

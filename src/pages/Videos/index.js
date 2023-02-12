@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Col, Row, Table } from 'react-bootstrap';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import VideoItem from './VideoItem';
 import CreateVideo from './CreateVideo';
@@ -17,8 +17,8 @@ function Videos() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const currentUser = useSelector((state) => state.auth.login.currentUser);
     const page = searchParams.get('page');
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
         setSearchParams({ page: 1 });

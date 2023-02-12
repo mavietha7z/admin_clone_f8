@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { privateRoutes } from './routes';
+import Loading from './components/Loading';
+import { mySwalError } from './configs/alert';
 import { refreshUser } from './services/apiAuth';
 import DefaultLayout from './layouts/DefaultLayout';
 import { logoutSuccess } from './redux/reducer/authReducer';
-import { mySwalError } from './configs/alert';
-import Loading from './components/Loading';
 
 function App() {
     const dispatch = useDispatch();
@@ -41,6 +41,7 @@ function App() {
     return (
         <div className="App">
             {loading && <Loading />}
+
             <Router>
                 <Routes>
                     {privateRoutes.map((route, index) => {

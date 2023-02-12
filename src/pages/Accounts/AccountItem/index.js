@@ -23,7 +23,7 @@ function AccountItem({ type, data }) {
     };
 
     const handleAgreeDelete = async () => {
-        const result = await deleteUserByType(currentUser.accessToken, 'uid', data._id);
+        const result = await deleteUserByType(currentUser.accessToken, data._id);
 
         if (result.statusCode === 0) {
             mySwalSuccess(result.message);
@@ -86,7 +86,7 @@ function AccountItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete show={show} setShow={setShow} title={data.name} onClick={handleAgreeDelete} />
+            {show && <ModalDelete show={show} setShow={setShow} title={data.name} onClick={handleAgreeDelete} />}
         </tr>
     );
 }

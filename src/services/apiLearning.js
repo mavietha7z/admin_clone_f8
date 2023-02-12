@@ -1,6 +1,5 @@
 import * as request from '~/utils/request';
 
-// Ok
 export const getLearningPath = async (type) => {
     try {
         const res = await request.get('/learning', {
@@ -15,7 +14,6 @@ export const getLearningPath = async (type) => {
     }
 };
 
-// OK
 export const toggleStatusLearningPath = async (token, type, id) => {
     try {
         const res = await request.post(
@@ -37,7 +35,6 @@ export const toggleStatusLearningPath = async (token, type, id) => {
     }
 };
 
-// Ok
 export const createLearningPath = async (token, learningPath) => {
     try {
         const res = await request.post('/learning/create', learningPath, {
@@ -52,7 +49,6 @@ export const createLearningPath = async (token, learningPath) => {
     }
 };
 
-// Ok
 export const createGroupLearningPath = async (token, group, id) => {
     try {
         const res = await request.post('/learning/create-group', group, {
@@ -70,7 +66,6 @@ export const createGroupLearningPath = async (token, group, id) => {
     }
 };
 
-// Ok
 export const getLearningPathById = async (token, id) => {
     try {
         const res = await request.get(`/learning/get/${id}`, {
@@ -85,7 +80,6 @@ export const getLearningPathById = async (token, id) => {
     }
 };
 
-// OK
 export const addCourseToGroup = async (token, data, id) => {
     try {
         const res = await request.post('/learning/add-course', data, {
@@ -103,7 +97,6 @@ export const addCourseToGroup = async (token, data, id) => {
     }
 };
 
-// OK
 export const deleteLearningPath = async (token, id) => {
     try {
         const res = await request.remove('/learning/delete', {
@@ -121,7 +114,6 @@ export const deleteLearningPath = async (token, id) => {
     }
 };
 
-// OK
 export const updateLearningPath = async (token, data, id) => {
     try {
         const res = await request.put('/learning/update', data, {

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row, Form, Button, Card } from 'react-bootstrap';
 
@@ -7,16 +7,22 @@ import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function FormLearningPath() {
-    const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
-    const [priority, setPriority] = useState(1);
-    const [content, setContent] = useState('');
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('');
     const [image, setImage] = useState(null);
+    const [content, setContent] = useState('');
+    const [priority, setPriority] = useState(1);
+    const [description, setDescription] = useState('');
 
     const imageRef = useRef();
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth.login.currentUser);
+
+    useEffect(() => {
+        return () => {
+            image && URL.revokeObjectURL(image.preview);
+        };
+    }, [image]);
 
     const handleOnChangeImage = (e) => {
         let file = e.target.files[0];

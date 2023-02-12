@@ -13,14 +13,14 @@ import CreateButton from '~/components/CreateButton';
 import HeaderListUser from '~/components/HeaderListUser';
 
 function Accounts() {
-    const [searchParams, setSearchParams] = useSearchParams();
     const [users, setUsers] = useState([]);
     const [show, setShow] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
-    const currentUser = useSelector((state) => state.auth.login.currentUser);
     const page = searchParams.get('page');
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
 
     useEffect(() => {
         setSearchParams({ page: 1 });

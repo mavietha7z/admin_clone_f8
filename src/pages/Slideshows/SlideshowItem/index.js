@@ -72,7 +72,7 @@ function SlideshowItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />
+            {show && <ModalDelete show={show} setShow={setShow} title={data.title} onClick={handleAgreeDelete} />}
         </tr>
     );
 }

@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import UpInput from '../UpInput';
@@ -8,19 +8,19 @@ import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { loadingStart, loadingSuccess } from '~/redux/reducer/authReducer';
 
 function FormCreateCourse({ type }) {
+    const [desc, setDesc] = useState('');
+    const [slug, setSlug] = useState('');
+    const [price, setPrice] = useState(0);
+    const [title, setTitle] = useState('');
+    const [video, setVideo] = useState('');
+    const [icon, setIcon] = useState(null);
+    const [image, setImage] = useState(null);
+    const [priority, setPriority] = useState(1);
+    const [oldPrice, setOldPrice] = useState(0);
     const [inputCount, setInputCount] = useState(1);
     const [comingSoon, setComingSoon] = useState('0');
-    const [title, setTitle] = useState('');
-    const [slug, setSlug] = useState('');
-    const [video, setVideo] = useState('');
-    const [priority, setPriority] = useState(1);
-    const [price, setPrice] = useState(0);
-    const [oldPrice, setOldPrice] = useState(0);
-    const [preOrderPrice, setPreOrderPrice] = useState(0);
     const [isWhatLearn, setIsWhatLearn] = useState([]);
-    const [image, setImage] = useState(null);
-    const [icon, setIcon] = useState(null);
-    const [desc, setDesc] = useState('');
+    const [preOrderPrice, setPreOrderPrice] = useState(0);
 
     const fileRef = useRef();
     const iconRef = useRef();

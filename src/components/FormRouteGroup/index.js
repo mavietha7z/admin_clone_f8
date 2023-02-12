@@ -7,11 +7,10 @@ import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createGroupLearningPath } from '~/services/apiLearning';
 
 function FormRouteGroup({ learningPath }) {
-    const [options, setOptions] = useState([]);
-    const [selected, setSelected] = useState(null);
-
     const [title, setTitle] = useState('');
+    const [options, setOptions] = useState([]);
     const [priority, setPriority] = useState(1);
+    const [selected, setSelected] = useState(null);
     const [description, setDescription] = useState('');
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);

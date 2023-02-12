@@ -7,16 +7,15 @@ import { mySwalError, mySwalSuccess } from '~/configs/alert';
 import { createVideo, getInfoVideo } from '~/services/apiVideo';
 
 function CreateVideo({ show, setShow }) {
-    const [active, setActive] = useState(false);
-
     const [url, setUrl] = useState('');
+    const [view, setView] = useState(0);
+    const [like, setLike] = useState(0);
     const [time, setTime] = useState('');
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
-    const [view, setView] = useState(0);
-    const [like, setLike] = useState(0);
     const [comment, setComment] = useState(0);
     const [priority, setPriority] = useState(1);
+    const [active, setActive] = useState(false);
 
     const currentUser = useSelector((state) => state.auth.login.currentUser);
 

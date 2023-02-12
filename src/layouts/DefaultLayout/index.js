@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useState } from 'react';
 import Header from '~/layouts/components/Header';
 import Footer from '~/layouts/components/Footer';
 import Sidebar from '~/layouts/components/Sidebar';
+import { Fragment, useEffect, useState } from 'react';
 
 function DefaultLayout({ children }) {
     const [width, setWidth] = useState(0);

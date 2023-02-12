@@ -1,7 +1,6 @@
 import * as request from '~/utils/request';
 const URL_API_YOUTUBE = 'https://www.googleapis.com/youtube/v3/videos';
 
-// Ok
 export const getInfoVideo = async (url) => {
     try {
         const res = await request.get(`${URL_API_YOUTUBE}`, {
@@ -32,7 +31,6 @@ export const getInfoVideo = async (url) => {
     }
 };
 
-// Ok
 export const createVideo = async (token, video) => {
     try {
         const res = await request.post('/video/create', video, {
@@ -47,7 +45,6 @@ export const createVideo = async (token, video) => {
     }
 };
 
-// Ok
 export const getVideoByPage = async (token, page) => {
     try {
         const res = await request.get('/video', {
@@ -65,7 +62,6 @@ export const getVideoByPage = async (token, page) => {
     }
 };
 
-// OK
 export const toggleStatusVideo = async (token, type, id) => {
     try {
         const res = await request.post(
@@ -88,15 +84,13 @@ export const toggleStatusVideo = async (token, type, id) => {
     }
 };
 
-// Ok
-export const deleteVideo = async (token, type = null, id = null) => {
+export const deleteVideo = async (token, id) => {
     try {
         const res = await request.remove('video/delete', {
             headers: {
                 token,
             },
             params: {
-                type,
                 id,
             },
         });
@@ -107,7 +101,6 @@ export const deleteVideo = async (token, type = null, id = null) => {
     }
 };
 
-// OK
 export const updateVideo = async (token, video, id) => {
     try {
         const res = await request.put('/video/update', video, {

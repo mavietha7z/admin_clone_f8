@@ -1,6 +1,5 @@
 import * as request from '~/utils/request';
 
-// Ok
 export const uploadImage = async (token, file) => {
     try {
         const res = await request.post('/upload/image', file, {
@@ -15,7 +14,6 @@ export const uploadImage = async (token, file) => {
     }
 };
 
-// Ok
 export const getAllSlideshow = async (token, type) => {
     try {
         const res = await request.get('/home/slideshow', {
@@ -33,7 +31,6 @@ export const getAllSlideshow = async (token, type) => {
     }
 };
 
-// Ok
 export const toggleStatusSlide = async (token, type, id) => {
     try {
         const res = await request.post(
@@ -55,7 +52,6 @@ export const toggleStatusSlide = async (token, type, id) => {
     }
 };
 
-// OK
 export const createSlideshow = async (token, slide) => {
     try {
         const res = await request.post('/home/create', slide, {
@@ -70,7 +66,6 @@ export const createSlideshow = async (token, slide) => {
     }
 };
 
-// OK
 export const deleteSlideshow = async (token, id) => {
     try {
         const res = await request.remove('/home/delete', {

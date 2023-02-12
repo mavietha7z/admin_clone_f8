@@ -1,6 +1,5 @@
 import * as request from '~/utils/request';
 
-// Ok
 export const getBlogByType = async (token, page = null, type = null) => {
     try {
         const res = await request.get('/posts', {
@@ -19,7 +18,6 @@ export const getBlogByType = async (token, page = null, type = null) => {
     }
 };
 
-// Ok
 export const toggleStatusPosts = async (token, type, id) => {
     try {
         const res = await request.post(
@@ -42,15 +40,14 @@ export const toggleStatusPosts = async (token, type, id) => {
     }
 };
 
-// OK
-export const deletePosts = async (token, postsId) => {
+export const deletePosts = async (token, id) => {
     try {
         const res = await request.remove('/posts/delete', {
             headers: {
                 token,
             },
             params: {
-                postsId,
+                id,
             },
         });
 

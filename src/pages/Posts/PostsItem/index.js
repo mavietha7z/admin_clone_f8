@@ -79,7 +79,7 @@ function PostsItem({ type, data }) {
                 </div>
             </td>
 
-            <ModalDelete show={show} setShow={setShow} title={data.metaTitle} onClick={handleAgreeDelete} />
+            {show && <ModalDelete show={show} setShow={setShow} title={data.metaTitle} onClick={handleAgreeDelete} />}
         </tr>
     );
 }
